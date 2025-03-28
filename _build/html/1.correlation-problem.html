@@ -57,6 +57,8 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '1.correlation-problem';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -359,7 +361,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -375,6 +379,19 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#least-squares-is-no-longer-blue">Least-squares is No Longer BLUE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-affects-the-standard-errors">Correlation Affects the Standard Errors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#theory">Theory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -384,8 +401,144 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="the-problem-of-correlated-errors">
+  <div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.width</span><span class="o">=</span><span class="m">14</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.height</span><span class="o">=</span><span class="m">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="the-problem-of-correlated-errors">
 <h1>The Problem of Correlated Errors<a class="headerlink" href="#the-problem-of-correlated-errors" title="Link to this heading">#</a></h1>
+<section id="least-squares-is-no-longer-blue">
+<h2>Least-squares is No Longer BLUE<a class="headerlink" href="#least-squares-is-no-longer-blue" title="Link to this heading">#</a></h2>
+</section>
+<section id="correlation-affects-the-standard-errors">
+<h2>Correlation Affects the Standard Errors<a class="headerlink" href="#correlation-affects-the-standard-errors" title="Link to this heading">#</a></h2>
+<section id="theory">
+<h3>Theory<a class="headerlink" href="#theory" title="Link to this heading">#</a></h3>
+</section>
+<section id="simulation">
+<h3>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">#</a></h3>
+<p>To see this, we can run a simulation in <code class="docutils literal notranslate"><span class="pre">R</span></code>. First, we use the <code class="docutils literal notranslate"><span class="pre">mvrnorm()</span></code> function from the <code class="docutils literal notranslate"><span class="pre">MASS</span></code> package to simulate 1,000 realisations of two repeated measurements with a correlation of <span class="math notranslate nohighlight">\(\rho = 0.8\)</span>. To do this, we use the following sampling model:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{bmatrix}
+    y_{i1} \\
+    y_{i2} \\
+\end{bmatrix}
+\sim\mathcal{N}\left(
+\begin{bmatrix}
+    0 \\
+    0 \\
+\end{bmatrix},
+\begin{bmatrix}
+    1 &amp; 0.8 \\
+    0.8 &amp; 1 \\
+\end{bmatrix}
+\right)
+\end{split}\]</div>
+<p>We can think of this as the data for subject <span class="math notranslate nohighlight">\(i\)</span> being drawn from a 2-dimensional normal distribution, where each dimension represents one of the repeated measurements. The mean vector is <span class="math notranslate nohighlight">\(\boldsymbol{\mu} = \left[0, 0\right]\)</span>, so there is no average difference between the conditions<a class="footnote-reference brackets" href="#foot1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. The variance-covariance matrix is then given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\boldsymbol{\Sigma} = 
+\begin{bmatrix}
+    1 &amp; 0.8 \\
+    0.8 &amp; 1 \\
+\end{bmatrix},
+\end{split}\]</div>
+<p>such that <span class="math notranslate nohighlight">\(\sigma^{2}_{y_{i1}} = \sigma^{2}_{y_{i2}} = 1\)</span> and the covariance is <span class="math notranslate nohighlight">\(\text{Cov}\left(y_{i1},y_{i2}\right) = \rho\sigma_{y_{i1}}\sigma_{y_{i2}} = \rho = 0.8\)</span>. The <code class="docutils literal notranslate"><span class="pre">R</span></code> code is then:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">MASS</span><span class="p">)</span>
+<span class="nf">set.seed</span><span class="p">(</span><span class="m">666</span><span class="p">)</span><span class="w"> </span><span class="c1"># For reproducibility</span>
+
+<span class="n">Sigma_dep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">0.8</span><span class="p">,</span><span class="m">0.8</span><span class="p">,</span><span class="m">1</span><span class="p">),</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">)</span>
+<span class="n">y_dep</span><span class="w">     </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma_dep</span><span class="p">)</span>
+
+<span class="nf">head</span><span class="p">(</span><span class="n">y_dep</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A matrix: 6 × 2 of type dbl</caption>
+<tbody>
+	<tr><td> 0.67694323</td><td> 0.7523640</td></tr>
+	<tr><td> 1.41638562</td><td> 2.4055836</td></tr>
+	<tr><td>-0.04662682</td><td>-0.6271934</td></tr>
+	<tr><td> 2.28473091</td><td> 1.5634470</td></tr>
+	<tr><td>-2.09179707</td><td>-2.1144265</td></tr>
+	<tr><td> 0.59623540</td><td> 0.8427202</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>The result of this is that we have simulated 1,000 pairs of data-points that are correlated. You can think of this like sampling 1,000 subjects, where each subject provides a pair of correlated measurements (such as a score from two different within-subject conditions of a task).</p>
+<p>We can compare this with a similar situation where there is <em>no</em> correlation between the measurements, i.e.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\boldsymbol{\Sigma} = 
+\begin{bmatrix}
+    1 &amp; 0 \\
+    0 &amp; 1 \\
+\end{bmatrix}.
+\end{split}\]</div>
+<p>Because all the measurements are independent, we do not really need the <code class="docutils literal notranslate"><span class="pre">mvrnorm()</span></code> function, but we keep it here for consistency. The <code class="docutils literal notranslate"><span class="pre">R</span></code> code would be:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">Sigma_indep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">),</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">)</span>
+<span class="n">y_indep</span><span class="w">     </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma_indep</span><span class="p">)</span>
+
+<span class="nf">head</span><span class="p">(</span><span class="n">y_indep</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A matrix: 6 × 2 of type dbl</caption>
+<tbody>
+	<tr><td>-0.5377941</td><td> 0.5408571</td></tr>
+	<tr><td>-0.6705118</td><td>-2.3190040</td></tr>
+	<tr><td> 1.0993015</td><td>-0.5375715</td></tr>
+	<tr><td>-0.1872913</td><td> 1.6585131</td></tr>
+	<tr><td> 0.3117156</td><td> 0.7840054</td></tr>
+	<tr><td> 1.6482554</td><td>-1.4637198</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>In both cases, we conceptualise the columns as representing two different conditions of an experiment. As such, our interest lies in the <em>difference</em> between the columns. So, as a final step, we subtract the columns and then compare the distributions of differences.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">y_diff_dep</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">y_dep</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">y_dep</span><span class="p">[,</span><span class="m">2</span><span class="p">]</span>
+<span class="n">y_diff_indep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">y_indep</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y_indep</span><span class="p">[,</span><span class="m">2</span><span class="p">]</span>
+
+<span class="nf">par</span><span class="p">(</span><span class="n">mfrow</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+<span class="nf">hist</span><span class="p">(</span><span class="n">y_diff_dep</span><span class="p">,</span><span class="w">   </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-5</span><span class="p">,</span><span class="m">5</span><span class="p">),</span><span class="w"> </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Condition Difference&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s">&#39;Correlated&#39;</span><span class="p">)</span>
+<span class="nf">hist</span><span class="p">(</span><span class="n">y_diff_indep</span><span class="p">,</span><span class="w"> </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-5</span><span class="p">,</span><span class="m">5</span><span class="p">),</span><span class="w"> </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Condition Difference&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s">&#39;Uncorrelated&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/5b8f9cbaa5360c289c69c9e382679c2e8f390fe96b5f8fadc568ba76fa236926.png"><img alt="_images/5b8f9cbaa5360c289c69c9e382679c2e8f390fe96b5f8fadc568ba76fa236926.png" src="_images/5b8f9cbaa5360c289c69c9e382679c2e8f390fe96b5f8fadc568ba76fa236926.png" style="width: 840px; height: 360px;" /></a>
+</div>
+</div>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="foot1" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>For the purpose of this simulation, the fact that there is no mean difference does not matter. All this influences is what number the distribution of differences is centred-on.</p>
+</aside>
+</aside>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -442,6 +595,26 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#least-squares-is-no-longer-blue">Least-squares is No Longer BLUE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-affects-the-standard-errors">Correlation Affects the Standard Errors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#theory">Theory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
