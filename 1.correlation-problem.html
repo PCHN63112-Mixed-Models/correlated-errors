@@ -387,9 +387,14 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#least-squares-is-no-longer-blue">Least-squares is No Longer BLUE</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-affects-the-standard-errors">Correlation Affects the Standard Errors</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#theory">Theory</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#positive-correlation">Positive Correlation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#negative-correlation">Negative Correlation</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#take-home-message">Take-home Message</a></li>
 </ul>
             </nav>
         </div>
@@ -401,20 +406,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.width</span><span class="o">=</span><span class="m">14</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.height</span><span class="o">=</span><span class="m">6</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<section class="tex2jax_ignore mathjax_ignore" id="the-problem-of-correlated-errors">
+  <section class="tex2jax_ignore mathjax_ignore" id="the-problem-of-correlated-errors">
 <h1>The Problem of Correlated Errors<a class="headerlink" href="#the-problem-of-correlated-errors" title="Link to this heading">#</a></h1>
 <section id="least-squares-is-no-longer-blue">
 <h2>Least-squares is No Longer BLUE<a class="headerlink" href="#least-squares-is-no-longer-blue" title="Link to this heading">#</a></h2>
@@ -426,6 +418,8 @@ document.write(`
 </section>
 <section id="simulation">
 <h3>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">#</a></h3>
+<section id="positive-correlation">
+<h4>Positive Correlation<a class="headerlink" href="#positive-correlation" title="Link to this heading">#</a></h4>
 <p>To see this, we can run a simulation in <code class="docutils literal notranslate"><span class="pre">R</span></code>. First, we use the <code class="docutils literal notranslate"><span class="pre">mvrnorm()</span></code> function from the <code class="docutils literal notranslate"><span class="pre">MASS</span></code> package to simulate 1,000 realisations of two repeated measurements with a correlation of <span class="math notranslate nohighlight">\(\rho = 0.8\)</span>. To do this, we use the following sampling model:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -459,7 +453,12 @@ document.write(`
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">MASS</span><span class="p">)</span>
 <span class="nf">set.seed</span><span class="p">(</span><span class="m">666</span><span class="p">)</span><span class="w"> </span><span class="c1"># For reproducibility</span>
 
-<span class="n">Sigma_dep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">0.8</span><span class="p">,</span><span class="m">0.8</span><span class="p">,</span><span class="m">1</span><span class="p">),</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">)</span>
+<span class="n">var1</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span><span class="w">                         </span><span class="c1"># Variance of condition 1</span>
+<span class="n">var2</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span><span class="w">                         </span><span class="c1"># Variance of condition 2</span>
+<span class="n">rho</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.8</span><span class="w">                       </span><span class="c1"># Correlation between conditions 1 &amp; 2</span>
+<span class="n">covar</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rho</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var1</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var2</span><span class="p">)</span><span class="w"> </span><span class="c1"># Covariance between conditions 1 &amp; 2</span>
+
+<span class="n">Sigma_dep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">var2</span><span class="p">),</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">)</span>
 <span class="n">y_dep</span><span class="w">     </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma_dep</span><span class="p">)</span>
 
 <span class="nf">head</span><span class="p">(</span><span class="n">y_dep</span><span class="p">)</span>
@@ -493,7 +492,10 @@ document.write(`
 <p>Because all the measurements are independent, we do not really need the <code class="docutils literal notranslate"><span class="pre">mvrnorm()</span></code> function, but we keep it here for consistency. The <code class="docutils literal notranslate"><span class="pre">R</span></code> code would be:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">Sigma_indep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">),</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rho</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span><span class="w">             </span>
+<span class="n">covar</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rho</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var1</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var2</span><span class="p">)</span>
+
+<span class="n">Sigma_indep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">var2</span><span class="p">),</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">)</span>
 <span class="n">y_indep</span><span class="w">     </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma_indep</span><span class="p">)</span>
 
 <span class="nf">head</span><span class="p">(</span><span class="n">y_indep</span><span class="p">)</span>
@@ -530,6 +532,138 @@ document.write(`
 <a class="reference internal image-reference" href="_images/5b8f9cbaa5360c289c69c9e382679c2e8f390fe96b5f8fadc568ba76fa236926.png"><img alt="_images/5b8f9cbaa5360c289c69c9e382679c2e8f390fe96b5f8fadc568ba76fa236926.png" src="_images/5b8f9cbaa5360c289c69c9e382679c2e8f390fe96b5f8fadc568ba76fa236926.png" style="width: 840px; height: 360px;" /></a>
 </div>
 </div>
+<p>According to the theory above, the standard error of these distributions can be calculated as <span class="math notranslate nohighlight">\(\sqrt{\sigma^{2}_{y_{i1}} + \sigma^{2}_{y_{i2}} - 2\text{Cov}\left(\sigma^{2}_{y_{i1}},\sigma^{2}_{y_{i2}}\right)}\)</span>. For the correlated data, we can compare this theoretical standard error to the one estimated from the simulations:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rho</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.8</span><span class="w">           </span>
+<span class="n">covar</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rho</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var1</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var2</span><span class="p">)</span>
+
+<span class="n">SE_dep_theory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">var2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">2</span><span class="o">*</span><span class="n">covar</span><span class="p">)</span>
+<span class="n">SE_dep_est</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sd</span><span class="p">(</span><span class="n">y_diff_dep</span><span class="p">)</span>
+<span class="nf">round</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">SE_dep_theory</span><span class="p">,</span><span class="n">SE_dep_est</span><span class="p">),</span><span class="w"> </span><span class="n">digits</span><span class="o">=</span><span class="m">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>0.632</li><li>0.63</li></ol>
+</div></div>
+</div>
+<p>For the uncorrelated data, this is</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rho</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span><span class="w"> </span>
+<span class="n">covar</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rho</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var1</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var2</span><span class="p">)</span><span class="w"> </span>
+
+<span class="n">SE_indep_theory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">var2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">2</span><span class="o">*</span><span class="n">covar</span><span class="p">)</span>
+<span class="n">SE_indep_est</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sd</span><span class="p">(</span><span class="n">y_diff_indep</span><span class="p">)</span>
+<span class="nf">round</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">SE_indep_theory</span><span class="p">,</span><span class="n">SE_indep_est</span><span class="p">),</span><span class="w"> </span><span class="n">digits</span><span class="o">=</span><span class="m">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>1.414</li><li>1.364</li></ol>
+</div></div>
+</div>
+<p>From this, we can conclude that the theory seems to be an accurate representation of reality, <em>and</em> most importantly, that positively correlated data leads to a <em>much smaller</em> standard error.</p>
+<p>We can see how this will affect the <span class="math notranslate nohighlight">\(t\)</span>-statistic by calculating</p>
+</section>
+<section id="negative-correlation">
+<h4>Negative Correlation<a class="headerlink" href="#negative-correlation" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">MASS</span><span class="p">)</span>
+<span class="nf">set.seed</span><span class="p">(</span><span class="m">666</span><span class="p">)</span><span class="w"> </span><span class="c1"># For reproducibility</span>
+
+<span class="c1"># Dependent covariance matrix</span>
+<span class="n">var1</span><span class="w">      </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span><span class="w">             </span>
+<span class="n">var2</span><span class="w">      </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span><span class="w">             </span>
+<span class="n">rho</span><span class="w">       </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">-0.8</span><span class="w">          </span>
+<span class="n">covar</span><span class="w">     </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rho</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var1</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var2</span><span class="p">)</span>
+<span class="n">Sigma_dep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">var2</span><span class="p">),</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">)</span>
+
+<span class="c1"># Independent covariance matric</span>
+<span class="n">rho</span><span class="w">         </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span><span class="w">             </span>
+<span class="n">covar</span><span class="w">       </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rho</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var1</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var2</span><span class="p">)</span>
+<span class="n">Sigma_indep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">var2</span><span class="p">),</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">)</span>
+
+<span class="c1"># Sample data</span>
+<span class="n">y_dep</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma_dep</span><span class="p">)</span>
+<span class="n">y_indep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma_indep</span><span class="p">)</span>
+
+<span class="c1"># Differences</span>
+<span class="n">y_diff_dep</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">y_dep</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">y_dep</span><span class="p">[,</span><span class="m">2</span><span class="p">]</span>
+<span class="n">y_diff_indep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">y_indep</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y_indep</span><span class="p">[,</span><span class="m">2</span><span class="p">]</span>
+
+<span class="c1"># Plot histograms of differences</span>
+<span class="nf">par</span><span class="p">(</span><span class="n">mfrow</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+<span class="nf">hist</span><span class="p">(</span><span class="n">y_diff_dep</span><span class="p">,</span><span class="w">   </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-7</span><span class="p">,</span><span class="m">7</span><span class="p">),</span><span class="w"> </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Condition Difference&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s">&#39;Correlated&#39;</span><span class="p">)</span>
+<span class="nf">hist</span><span class="p">(</span><span class="n">y_diff_indep</span><span class="p">,</span><span class="w"> </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-7</span><span class="p">,</span><span class="m">7</span><span class="p">),</span><span class="w"> </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Condition Difference&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s">&#39;Uncorrelated&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/a2f3a93e4d67489c4e79fcb896de483078291f3702b61cef465578411f65da55.png"><img alt="_images/a2f3a93e4d67489c4e79fcb896de483078291f3702b61cef465578411f65da55.png" src="_images/a2f3a93e4d67489c4e79fcb896de483078291f3702b61cef465578411f65da55.png" style="width: 840px; height: 360px;" /></a>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">SE_dep_theory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">2</span><span class="o">*</span><span class="p">(</span><span class="m">-0.8</span><span class="p">))</span><span class="w"> </span><span class="c1"># Theoretical SE</span>
+<span class="n">SE_dep_est</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sd</span><span class="p">(</span><span class="n">y_diff_dep</span><span class="p">)</span><span class="w">         </span><span class="c1"># Estimated SE from simulation</span>
+
+<span class="nf">round</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">SE_dep_theory</span><span class="p">,</span><span class="w"> </span><span class="n">SE_dep_est</span><span class="p">),</span><span class="w"> </span><span class="n">digits</span><span class="o">=</span><span class="m">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>1.897</li><li>1.867</li></ol>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">SE_indep_theory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">2</span><span class="o">*</span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="c1"># Theoretical SE</span>
+<span class="n">SE_indep_est</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sd</span><span class="p">(</span><span class="n">y_diff_indep</span><span class="p">)</span><span class="w">  </span><span class="c1"># Estimated SE from simulation</span>
+
+<span class="nf">round</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">SE_indep_theory</span><span class="p">,</span><span class="w"> </span><span class="n">SE_indep_est</span><span class="p">),</span><span class="w"> </span><span class="n">digits</span><span class="o">=</span><span class="m">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>1.414</li><li>1.364</li></ol>
+</div></div>
+</div>
+</section>
+</section>
+</section>
+<section id="take-home-message">
+<h2>Take-home Message<a class="headerlink" href="#take-home-message" title="Link to this heading">#</a></h2>
+<div class="admonition-take-home-message admonition">
+<p class="admonition-title">Take Home Message</p>
+<p>Dependence influences the magnitude of the standard errors when comparing correlated measurements. This has two important ramifications:</p>
+<ol class="arabic simple">
+<li><p>When designing an experiment, we can improve power by using repeated measurements, so long as the correlation is <em>positive</em>.</p></li>
+<li><p>When analysing data, it is important that this correlation is taken into account so that the standard errors are accurate. Depending upon the nature of the dependency, they will either be <em>smaller</em> or <em>larger</em> than under independent conditions.</p></li>
+</ol>
+</div>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="foot1" role="note">
@@ -537,7 +671,6 @@ document.write(`
 <p>For the purpose of this simulation, the fact that there is no mean difference does not matter. All this influences is what number the distribution of differences is centred-on.</p>
 </aside>
 </aside>
-</section>
 </section>
 </section>
 
@@ -608,9 +741,14 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#least-squares-is-no-longer-blue">Least-squares is No Longer BLUE</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-affects-the-standard-errors">Correlation Affects the Standard Errors</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#theory">Theory</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#positive-correlation">Positive Correlation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#negative-correlation">Negative Correlation</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#take-home-message">Take-home Message</a></li>
 </ul>
   </nav></div>
 
