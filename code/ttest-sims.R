@@ -1,4 +1,5 @@
 library(MASS)
+library(matrixcalc)
 set.seed(666)
 
 var1  <- 1
