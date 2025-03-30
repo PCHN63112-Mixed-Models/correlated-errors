@@ -591,6 +591,31 @@ F-statistic: 13.33 on 50 and 49 DF,  p-value: 2.636e-16
 </div>
 </div>
 <p>Now, the output here is a bit of mess due to all the subject effects. However, if you look at the coefficient and test for <code class="docutils literal notranslate"><span class="pre">CondB</span></code>, notice that <span class="math notranslate nohighlight">\(t = 2.495\)</span> and <span class="math notranslate nohighlight">\(p = 0.016\)</span>, which is the same as the <em>paired</em> <span class="math notranslate nohighlight">\(t\)</span>-test from earlier. Furthermore, the degrees of freedom are now correct at <span class="math notranslate nohighlight">\(49\)</span>. As such, adding the subject effects to the model has allowed the <em>between-subjects</em> error to be partitioned out and thus the remaining variance calculated from the residuals is <em>only</em> the <em>within-subject</em> error. This is the error needed to correctly estimate the standard error of the paired difference and thus the model results are now correct.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">round</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="nf">mean</span><span class="p">(</span><span class="n">y</span><span class="p">[,</span><span class="m">1</span><span class="p">]),</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">y</span><span class="p">[,</span><span class="m">2</span><span class="p">])),</span><span class="w"> </span><span class="n">digits</span><span class="o">=</span><span class="m">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>0.9602</li><li>1.1669</li></ol>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">beta</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">coef</span><span class="p">(</span><span class="n">paired.mod</span><span class="p">)</span>
+<span class="n">mu</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">)</span>
+<span class="n">mu</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">beta</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w">           </span><span class="nf">sum</span><span class="p">(</span><span class="n">beta</span><span class="p">[</span><span class="m">3</span><span class="o">:</span><span class="m">51</span><span class="p">])</span><span class="o">/</span><span class="m">50</span><span class="w"> </span><span class="c1"># beta[1] = mu[1] + mean subject effect</span>
+<span class="n">mu</span><span class="p">[</span><span class="m">2</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">beta</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">beta</span><span class="p">[</span><span class="m">2</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">beta</span><span class="p">[</span><span class="m">3</span><span class="o">:</span><span class="m">51</span><span class="p">])</span><span class="o">/</span><span class="m">50</span><span class="w"> </span><span class="c1"># beta[2] = mu[1] - mu[2] </span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="warning dropdown admonition">
 <p class="admonition-title">Advanced: Understanding the coefficients in the paired model</p>
 <p>Boo!</p>
