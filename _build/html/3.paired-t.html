@@ -616,6 +616,33 @@ F-statistic: 13.33 on 50 and 49 DF,  p-value: 2.636e-16
 </div>
 </div>
 </div>
+<p>So from this, we can see that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\mu_{1} &amp;= \beta_{0} + \frac{1}{n}\sum_{k=2}^{n+1}\beta_{k} \\
+\mu_{2} &amp;= \beta_{0} + \beta_{1} + \frac{1}{n}\sum_{k=2}^{n+1}\beta_{k}.
+\end{align}
+\end{split}\]</div>
+<p>Solving for both <span class="math notranslate nohighlight">\(\beta_{0}\)</span> and <span class="math notranslate nohighlight">\(\beta_{1}\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\beta_{0} &amp;= \mu_{1} - \frac{1}{n}\sum_{k=2}^{n+1}\beta_{k} \\
+\beta_{1} &amp;= \beta_{0} + \frac{1}{n}\sum_{k=2}^{n+1}\beta_{k} - \mu_{2} = \mu_{1} - \mu_{2}.
+\end{align}
+\end{split}\]</div>
+<p>So, rather unituitively, the intercept is actually the mean of the first group, minus the average of the subject effects. This then raises the question of what exactly the subject effects are? We can use a similar approach as above to solve for these. For instance, the expected value of the response from subject 2 in condition A is</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_{12} = \beta_{0} + \beta_{2}.
+\]</div>
+<p>Meaning that the effect for subject 2 is</p>
+<div class="math notranslate nohighlight">
+\[
+\beta_{2} = \mu_{12} - \beta_{0}.
+\]</div>
+<p>As such, the subject effects are effectively <em>residuals</em> around the intercept. Importantly, these are <em>constant offsets</em>, irrespective of the condition. For instance. As such, subject 2 is expect to lie the same distance from the mean of condition A and the mean of condition B.</p>
 <div class="warning dropdown admonition">
 <p class="admonition-title">Advanced: Understanding the coefficients in the paired model</p>
 <p>Boo!</p>
