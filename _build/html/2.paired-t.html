@@ -384,6 +384,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#paired-vs-two-sample-t-tests">Paired vs Two-sample <span class="math notranslate nohighlight">\(t\)</span>-tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-paired-t-test-as-a-linear-model">The Paired <span class="math notranslate nohighlight">\(t\)</span>-test as a Linear Model</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-sample-t-test-as-an-lm">Two-sample <span class="math notranslate nohighlight">\(t\)</span>-test as an LM</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-sources">Variance Sources</a></li>
@@ -403,7 +404,10 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="the-paired-t-test">
 <h1>The Paired <span class="math notranslate nohighlight">\(t\)</span>-test<a class="headerlink" href="#the-paired-t-test" title="Link to this heading">#</a></h1>
-<p>To begin, let us examine the difference in results between a <em>two-sample</em> <span class="math notranslate nohighlight">\(t\)</span>-test and a <em>paired</em> <span class="math notranslate nohighlight">\(t\)</span>-test. To do this, we can simulate data as we did before and then use the <code class="docutils literal notranslate"><span class="pre">t.test()</span></code> function with the <code class="docutils literal notranslate"><span class="pre">paired</span></code> option set to either <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> or <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>.</p>
+<p>As we have now seen, correlation causes problems in terms of both the properties of the least-squares estimates, as well as the accuracy of the standard errors. We will put the least-squares issues to one side, for the moment, and start by focussing on the standard errors. To do so, we will explore how the humble <span class="math notranslate nohighlight">\(t\)</span>-test can be adapted to accommodate repeated measurements. In particular, we will see what this tells us about representing repeated measurements within the framework of linear models.</p>
+<section id="paired-vs-two-sample-t-tests">
+<h2>Paired vs Two-sample <span class="math notranslate nohighlight">\(t\)</span>-tests<a class="headerlink" href="#paired-vs-two-sample-t-tests" title="Link to this heading">#</a></h2>
+<p>To begin, let us examine the difference in results between a <em>two-sample</em> <span class="math notranslate nohighlight">\(t\)</span>-test and a <em>paired</em> <span class="math notranslate nohighlight">\(t\)</span>-test. To do this, we first simulate correlated data as we did before:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">MASS</span><span class="p">)</span>
@@ -416,9 +420,14 @@ document.write(`
 
 <span class="n">Sigma</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">var2</span><span class="p">),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
 <span class="n">y</span><span class="w">     </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">1.25</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma</span><span class="p">)</span>
-
-<span class="nf">t.test</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">y</span><span class="p">[,</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[,</span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="n">paired</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">var.equal</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
-<span class="nf">t.test</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">y</span><span class="p">[,</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[,</span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="n">paired</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w">  </span><span class="n">var.equal</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can then run a <em>two-sample</em> <span class="math notranslate nohighlight">\(t\)</span>-test using</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">t.test</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">y</span><span class="p">[,</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[,</span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="n">paired</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">var.equal</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -435,6 +444,16 @@ mean of x mean of y
 0.9601951 1.1668504 
 </pre></div>
 </div>
+</div>
+</div>
+<p>and compare the output to a <em>paired</em> <span class="math notranslate nohighlight">\(t\)</span>-test on the same data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">t.test</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">y</span><span class="p">[,</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[,</span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="n">paired</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w">  </span><span class="n">var.equal</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>	Paired t-test
 
 data:  y[, 1] and y[, 2]
@@ -449,15 +468,15 @@ mean difference
 </div>
 </div>
 </div>
-<p>Perhaps the first thing you will notice is that the two-sample <span class="math notranslate nohighlight">\(t\)</span>-test is <em>non-significant</em>, whereas the paired <span class="math notranslate nohighlight">\(t\)</span>-test is <em>significant</em>. However, there is more to unpack here.</p>
-<p>Firstly, the output from the <em>two-sample</em> test reports the estimated group means as <span class="math notranslate nohighlight">\(\hat{\mu}_{1} = 0.9601951\)</span> and <span class="math notranslate nohighlight">\(\hat{\mu}_{2} = 1.1668504\)</span>, meaning that the estimated mean difference is <span class="math notranslate nohighlight">\(\hat{\mu}_{1} - \hat{\mu}_{2} = 1.090923 - 1.303266 = -0.2066553\)</span>. This is the same as reported by the <em>paired</em> test. As such, the difference between these methods has nothing to do with the estimated mean difference, as this is <em>identical</em>.</p>
-<p>Where the two tests differ can be seen in terms of the <span class="math notranslate nohighlight">\(t\)</span>-statistic itself, the degrees of freedom and the confidence interval. Remembering that the structure of a <span class="math notranslate nohighlight">\(t\)</span>-statistic is</p>
+<p>Perhaps the first thing you will notice is that the two-sample <span class="math notranslate nohighlight">\(t\)</span>-test is <em>non-significant</em>, whereas the paired <span class="math notranslate nohighlight">\(t\)</span>-test is <em>significant</em>. However, there is a lot more important information to unpack here.</p>
+<p>Firstly, the output from the <em>two-sample</em> test reports the estimated group means as <span class="math notranslate nohighlight">\(\hat{\mu}_{1} = 0.96\)</span> and <span class="math notranslate nohighlight">\(\hat{\mu}_{2} = 1.17\)</span>, meaning that the estimated mean difference is <span class="math notranslate nohighlight">\(\hat{\mu}_{1} - \hat{\mu}_{2} = 0.96 - 1.17 = -0.21\)</span>. This is the same as reported by the <em>paired</em> test. As such, the difference between these methods is not related to the estimated mean difference, as this is <em>identical</em>.</p>
+<p>Where the two tests differ can be seen in terms of the <span class="math notranslate nohighlight">\(t\)</span>-statistic itself, the degrees of freedom and the confidence interval. The structure of the <span class="math notranslate nohighlight">\(t\)</span>-statistic is</p>
 <div class="math notranslate nohighlight">
 \[
-t = \frac{\mu_{1} - \mu_{2}}{\text{SE}\{\mu_{1} - \mu_{2}\}}
+t = \frac{\mu_{1} - \mu_{2}}{\text{SE}\{\mu_{1} - \mu_{2}\}},
 \]</div>
-<p>we think of the test statistic as dividing the mean difference by the standard error of the difference. If the numerator of the test statistic is the same under both the <em>two-sample</em> and <em>paired</em> tests, then the difference in results <em>must</em> be coming from a difference in the denominator. In other words, the standard error of the difference changes between the two-sample and paired cases.</p>
-<p>This should not be a surprise, given the discussion earlier in this lesson. If the correlation is <em>positive</em>, then we expect the standard error of the difference to be <em>smaller</em> when the data are correlated. Indeed, this is what we see here. In both cases, we can recover the standard error by dividing the mean difference by the <span class="math notranslate nohighlight">\(t\)</span>-statistic. This gives</p>
+<p>meaning that we think of the <span class="math notranslate nohighlight">\(t\)</span> as the ratio between the mean difference and the standard error of the difference. Given that the mean difference is the same across both methods, the numerator of the test statistic will be identical under both the <em>two-sample</em> and <em>paired</em> tests. As such, the difference in the <span class="math notranslate nohighlight">\(t\)</span> values <em>must</em> be coming from a difference in the denominator. In other words, the standard error of the difference changes between the two-sample and paired cases.</p>
+<p>This should not be a surprise, given our earlier discussion. If the correlation is <em>positive</em>, then we expect the standard error of the difference to be <em>smaller</em> when the data are correlated. Indeed, this is what we see here. In both cases, we can recover the standard error by dividing the mean difference by the <span class="math notranslate nohighlight">\(t\)</span>-statistic. This gives</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">round</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">-0.2066553</span><span class="o">/</span><span class="m">-0.92759</span><span class="p">,</span><span class="w"> </span><span class="m">-0.2066553</span><span class="o">/</span><span class="m">-2.4952</span><span class="p">),</span><span class="w"> </span><span class="n">digits</span><span class="o">=</span><span class="m">3</span><span class="p">)</span>
@@ -473,7 +492,8 @@ t = \frac{\mu_{1} - \mu_{2}}{\text{SE}\{\mu_{1} - \mu_{2}\}}
 <ol class=list-inline><li>0.223</li><li>0.083</li></ol>
 </div></div>
 </div>
-<p>So, in the <em>two-sample</em> case the standard error is <span class="math notranslate nohighlight">\(0.223\)</span>, which is larger than the standard error in the <em>paired</em> case, which is <span class="math notranslate nohighlight">\(0.083\)</span>. Again, this should not be a surprise and the conclusion here would be that the estimate in the <em>two-sample</em> case is <em>too large</em>, given the correlation in the data. However, the question for us here is really about <em>how</em> the <em>paired</em> <span class="math notranslate nohighlight">\(t\)</span>-test is able to take this into account.</p>
+<p>So, in the <em>two-sample</em> case the standard error is <span class="math notranslate nohighlight">\(0.223\)</span>, which is larger than the standard error in the <em>paired</em> case, which is <span class="math notranslate nohighlight">\(0.083\)</span>. Given what we know, the conclusion would be that the estimate in the <em>two-sample</em> case is <em>too large</em>, given the correlation in the data. The <em>paired</em> test is therefore able to correctly estimate the standard error of the difference under cases of correlation. This should not be surprising, however, the key question for us is <em>how</em> the <em>paired</em> <span class="math notranslate nohighlight">\(t\)</span>-test is able to do this.</p>
+</section>
 <section id="the-paired-t-test-as-a-linear-model">
 <h2>The Paired <span class="math notranslate nohighlight">\(t\)</span>-test as a Linear Model<a class="headerlink" href="#the-paired-t-test-as-a-linear-model" title="Link to this heading">#</a></h2>
 <p>To begin understanding how this works, it is useful to reframe the <span class="math notranslate nohighlight">\(t\)</span>-test in terms of a linear model.</p>
@@ -493,23 +513,10 @@ t = \frac{\mu_{1} - \mu_{2}}{\text{SE}\{\mu_{1} - \mu_{2}\}}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call:
-lm(formula = y.long ~ cond)
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="n">library</span><span class="p">(</span><span class="n">matrixcalc</span><span class="p">):</span> <span class="n">there</span> <span class="ow">is</span> <span class="n">no</span> <span class="n">package</span> <span class="n">called</span> <span class="s1">&#39;matrixcalc&#39;</span>
+<span class="ne">Traceback</span>:
 
-Residuals:
-     Min       1Q   Median       3Q      Max 
--2.52090 -0.85738  0.01796  0.70661  2.41932 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   0.9602     0.1575   6.095 2.16e-08 ***
-condB         0.2067     0.2228   0.928    0.356    
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 1.114 on 98 degrees of freedom
-Multiple R-squared:  0.008703,	Adjusted R-squared:  -0.001412 
-F-statistic: 0.8604 on 1 and 98 DF,  p-value: 0.3559
+<span class="mi">1</span><span class="o">.</span> <span class="n">stop</span><span class="p">(</span><span class="n">packageNotFoundError</span><span class="p">(</span><span class="n">package</span><span class="p">,</span> <span class="n">lib</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">call</span><span class="p">()))</span>
 </pre></div>
 </div>
 </div>
@@ -736,6 +743,7 @@ F-statistic: 13.33 on 50 and 49 DF,  p-value: 2.636e-16
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#paired-vs-two-sample-t-tests">Paired vs Two-sample <span class="math notranslate nohighlight">\(t\)</span>-tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-paired-t-test-as-a-linear-model">The Paired <span class="math notranslate nohighlight">\(t\)</span>-test as a Linear Model</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-sample-t-test-as-an-lm">Two-sample <span class="math notranslate nohighlight">\(t\)</span>-test as an LM</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-sources">Variance Sources</a></li>
