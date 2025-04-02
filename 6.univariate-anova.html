@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Introducing Mixed-effects Models &#8212; Linear Models with Correlated Errors</title>
+    <title>The Univeriate Repeated-measures ANOVA &#8212; Linear Models with Correlated Errors</title>
   
   
   
@@ -16,30 +16,33 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
@@ -59,13 +62,12 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '6.mixed-effects';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '6.univariate-anova';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Summary and Quiz" href="summary.html" />
-    <link rel="prev" title="The Multivariate Repeated-measures ANOVA" href="5.multivariate-anova.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -81,19 +83,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -101,7 +92,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -109,8 +99,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -126,7 +116,10 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -156,21 +149,17 @@
     
     
     <img src="_static/logo.png" class="logo__image only-light" alt="Linear Models with Correlated Errors - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Linear Models with Correlated Errors - Home"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Linear Models with Correlated Errors - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -181,13 +170,10 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="1.correlation-problem.html">The Problem of Correlated Errors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2.traditional-approaches.html">Traditional Approaches to Repeated Measurements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="3.paired-t.html">The Paired <span class="math notranslate nohighlight">\(t\)</span>-test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="4.univariate-anova.html">The Univeriate Repeated-measures ANOVA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="5.multivariate-anova.html">The Multivariate Repeated-measures ANOVA</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introducing Mixed-effects Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2.paired-t.html">The Paired <span class="math notranslate nohighlight">\(t\)</span>-test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3.blocking.html">The Statistical Concept of <em>Blocking</em></a></li>
 <li class="toctree-l1"><a class="reference internal" href="summary.html">Summary and Quiz</a></li>
 </ul>
 
@@ -197,9 +183,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -260,7 +251,7 @@
       
       
       
-      <li><a href="https://github.com/PCHN63112-Mixed-Models/correlated-errors/issues/new?title=Issue%20on%20page%20%2F6.mixed-effects.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/PCHN63112-Mixed-Models/correlated-errors/issues/new?title=Issue%20on%20page%20%2F6.univariate-anova.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -290,7 +281,7 @@
       
       
       
-      <li><a href="_sources/6.mixed-effects.ipynb" target="_blank"
+      <li><a href="_sources/6.univariate-anova.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -343,24 +334,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -374,7 +357,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Introducing Mixed-effects Models</h1>
+    <h1>The Univeriate Repeated-measures ANOVA</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -384,7 +367,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-lme4-package">The <code class="docutils literal notranslate"><span class="pre">lme4</span></code> Package</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-between-subjects-factors">Adding Between-subjects Factors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioned-error-models">Partitioned Error Models</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -396,54 +382,18 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="introducing-mixed-effects-models">
-<h1>Introducing Mixed-effects Models<a class="headerlink" href="#introducing-mixed-effects-models" title="Link to this heading">#</a></h1>
-<div class="tip admonition">
-<p class="admonition-title">Variable Terminology</p>
-<p>Note that mixed-effects models are also known as <em>random-effects models</em>, <em>linear mixed models</em> and <em>hierarchical linear models</em>. These are all exactly the same thing, so try not to get confused if you come across these different terms.</p>
-</div>
-<section id="the-lme4-package">
-<h2>The <code class="docutils literal notranslate"><span class="pre">lme4</span></code> Package<a class="headerlink" href="#the-lme4-package" title="Link to this heading">#</a></h2>
-<p>We will learn much more about the syntax and theory behind these methods as this unit progresses. For now, just notice what happens when we specify the same paired <span class="math notranslate nohighlight">\(t\)</span>-test from earlier, but with <code class="docutils literal notranslate"><span class="pre">subject</span></code> specifically treated as a random effect.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;lme4&#39;</span><span class="p">)</span>
-
-<span class="c1"># Mixed Model</span>
-<span class="n">mix.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lmer</span><span class="p">(</span><span class="n">y.long</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="o">|</span><span class="n">subject</span><span class="p">))</span>
-<span class="nf">summary</span><span class="p">(</span><span class="n">mix.mod</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Linear mixed model fit by REML [&#39;lmerMod&#39;]
-Formula: y.long ~ cond + (1 | subject)
-
-REML criterion at convergence: 240.6
-
-Scaled residuals: 
-    Min      1Q  Median      3Q     Max 
--2.4842 -0.5269 -0.0009  0.4361  1.9063 
-
-Random effects:
- Groups   Name        Variance Std.Dev.
- subject  (Intercept) 1.0694   1.0341  
- Residual             0.1715   0.4141  
-Number of obs: 100, groups:  subject, 50
-
-Fixed effects:
-            Estimate Std. Error t value
-(Intercept)  0.96020    0.15753   6.095
-condB        0.20666    0.08282   2.495
-
-Correlation of Fixed Effects:
-      (Intr)
-condB -0.263
-</pre></div>
-</div>
-</div>
-</div>
-<p>Although this is useful, the power of mixed-effects models is that they can do much more than the traditional repeated measures ANOVA. Also, notice that the correct tests have been produced automatically for each effect, without any need to identify the correct error term. This alone is a big advantage over the traditional repeated-measures ANOVA.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="the-univeriate-repeated-measures-anova">
+<h1>The Univeriate Repeated-measures ANOVA<a class="headerlink" href="#the-univeriate-repeated-measures-anova" title="Link to this heading">#</a></h1>
+<section id="adding-between-subjects-factors">
+<h2>Adding Between-subjects Factors<a class="headerlink" href="#adding-between-subjects-factors" title="Link to this heading">#</a></h2>
+<p>… So what is the correct error here? The obvious, and correct, answer is that it is the <em>between-subjects</em> error. So how do we use this in our test statistics? At present, all we have done is <em>removed</em> the between-subjects error by including the <code class="docutils literal notranslate"><span class="pre">Subject</span></code> factor in our models. However, we somehow have to use this removed error as the denominator in tests that are based on between-subjects effects.</p>
+<section id="partitioned-error-models">
+<h3>Partitioned Error Models<a class="headerlink" href="#partitioned-error-models" title="Link to this heading">#</a></h3>
+<p>… the difference is that, rather than including the <code class="docutils literal notranslate"><span class="pre">Subject</span></code> factor as something to be estimated and tested (like any other regression coefficients), we instead want to just use these effects for the purpose of estimating the <em>between-subjects</em> variance. We already saw from previous examples that the effects of <code class="docutils literal notranslate"><span class="pre">Subject</span></code> are not interesting, as we simply ignored them. Indeed, the <span class="math notranslate nohighlight">\(t\)</span>-tests and <span class="math notranslate nohighlight">\(p\)</span>-values and other automatic treatments of these coefficients were both <em>uninteresting</em> and <em>unnecessary</em>, which is a hint to the fact that we were not really using this factor correctly when adding it to the linear model in this way. This is because <code class="docutils literal notranslate"><span class="pre">Subject</span></code> was, in fact, something known as a <em>random-effect</em>.</p>
+<p>…This distinction between something we want to directly estimate and test and something that is used for calculating varirance is the difference between <em>fixed-effects</em> and <em>random-effects</em>. As such, in order to use the <code class="docutils literal notranslate"><span class="pre">Subject</span></code> factor in this way, it must be treated as a <em>random-effect</em>.</p>
+<p>…We have already seen models that contain random variables, as every single linear model so far has contained a <em>random error term</em>. As such,</p>
+<p>…The way the ANOVA calculated this error is through the usual decomposition of sums-of-squares…If we run an ANOVA on the paired model from earlier, we can see the <em>mean-squares</em> for the subejct effects. This <em>is</em> the estimate of the between-subejcts variance…</p>
+</section>
 </section>
 </section>
 
@@ -477,24 +427,6 @@ condB -0.263
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="5.multivariate-anova.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">The Multivariate Repeated-measures ANOVA</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="summary.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Summary and Quiz</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -502,7 +434,8 @@ condB -0.263
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -511,7 +444,10 @@ condB -0.263
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-lme4-package">The <code class="docutils literal notranslate"><span class="pre">lme4</span></code> Package</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-between-subjects-factors">Adding Between-subjects Factors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioned-error-models">Partitioned Error Models</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
@@ -560,8 +496,8 @@ By Dr Martyn McFarquhar
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>
