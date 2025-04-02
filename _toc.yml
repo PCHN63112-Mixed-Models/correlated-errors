@@ -5,8 +5,8 @@ format: jb-book
 root: 0.intro
 chapters:
 - file: 1.correlation-problem
-- file: 2.traditional-approaches
-- file: 3.paired-t
+- file: 2.paired-t
+- file: 3.blocking
 - file: 4.univariate-anova
 - file: 5.multivariate-anova
 - file: 6.mixed-effects
