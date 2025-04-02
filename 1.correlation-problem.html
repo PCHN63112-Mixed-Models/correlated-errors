@@ -467,14 +467,14 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><table class="dataframe">
-<caption>A matrix: 6 × 2 of type dbl</caption>
+<caption>A matrix: 6 x 2 of type dbl</caption>
 <tbody>
-	<tr><td> 0.67694323</td><td> 0.7523640</td></tr>
-	<tr><td> 1.41638562</td><td> 2.4055836</td></tr>
-	<tr><td>-0.04662682</td><td>-0.6271934</td></tr>
-	<tr><td> 2.28473091</td><td> 1.5634470</td></tr>
-	<tr><td>-2.09179707</td><td>-2.1144265</td></tr>
-	<tr><td> 0.59623540</td><td> 0.8427202</td></tr>
+	<tr><td> 1.6769432</td><td> 2.0023640</td></tr>
+	<tr><td> 2.4163856</td><td> 3.6555836</td></tr>
+	<tr><td> 0.9533732</td><td> 0.6228066</td></tr>
+	<tr><td> 3.2847309</td><td> 2.8134470</td></tr>
+	<tr><td>-1.0917971</td><td>-0.8644265</td></tr>
+	<tr><td> 1.5962354</td><td> 2.0927202</td></tr>
 </tbody>
 </table>
 </div></div>
@@ -504,19 +504,49 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><table class="dataframe">
-<caption>A matrix: 6 × 2 of type dbl</caption>
+<caption>A matrix: 6 x 2 of type dbl</caption>
 <tbody>
-	<tr><td>-0.5377941</td><td> 0.5408571</td></tr>
-	<tr><td>-0.6705118</td><td>-2.3190040</td></tr>
-	<tr><td> 1.0993015</td><td>-0.5375715</td></tr>
-	<tr><td>-0.1872913</td><td> 1.6585131</td></tr>
-	<tr><td> 0.3117156</td><td> 0.7840054</td></tr>
-	<tr><td> 1.6482554</td><td>-1.4637198</td></tr>
+	<tr><td>0.4622059</td><td> 1.7908571</td></tr>
+	<tr><td>0.3294882</td><td>-1.0690040</td></tr>
+	<tr><td>2.0993015</td><td> 0.7124285</td></tr>
+	<tr><td>0.8127087</td><td> 2.9085131</td></tr>
+	<tr><td>1.3117156</td><td> 2.0340054</td></tr>
+	<tr><td>2.6482554</td><td>-0.2137198</td></tr>
 </tbody>
 </table>
 </div></div>
 </div>
 <p>In both cases, we conceptualise the columns as representing two different conditions of an experiment. As such, our interest lies in the <em>difference</em> between the columns. So, as a final step, we subtract the columns and then compare the distributions of differences.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">mu_diff_dep</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">5000</span><span class="p">)</span>
+<span class="n">mu_diff_indep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">5000</span><span class="p">)</span>
+
+<span class="nf">for</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">5000</span><span class="p">){</span>
+<span class="w">    </span><span class="n">y_indep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma_indep</span><span class="p">)</span>
+<span class="w">    </span><span class="n">y_dep</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma_dep</span><span class="p">)</span>
+<span class="w">    </span><span class="n">mu_diff_indep</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">y_indep</span><span class="p">[,</span><span class="m">1</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w">  </span><span class="nf">mean</span><span class="p">(</span><span class="n">y_indep</span><span class="p">[,</span><span class="m">2</span><span class="p">])</span>
+<span class="w">    </span><span class="n">mu_diff_dep</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">y_dep</span><span class="p">[,</span><span class="m">1</span><span class="p">])</span><span class="w">   </span><span class="o">-</span><span class="w">  </span><span class="nf">mean</span><span class="p">(</span><span class="n">y_dep</span><span class="p">[,</span><span class="m">2</span><span class="p">])</span>
+<span class="p">}</span>
+
+<span class="nf">par</span><span class="p">(</span><span class="n">mfrow</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+<span class="nf">hist</span><span class="p">(</span><span class="n">mu_diff_dep</span><span class="p">,</span><span class="w">   </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span><span class="m">1</span><span class="p">),</span><span class="w"> </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Mean Difference&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s">&#39;Correlated&#39;</span><span class="p">)</span>
+<span class="nf">hist</span><span class="p">(</span><span class="n">mu_diff_indep</span><span class="p">,</span><span class="w"> </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span><span class="m">1</span><span class="p">),</span><span class="w"> </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Mean Difference&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s">&#39;Uncorrelated&#39;</span><span class="p">)</span>
+
+<span class="nf">c</span><span class="p">(</span><span class="nf">sd</span><span class="p">(</span><span class="n">mu_diff_dep</span><span class="p">),</span><span class="nf">sd</span><span class="p">(</span><span class="n">mu_diff_indep</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>0.0878998536957906</li><li>0.200852882069772</li></ol>
+</div><a class="reference internal image-reference" href="_images/473b52f96d15de8b63ad0f575deffe229a380929067e8bd6278ed33c257deb40.png"><img alt="_images/473b52f96d15de8b63ad0f575deffe229a380929067e8bd6278ed33c257deb40.png" src="_images/473b52f96d15de8b63ad0f575deffe229a380929067e8bd6278ed33c257deb40.png" style="width: 840px; height: 360px;" /></a>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">y_diff_dep</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">y_dep</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">y_dep</span><span class="p">[,</span><span class="m">2</span><span class="p">]</span>
@@ -529,7 +559,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/5b8f9cbaa5360c289c69c9e382679c2e8f390fe96b5f8fadc568ba76fa236926.png"><img alt="_images/5b8f9cbaa5360c289c69c9e382679c2e8f390fe96b5f8fadc568ba76fa236926.png" src="_images/5b8f9cbaa5360c289c69c9e382679c2e8f390fe96b5f8fadc568ba76fa236926.png" style="width: 840px; height: 360px;" /></a>
+<a class="reference internal image-reference" href="_images/0d900443e4e15dfdc4f039f24a9e259ba00e996daa125441edc97cdc173a6143.png"><img alt="_images/0d900443e4e15dfdc4f039f24a9e259ba00e996daa125441edc97cdc173a6143.png" src="_images/0d900443e4e15dfdc4f039f24a9e259ba00e996daa125441edc97cdc173a6143.png" style="width: 840px; height: 360px;" /></a>
 </div>
 </div>
 <p>According to the theory above, the standard error of these distributions can be calculated as <span class="math notranslate nohighlight">\(\sqrt{\sigma^{2}_{y_{i1}} + \sigma^{2}_{y_{i2}} - 2\text{Cov}\left(\sigma^{2}_{y_{i1}},\sigma^{2}_{y_{i2}}\right)}\)</span>. For the correlated data, we can compare this theoretical standard error to the one estimated from the simulations:</p>
