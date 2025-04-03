@@ -660,15 +660,35 @@ F-statistic: 0.8604 on 1 and 98 DF,  p-value: 0.3559
 <span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">vec</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="n">subject</span><span class="p">))</span>
 <span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
 
-<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="m">5</span><span class="o">:</span><span class="m">20</span><span class="p">],</span><span class="n">y.long</span><span class="p">[</span><span class="m">5</span><span class="o">:</span><span class="m">20</span><span class="p">],</span><span class="n">col</span><span class="o">=</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">cond</span><span class="p">))</span>
+<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="p">],</span><span class="n">y.long</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="p">],</span><span class="n">col</span><span class="o">=</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">cond</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/3978b8e074620d15a5c393ff9cd1cd7d0f2e4170f2887e3b67924cea8574e4c4.png"><img alt="_images/3978b8e074620d15a5c393ff9cd1cd7d0f2e4170f2887e3b67924cea8574e4c4.png" src="_images/3978b8e074620d15a5c393ff9cd1cd7d0f2e4170f2887e3b67924cea8574e4c4.png" style="width: 840px; height: 420px;" /></a>
+<a class="reference internal image-reference" href="_images/6344591f9acfeb9735d530548491fa0ff1373c2a8b0223dfddd3fb61c7f3687f.png"><img alt="_images/6344591f9acfeb9735d530548491fa0ff1373c2a8b0223dfddd3fb61c7f3687f.png" src="_images/6344591f9acfeb9735d530548491fa0ff1373c2a8b0223dfddd3fb61c7f3687f.png" style="width: 840px; height: 420px;" /></a>
 </div>
 </div>
 <p>If we could <em>remove</em> all the variability associated with the different subjects, we could align all the subjects around 0. This would be like making it as if the data were all collected from only <em>one</em> individual. Because of this, the only variability left would be that associated with the consistency of measurements <em>within</em> a subject.</p>
+<p>We can see this visually by running</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sub.means</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rowMeans</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">y.nosub</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">100</span><span class="p">)</span>
+<span class="n">sub.idx</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
+
+<span class="nf">for </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">100</span><span class="p">){</span>
+<span class="w">    </span><span class="n">y.nosub</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">y.long</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sub.means</span><span class="p">[</span><span class="n">sub.idx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+<span class="p">}</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="p">],</span><span class="n">y.nosub</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="p">],</span><span class="n">col</span><span class="o">=</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">cond</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/42e87984469b33c1b6ca965c5164cb494b394e473862fc3ccfa27dadd8b5fe8a.png"><img alt="_images/42e87984469b33c1b6ca965c5164cb494b394e473862fc3ccfa27dadd8b5fe8a.png" src="_images/42e87984469b33c1b6ca965c5164cb494b394e473862fc3ccfa27dadd8b5fe8a.png" style="width: 840px; height: 420px;" /></a>
+</div>
+</div>
+<p>Having removed the <em>between-subject</em> variance, we have essentially removed the only element of the outcome variable that was different between the subjects. As such, we can now treat our data as one big sample from <em>the same subject</em>. As such, the variability we can see between all pairs of measurements provides us with an estimate of the <em>within-subject</em> variance. Because this quantifies the uncertainty around the <em>difference</em> between the conditions, this is therefore the most suitable variance to use as the denominator in the <span class="math notranslate nohighlight">\(t\)</span>-statistic.</p>
 </section>
 <section id="recreating-the-paired-t-test-in-the-linear-model">
 <h3>Recreating the Paired <span class="math notranslate nohighlight">\(t\)</span>-test in the Linear Model<a class="headerlink" href="#recreating-the-paired-t-test-in-the-linear-model" title="Link to this heading">#</a></h3>
