@@ -16,33 +16,30 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
@@ -69,7 +66,6 @@
     <link rel="prev" title="The Problem of Correlated Errors" href="1.correlation-problem.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -85,8 +81,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -94,6 +101,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -101,8 +109,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -118,8 +126,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -149,17 +156,21 @@
     
     
     <img src="_static/logo.png" class="logo__image only-light" alt="Linear Models with Correlated Errors - Home"/>
-    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Linear Models with Correlated Errors - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Linear Models with Correlated Errors - Home"/>`);</script>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -186,14 +197,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -337,16 +343,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -543,7 +557,7 @@ t = \frac{\mu_{1} - \mu_{2}}{\text{SE}\{\mu_{1} - \mu_{2}\}},
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading required package: survival
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/faa324c3054dbbd6f804030d7327f4600b9b70fec2b7cdded2f4d05eb06e8e69.png"><img alt="_images/faa324c3054dbbd6f804030d7327f4600b9b70fec2b7cdded2f4d05eb06e8e69.png" src="_images/faa324c3054dbbd6f804030d7327f4600b9b70fec2b7cdded2f4d05eb06e8e69.png" style="width: 840px; height: 420px;" /></a>
+<a class="reference internal image-reference" href="_images/850f5f26fd73b5fdf578041aed99415ee4aab20ec736eccf64cc0c233058bc6f.png"><img alt="_images/850f5f26fd73b5fdf578041aed99415ee4aab20ec736eccf64cc0c233058bc6f.png" src="_images/850f5f26fd73b5fdf578041aed99415ee4aab20ec736eccf64cc0c233058bc6f.png" style="width: 840px; height: 420px;" /></a>
 </div>
 </div>
 <p>The standard error from the simulations is then given by</p>
@@ -568,9 +582,9 @@ t = \frac{\mu_{1} - \mu_{2}}{\text{SE}\{\mu_{1} - \mu_{2}\}},
 <p>To see this, we first start with the familiar case of the <em>two-sample</em> model. We can fit this as an LM within <code class="docutils literal notranslate"><span class="pre">R</span></code> as follows</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">matrixcalc</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;ks&#39;</span><span class="p">)</span>
 
-<span class="n">y.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">vec</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="w">          </span><span class="c1"># Turn y into a column</span>
+<span class="n">y.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">vec</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">byrow</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="c1"># Turn y into a column</span>
 <span class="n">cond</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="s">&quot;B&quot;</span><span class="p">),</span><span class="m">50</span><span class="p">)</span><span class="w"> </span><span class="c1"># Create a predictor for the two conditions</span>
 
 <span class="n">two.sample.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">y.long</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">cond</span><span class="p">)</span>
@@ -591,7 +605,7 @@ Coefficients:
 (Intercept)   0.9602     0.1575   6.095 2.16e-08 ***
 condB         0.2067     0.2228   0.928    0.356    
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 Residual standard error: 1.114 on 98 degrees of freedom
 Multiple R-squared:  0.008703,	Adjusted R-squared:  -0.001412 
@@ -653,45 +667,118 @@ F-statistic: 0.8604 on 1 and 98 DF,  p-value: 0.3559
 </section>
 <section id="the-residuals-and-sources-of-variance">
 <h3>The Residuals and Sources of Variance<a class="headerlink" href="#the-residuals-and-sources-of-variance" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<p>To begin with, let us just examine the overall variance of the data for the first 15 subjects.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot subject variance</span>
-<span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">),</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">)),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">),</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">)),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
 <span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">vec</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="n">subject</span><span class="p">))</span>
 <span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
 
-<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="p">],</span><span class="n">y.long</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="p">],</span><span class="n">col</span><span class="o">=</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">cond</span><span class="p">))</span>
+<span class="nf">par</span><span class="p">(</span><span class="n">cex.lab</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.axis</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.main</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.sub</span><span class="o">=</span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
+<span class="w">     </span><span class="n">y.long</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
+<span class="w">     </span><span class="n">col</span><span class="o">=</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">cond</span><span class="p">),</span>
+<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Subject&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Y&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">)</span>
+
+<span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="nf">mean</span><span class="p">(</span><span class="n">y.long</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/6344591f9acfeb9735d530548491fa0ff1373c2a8b0223dfddd3fb61c7f3687f.png"><img alt="_images/6344591f9acfeb9735d530548491fa0ff1373c2a8b0223dfddd3fb61c7f3687f.png" src="_images/6344591f9acfeb9735d530548491fa0ff1373c2a8b0223dfddd3fb61c7f3687f.png" style="width: 840px; height: 420px;" /></a>
+<a class="reference internal image-reference" href="_images/3026975b14401ec68e2b5890d66684dfc5e7fcb9b7283c30da197f868ec5f41b.png"><img alt="_images/3026975b14401ec68e2b5890d66684dfc5e7fcb9b7283c30da197f868ec5f41b.png" src="_images/3026975b14401ec68e2b5890d66684dfc5e7fcb9b7283c30da197f868ec5f41b.png" style="width: 900px; height: 420px;" /></a>
 </div>
 </div>
-<p>If we could <em>remove</em> all the variability associated with the different subjects, we could align all the subjects around 0. This would be like making it as if the data were all collected from only <em>one</em> individual. Because of this, the only variability left would be that associated with the consistency of measurements <em>within</em> a subject.</p>
-<p>We can see this visually by running</p>
-<div class="cell docutils container">
+<p>Here we can see that there are 3 main sources of variation in these data:</p>
+<ol class="arabic simple">
+<li><p>The two conditions have different means, thus measures from one condition tend to be larger than the other. In this example, the mean difference is only 0.21, so this is quite a subtle effect. But it is there.</p></li>
+<li><p>The data come from different subjects, thus the degree to which the data fall above or below the grand means depends upon the individual subject.</p></li>
+<li><p>Within each subject, there is variation between the two measures. The magnitude of this difference is sometimes bigger and sometimes smaller than the condition difference of 0.21. As such, it cannot completely be explained by the effect of the conditions and thus represents an additional source of variation.</p></li>
+</ol>
+<p>To understand this more, we can work through <em>removing</em> each of these sources from the data to see how it can be decomposed. To begin with, we can remove the constant effect of each condition. To do so, we can simply take the residuals from the <code class="docutils literal notranslate"><span class="pre">two.sample.mod</span></code>, given that the predicted values from this model <em>are</em> the condition means. Once the effect of the conditions is removed, we have the plot below.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sub.means</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rowMeans</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="n">y.nosub</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">100</span><span class="p">)</span>
-<span class="n">sub.idx</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">res.two.sample</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">resid</span><span class="p">(</span><span class="n">two.sample.mod</span><span class="p">)</span>
+
+<span class="nf">par</span><span class="p">(</span><span class="n">cex.lab</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.axis</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.main</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.sub</span><span class="o">=</span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
+<span class="w">     </span><span class="n">res.two.sample</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
+<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Subject&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Residuals&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">col</span><span class="o">=</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">cond</span><span class="p">),</span>
+<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span>
+<span class="w">     </span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-3</span><span class="p">,</span><span class="m">3</span><span class="p">))</span>
+
+<span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="m">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/b58420a4770cc961d7a119498ea08203e191510d9c35d5ec5073f9640ed44ae5.png"><img alt="_images/b58420a4770cc961d7a119498ea08203e191510d9c35d5ec5073f9640ed44ae5.png" src="_images/b58420a4770cc961d7a119498ea08203e191510d9c35d5ec5073f9640ed44ae5.png" style="width: 900px; height: 420px;" /></a>
+</div>
+</div>
+<p>Now that we have removed any variation associated with the two conditions, we can turn to variability associated with the individual subjects. This is known as <em>between-subjects</em> variance. To remove it, we can calculate the mean value of each subject and then subtract it from the data. This results in the plot below.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">res.matrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">invvec</span><span class="p">(</span><span class="n">res.two.sample</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">byrow</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="n">sub.means</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rowMeans</span><span class="p">(</span><span class="n">res.matrix</span><span class="p">)</span>
+<span class="n">res.nosub</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">100</span><span class="p">)</span>
+<span class="n">sub.idx</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
 
 <span class="nf">for </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">100</span><span class="p">){</span>
-<span class="w">    </span><span class="n">y.nosub</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">y.long</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sub.means</span><span class="p">[</span><span class="n">sub.idx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+<span class="w">    </span><span class="n">res.nosub</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res.two.sample</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sub.means</span><span class="p">[</span><span class="n">sub.idx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
 <span class="p">}</span>
 
-<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="p">],</span><span class="n">y.nosub</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="p">],</span><span class="n">col</span><span class="o">=</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">cond</span><span class="p">))</span>
+<span class="nf">par</span><span class="p">(</span><span class="n">cex.lab</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.axis</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.main</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.sub</span><span class="o">=</span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="n">sub.idx</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">50</span><span class="p">],</span>
+<span class="w">     </span><span class="n">res.nosub</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">50</span><span class="p">],</span>
+<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Subject&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Residuals - Subjects&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span>
+<span class="w">     </span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-3</span><span class="p">,</span><span class="m">3</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/42e87984469b33c1b6ca965c5164cb494b394e473862fc3ccfa27dadd8b5fe8a.png"><img alt="_images/42e87984469b33c1b6ca965c5164cb494b394e473862fc3ccfa27dadd8b5fe8a.png" src="_images/42e87984469b33c1b6ca965c5164cb494b394e473862fc3ccfa27dadd8b5fe8a.png" style="width: 840px; height: 420px;" /></a>
+<a class="reference internal image-reference" href="_images/7d90d80b4391d9b4424f1b89bf2e9fbd330b8bb4d2349e1de466a40da7feb564.png"><img alt="_images/7d90d80b4391d9b4424f1b89bf2e9fbd330b8bb4d2349e1de466a40da7feb564.png" src="_images/7d90d80b4391d9b4424f1b89bf2e9fbd330b8bb4d2349e1de466a40da7feb564.png" style="width: 900px; height: 420px;" /></a>
 </div>
 </div>
-<p>Having removed the <em>between-subject</em> variance, we have essentially removed the only element of the outcome variable that was different between the subjects. As such, we can now treat our data as one big sample from <em>the same subject</em>. As such, the variability we can see between all pairs of measurements provides us with an estimate of the <em>within-subject</em> variance. Because this quantifies the uncertainty around the <em>difference</em> between the conditions, this is therefore the most suitable variance to use as the denominator in the <span class="math notranslate nohighlight">\(t\)</span>-statistic.</p>
+<p>Notice that a huge amount of the variation in this data was attributable to the variation between different subjects. Now that this has been removed, we can effectively treat our data as <em>one big sample from a single subject</em>. As such, the variability we can see between all pairs of measurements provides us with an indication of how <em>internally consistent</em> a single subject is across the different conditions of the task. With the overall effect of the conditions removed, this remaining variability is not related to the conditions themseleves. Rather, it is related to other sources of random variation that cause an individual’s response to change across multiple repeats of an experiment. This is known as the  <em>within-subject variance</em>.</p>
+<p>The variance associated with the two conditions is of direct interest because this captures our experimental effect of interest. Both the <em>between-subjects</em> and <em>within-subject</em> variance are effectively sources of <em>error</em> because they indicate different ways that the raw data may differ from the means of the conditions. One of these errors comes from the fact that different people may respond consistently higher or lower than the mean. The other comes from the fact that, even if an individual did not respond differently from the mean, natural variation across repeats will always be there.</p>
+<p>This partitioning of variance can be formally stated as</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Var}(y) = \sigma^{2} = \sigma^{2}_{b} + \sigma^{2}_{w}.
+\]</div>
+<p>As such, we now have <em>three</em> choices when it comes to calculating standard errors. Do we use the pooled variance of <span class="math notranslate nohighlight">\(\sigma^{2}\)</span>? The between-subjects variance of <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>, or the within-subject variance of <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>?</p>
+<p>Key Point
+In a regular paired t-test, the error variance consists of the differences between the means of the groups and the raw data. Howevever, when we have repeated measurements, this difference can be further divided into two sources … This is consistent with the idea of the <em>between-subjects variance</em> <span class="math notranslate nohighlight">\(\left(\sigma^{2}_{b}\right)\)</span> and the <em>within-subject variance</em> <span class="math notranslate nohighlight">\(\left(\sigma^{2}_{w}\right)\)</span> … As such, the difference with a <em>paired</em> test is that is uses the <em>within-subject variance</em> exclusively for determining the denominator of the <span class="math notranslate nohighlight">\(t\)</span>-statistic.</p>
 </section>
 <section id="recreating-the-paired-t-test-in-the-linear-model">
 <h3>Recreating the Paired <span class="math notranslate nohighlight">\(t\)</span>-test in the Linear Model<a class="headerlink" href="#recreating-the-paired-t-test-in-the-linear-model" title="Link to this heading">#</a></h3>
+<p>From all we discussed earlier, the aim is therefore to <em>remove</em> the between-subject variance from the residuals so that the error variance of the model only contains the <em>within-subject variance</em>. If we do not do this, then <span class="math notranslate nohighlight">\(\sigma^{2} = \sigma^{2}_{b} + \sigma^{2}_{w}\)</span>, which will be too large to accurately capture the standard error of the mean difference under repeated measurements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">),</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">)),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
@@ -765,7 +852,7 @@ subject48   -0.627914   0.414100  -1.516 0.135860
 subject49   -0.103401   0.414100  -0.250 0.803864    
 subject50   -0.359054   0.414100  -0.867 0.390129    
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 Residual standard error: 0.4141 on 49 degrees of freedom
 Multiple R-squared:  0.9315,	Adjusted R-squared:  0.8616 
@@ -878,8 +965,7 @@ F-statistic: 13.33 on 50 and 49 DF,  p-value: 2.636e-16
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -949,8 +1035,8 @@ By Dr Martyn McFarquhar
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>
