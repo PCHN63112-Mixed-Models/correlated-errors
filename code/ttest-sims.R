@@ -5,7 +5,7 @@ set.seed(666)
 var1  <- 1
 var2  <- 1
 rho   <- 0.8
-covar <- rho*var1*var2
+covar <- rho*sqrt(var1)*sqrt(var2)
 
 Sigma <- matrix(data=c(var1,covar,covar,var2), nrow=2, ncol=2)
 y     <- mvrnorm(n=50, mu=c(1,1.25), Sigma=Sigma)
@@ -15,6 +15,7 @@ t.test(x=y[,1], y=y[,2], paired=TRUE,  var.equal=TRUE)
 
 y.long <- vec(t(y))          # Turn y into a column
 cond   <- rep(c("A","B"),50) # Create a predictor for the two conditions
+group  <- c(rep("A",50),rep("B",50))
 
 two.sample.mod <- lm(y.long ~ cond)
 summary(two.sample.mod)
