@@ -493,7 +493,7 @@
 </div>
 </div>
 </div>
-<p>So we can see that we get <em>two</em> values back whenever we sample from this distribution. These represent a random draw from condition 1 and a random draw from condition 2, with some degree of correlation. The mean vector is given by</p>
+<p>So we can see that we get <em>two</em> values back whenever we sample from this distribution. These represent a random draw from condition 1 and a random draw from condition 2, with some degree of correlation. Notice that <code class="docutils literal notranslate"><span class="pre">mvrnorm()</span></code> returns the random draws as a <em>row</em> of values, rather than a column (as we showed earlier). This will only make a difference to way the values are arranged, but the interpretation remains the same. The mean vector is given by</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">print</span><span class="p">(</span><span class="n">Mu</span><span class="p">)</span>
