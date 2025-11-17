@@ -8,5 +8,5 @@ chapters:
 - file: 2.paired-t
 - file: 3.blocking
 - file: 4.univariate-anova
-- file: 6.mixed-effects
+- file: 6.multivar-anova
 - file: summary
