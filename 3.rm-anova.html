@@ -62,11 +62,11 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '4.univariate-anova';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '3.rm-anova';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="The Multivariate Repeated Measures ANOVA" href="6.multivar-anova.html" />
-    <link rel="prev" title="The Concept of Blocking" href="3.blocking.html" />
+    <link rel="next" title="Generalised Least Squares" href="4.gls.html" />
+    <link rel="prev" title="The Paired t-test" href="2.paired-t.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -173,9 +173,9 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="1.correlation-problem.html">The Problem of Repeated Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2.paired-t.html">The Paired <em>t</em>-test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="3.blocking.html">The Concept of <em>Blocking</em></a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">The Repeated Measures ANOVA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="6.multivar-anova.html">The Multivariate Repeated Measures ANOVA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4.gls.html">Generalised Least Squares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5.intro-mixed.html">Introducing Mixed-effects Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="summary.html">Summary</a></li>
 </ul>
 
@@ -253,7 +253,7 @@
       
       
       
-      <li><a href="https://github.com/PCHN63112-Mixed-Models/correlated-errors/issues/new?title=Issue%20on%20page%20%2F4.univariate-anova.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/PCHN63112-Mixed-Models/correlated-errors/issues/new?title=Issue%20on%20page%20%2F3.rm-anova.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -283,7 +283,7 @@
       
       
       
-      <li><a href="_sources/4.univariate-anova.ipynb" target="_blank"
+      <li><a href="_sources/3.rm-anova.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -369,6 +369,7 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-concept-of-blocking">The Concept of Blocking</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-between-subjects-factors">Adding Between-subjects Factors</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioned-error-models">Partitioned Error Models</a></li>
 </ul>
@@ -386,6 +387,9 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="the-repeated-measures-anova">
 <h1>The Repeated Measures ANOVA<a class="headerlink" href="#the-repeated-measures-anova" title="Link to this heading">#</a></h1>
+<section id="the-concept-of-blocking">
+<h2>The Concept of Blocking<a class="headerlink" href="#the-concept-of-blocking" title="Link to this heading">#</a></h2>
+</section>
 <section id="adding-between-subjects-factors">
 <h2>Adding Between-subjects Factors<a class="headerlink" href="#adding-between-subjects-factors" title="Link to this heading">#</a></h2>
 <p>… So what is the correct error here? The obvious, and correct, answer is that it is the <em>between-subjects</em> error. So how do we use this in our test statistics? At present, all we have done is <em>removed</em> the between-subjects error by including the <code class="docutils literal notranslate"><span class="pre">Subject</span></code> factor in our models. However, we somehow have to use this removed error as the denominator in tests that are based on between-subjects effects.</p>
@@ -430,20 +434,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="3.blocking.html"
+       href="2.paired-t.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">The Concept of <em>Blocking</em></p>
+        <p class="prev-next-title">The Paired <em>t</em>-test</p>
       </div>
     </a>
     <a class="right-next"
-       href="6.multivar-anova.html"
+       href="4.gls.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">The Multivariate Repeated Measures ANOVA</p>
+        <p class="prev-next-title">Generalised Least Squares</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -464,6 +468,7 @@
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-concept-of-blocking">The Concept of Blocking</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-between-subjects-factors">Adding Between-subjects Factors</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioned-error-models">Partitioned Error Models</a></li>
 </ul>
