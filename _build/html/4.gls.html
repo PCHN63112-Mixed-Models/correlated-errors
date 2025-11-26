@@ -60,6 +60,8 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '4.gls';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -344,7 +346,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -360,6 +364,21 @@
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-gls-work">How Does GLS Work?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-paired-t-test-using-gls">The Paired <span class="math notranslate nohighlight">\(t\)</span>-test Using GLS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#large-sample-gls">Large Sample GLS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gls-for-anova-models">GLS for ANOVA Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anova-models-with-more-flexible-variance-structures">ANOVA Models with More Flexible Variance Structures</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-can-we-use-gls">When Can We Use GLS?</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -371,6 +390,232 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="generalised-least-squares">
 <h1>Generalised Least Squares<a class="headerlink" href="#generalised-least-squares" title="Link to this heading">#</a></h1>
+<p>… As we will see below, GLS is really a stepping-stone to mixed-effects models. Although we can use GLS to accommodate a variety of correlation structures, we will see that this method has no concept of the <em>structure</em> of the data. This means the hypothesis tests produced will not match other methods that <em>do</em> have a sense of the structure. …</p>
+<section id="how-does-gls-work">
+<h2>How Does GLS Work?<a class="headerlink" href="#how-does-gls-work" title="Link to this heading">#</a></h2>
+<p>…At its most basic, GLS uses the residuals of an initial model fit to estimate the correlation/variance structure. This is then <em>removed</em> from the data. The corrected data is then, in theory, <em>uncorrelated</em> with <em>equal variance</em> and we can use OLS to estimate the parameters. This can all be achived effectively within a single estimation framework by using <em>restricted maximum likelihood</em> (REML). This will iteratively estimate the variance structure from the residuals and then estimate the parameters after removing the estimated variance structure. This continues until covergence (i.e. the parameters stop changing on each iteration). So we can think of GLS as a mechanism for <em>removing</em> a complex correlation or variance structure from the data, and then using a standard regression model on what remains.</p>
+</section>
+<section id="the-paired-t-test-using-gls">
+<h2>The Paired <span class="math notranslate nohighlight">\(t\)</span>-test Using GLS<a class="headerlink" href="#the-paired-t-test-using-gls" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">MASS</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">nlme</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
+
+<span class="nf">set.seed</span><span class="p">(</span><span class="m">666</span><span class="p">)</span>
+
+<span class="n">var1</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">var2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span>
+<span class="n">rho</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.8</span>
+<span class="n">covar</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rho</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var1</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var2</span><span class="p">)</span>
+
+<span class="n">Sigma</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">var2</span><span class="p">),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
+<span class="n">y</span><span class="w">     </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">1.25</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma</span><span class="p">)</span>
+
+<span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="n">from</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="n">to</span><span class="o">=</span><span class="m">50</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
+<span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
+
+<span class="n">y.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="w">    </span><span class="c1"># Turn y into a column</span>
+<span class="n">cond</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="s">&quot;B&quot;</span><span class="p">),</span><span class="m">50</span><span class="p">)</span><span class="w"> </span><span class="c1"># Create a predictor for the two conditions</span>
+<span class="n">cond</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">cond</span><span class="p">)</span>
+
+<span class="nf">t.test</span><span class="p">(</span><span class="n">y</span><span class="p">[,</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">y</span><span class="p">[,</span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="n">paired</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">var.equal</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="n">gls.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">gls</span><span class="p">(</span><span class="n">y.long</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">cond</span><span class="p">,</span><span class="w"> </span><span class="n">correlation</span><span class="o">=</span><span class="nf">corCompSymm</span><span class="p">(</span><span class="n">form</span><span class="o">=~</span><span class="m">1</span><span class="o">|</span><span class="n">subject</span><span class="p">))</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">gls.mod</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="nf">Anova</span><span class="p">(</span><span class="n">gls.mod</span><span class="p">))</span>
+
+<span class="c1">#lme.mod &lt;- lme(y.long ~ cond, random=(~1|subject))</span>
+<span class="c1">#summary(lme.mod)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>	Paired t-test
+
+data:  y[, 1] and y[, 2]
+t = -2.4952, df = 49, p-value = 0.01601
+alternative hypothesis: true mean difference is not equal to 0
+95 percent confidence interval:
+ -0.3730884 -0.0402221
+sample estimates:
+mean difference 
+     -0.2066553 
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generalized least squares fit by REML
+  Model: y.long ~ cond 
+  Data: NULL 
+       AIC      BIC    logLik
+  248.5643 258.9042 -120.2822
+
+Correlation Structure: Compound symmetry
+ Formula: ~1 | subject 
+ Parameter estimate(s):
+      Rho 
+0.8618049 
+
+Coefficients:
+                Value  Std.Error  t-value p-value
+(Intercept) 0.9601951 0.15753402 6.095161  0.0000
+condB       0.2066553 0.08282007 2.495232  0.0143
+
+ Correlation: 
+      (Intr)
+condB -0.263
+
+Standardized residuals:
+        Min          Q1         Med          Q3         Max 
+-2.26305985 -0.76968978  0.01612246  0.63434195  2.17187084 
+
+Residual standard error: 1.113934 
+Degrees of freedom: 100 total; 98 residual
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Analysis of Deviance Table (Type II tests)
+
+Response: y.long
+     Df  Chisq Pr(&gt;Chisq)  
+cond  1 6.2262    0.01259 *
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice, however, that GLS is ignoring the structure in the data in terms of the subjects, because it has no knowledge of them.</p>
+<p>The <span class="math notranslate nohighlight">\(t\)</span>-statistics reported in the table can be thought-of as asymptotic <span class="math notranslate nohighlight">\(z\)</span>-statistics…</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">print</span><span class="p">(</span><span class="m">2</span><span class="o">*</span><span class="nf">pnorm</span><span class="p">(</span><span class="m">2.495231</span><span class="p">,</span><span class="n">lower.tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 0.01258752
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="large-sample-gls">
+<h2>Large Sample GLS<a class="headerlink" href="#large-sample-gls" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">MASS</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">nlme</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
+
+<span class="nf">set.seed</span><span class="p">(</span><span class="m">666</span><span class="p">)</span>
+
+<span class="n">n.sub</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">600</span>
+<span class="n">n.cond</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">2</span>
+<span class="n">var1</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">var2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span>
+<span class="n">rho</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.8</span>
+<span class="n">covar</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rho</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var1</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var2</span><span class="p">)</span>
+
+<span class="n">Sigma</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">var2</span><span class="p">),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
+<span class="n">y</span><span class="w">     </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n.sub</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">1.01</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma</span><span class="p">)</span>
+
+<span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="n">from</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="n">to</span><span class="o">=</span><span class="n">n.sub</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="o">=</span><span class="n">n.cond</span><span class="p">)</span>
+<span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
+
+<span class="n">y.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="w">    </span><span class="c1"># Turn y into a column</span>
+<span class="n">cond</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="s">&quot;B&quot;</span><span class="p">),</span><span class="n">n.sub</span><span class="p">)</span><span class="w"> </span><span class="c1"># Create a predictor for the two conditions</span>
+<span class="n">cond</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">cond</span><span class="p">)</span>
+
+<span class="nf">t.test</span><span class="p">(</span><span class="n">y</span><span class="p">[,</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">y</span><span class="p">[,</span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="n">paired</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">var.equal</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="n">gls.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">gls</span><span class="p">(</span><span class="n">y.long</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">cond</span><span class="p">,</span><span class="w"> </span><span class="n">correlation</span><span class="o">=</span><span class="nf">corCompSymm</span><span class="p">(</span><span class="n">form</span><span class="o">=~</span><span class="m">1</span><span class="o">|</span><span class="n">subject</span><span class="p">))</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">gls.mod</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="nf">Anova</span><span class="p">(</span><span class="n">gls.mod</span><span class="p">))</span>
+
+<span class="c1">#lme.mod &lt;- lme(y.long ~ cond, random=(~1|subject))</span>
+<span class="c1">#summary(lme.mod)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>	Paired t-test
+
+data:  y[, 1] and y[, 2]
+t = -0.14922, df = 599, p-value = 0.8814
+alternative hypothesis: true mean difference is not equal to 0
+95 percent confidence interval:
+ -0.05131205  0.04406548
+sample estimates:
+mean difference 
+    -0.00362329 
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generalized least squares fit by REML
+  Model: y.long ~ cond 
+  Data: NULL 
+       AIC      BIC    logLik
+  2747.006 2767.359 -1369.503
+
+Correlation Structure: Compound symmetry
+ Formula: ~1 | subject 
+ Parameter estimate(s):
+      Rho 
+0.8242698 
+
+Coefficients:
+                Value  Std.Error   t-value p-value
+(Intercept) 0.9710817 0.04095920 23.708516  0.0000
+condB       0.0036233 0.02428229  0.149215  0.8814
+
+ Correlation: 
+      (Intr)
+condB -0.296
+
+Standardized residuals:
+        Min          Q1         Med          Q3         Max 
+-3.22888223 -0.68109163 -0.01037886  0.71963247  2.85231883 
+
+Residual standard error: 1.003291 
+Degrees of freedom: 1200 total; 1198 residual
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Analysis of Deviance Table (Type II tests)
+
+Response: y.long
+     Df  Chisq Pr(&gt;Chisq)
+cond  1 0.0223     0.8814
+</pre></div>
+</div>
+</div>
+</div>
+<p>So notice now that the paired <span class="math notranslate nohighlight">\(t\)</span>-test with knowledge of the structure, the GLS tests with inaccurate knowledge of the structure and the asymptotic tests that ignore the structure are <em>identical</em>. This is because the structure only matters for calculation of the degrees of freedom, which only make a difference when the sample size is <em>small</em>. Once the sample size gets big enough, the <span class="math notranslate nohighlight">\(t\)</span>-distribution approaches the normal distribution and the degrees of freedom no longer matter. So this suggests that, actually, GLS will agree perfectly so long as the sample size is large. Otherwise, its tests must be taken as <em>asymptotic approximations</em> that will be liberal in small samples.</p>
+<p>In brief, we can conclude that</p>
+<ul class="simple">
+<li><p>GLS is an asymptotically valid generalisation of RM ANOVA.</p></li>
+<li><p>The only reason it fails to reproduce ANOVA tests is that ANOVA df are small-sample design-based df.</p></li>
+<li><p>In large samples, GLS and RM ANOVA inference become identical</p></li>
+<li><p>In small samples, <span class="math notranslate nohighlight">\(p\)</span>-values that are quite close to the threshold (e.g. <span class="math notranslate nohighlight">\(p = 0.048\)</span> or <span class="math notranslate nohighlight">\(p = 0.035\)</span>) should be treated <em>very cautiously</em>, as we know these will be liberal</p></li>
+</ul>
+</section>
+<section id="gls-for-anova-models">
+<h2>GLS for ANOVA Models<a class="headerlink" href="#gls-for-anova-models" title="Link to this heading">#</a></h2>
+<p>In the above example, we saw the use of GLS as an alternative to the paired <span class="math notranslate nohighlight">\(t\)</span>-test. A more usual application would be as an alternative to the Repeated Measures ANOVA as a means of side-stepping all the messy specification of different error terms for different tests.</p>
+<section id="anova-models-with-more-flexible-variance-structures">
+<h3>ANOVA Models with More Flexible Variance Structures<a class="headerlink" href="#anova-models-with-more-flexible-variance-structures" title="Link to this heading">#</a></h3>
+<p>Perhaps the most useful elements of GLS is that we can use much more flexible variance structures than the simple compound-symmetric structure assumed by RM ANOVA. For instance, we can ask for a completely free within-subject correlations and a different variance for each between-subject group. For instance, specifying <code class="docutils literal notranslate"><span class="pre">corSymm(form=~1|subject)</span></code> and <code class="docutils literal notranslate"><span class="pre">varIdent(form=~1|group)</span></code> gives the most flexible structure that allows all correlations and variances to differ. However, we have to be careful because it is possible that there simply is not enough information in our data to allow this to be estimated, even if we want it.</p>
+</section>
+</section>
+<section id="when-can-we-use-gls">
+<h2>When Can We Use GLS?<a class="headerlink" href="#when-can-we-use-gls" title="Link to this heading">#</a></h2>
+<p>In reality, a GLS model is useful if you do not care about the hypothesis tests and just want estimates that accommodate a given correlation structure, or if you are using non-repeated measurement data and want a more flexible between-subjects variance structure. Alternatively, if you are taking many measurements from a <em>single</em> subject, GLS can be useful to model just their individual data. For instance, time-series data from one subject as measured using EEG, or eye-tracking, or continuous monitoring of hand movement. In these cases you can end up with thousands of data points and GLS can be used to model it using some suitable correlation structure (e.g. <code class="docutils literal notranslate"><span class="pre">corAR1(form=~time)</span></code>). The estimates could then be used as summary statistics to analyse multiple subjects<a class="footnote-reference brackets" href="#summarystat-foot" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. However, as we have seen above, GLS is not necessarily suitable for multiple subjects with repeated measurements because it does not accommodate the blocked structure of the data and thus fails to consider how this changes the number of independant pieces of information. This can be side-stepped by using asymptotic statistics that do not depend upon the concept of degrees of freedom. In large samples, this issue disappears, so if you have a large sample, or are willing to treat the <span class="math notranslate nohighlight">\(p\)</span>-values cautiously in small samples, GLS is a perfectly legitimate solution to the problem.</p>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="summarystat-foot" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>This approach is, unsurprisingly, known as a <em>summary statistics</em> approach and is typical of how data analysis is handled for fMRI and M/EEG data.</p>
+</aside>
+</aside>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -427,6 +672,29 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-gls-work">How Does GLS Work?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-paired-t-test-using-gls">The Paired <span class="math notranslate nohighlight">\(t\)</span>-test Using GLS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#large-sample-gls">Large Sample GLS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gls-for-anova-models">GLS for ANOVA Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anova-models-with-more-flexible-variance-structures">ANOVA Models with More Flexible Variance Structures</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-can-we-use-gls">When Can We Use GLS?</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

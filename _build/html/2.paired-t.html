@@ -542,7 +542,7 @@ t = \frac{\mu_{1} - \mu_{2}}{\text{SE}\{\mu_{1} - \mu_{2}\}},
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading required package: survival
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/850f5f26fd73b5fdf578041aed99415ee4aab20ec736eccf64cc0c233058bc6f.png"><img alt="_images/850f5f26fd73b5fdf578041aed99415ee4aab20ec736eccf64cc0c233058bc6f.png" src="_images/850f5f26fd73b5fdf578041aed99415ee4aab20ec736eccf64cc0c233058bc6f.png" style="width: 840px; height: 420px;" /></a>
+<a class="reference internal image-reference" href="_images/faa324c3054dbbd6f804030d7327f4600b9b70fec2b7cdded2f4d05eb06e8e69.png"><img alt="_images/faa324c3054dbbd6f804030d7327f4600b9b70fec2b7cdded2f4d05eb06e8e69.png" src="_images/faa324c3054dbbd6f804030d7327f4600b9b70fec2b7cdded2f4d05eb06e8e69.png" style="width: 840px; height: 420px;" /></a>
 </div>
 </div>
 <p>The standard error from the simulations is then given by</p>
@@ -567,9 +567,7 @@ t = \frac{\mu_{1} - \mu_{2}}{\text{SE}\{\mu_{1} - \mu_{2}\}},
 <p>To see this, we first start with the familiar case of the <em>two-sample</em> model. We can fit this as an LM within <code class="docutils literal notranslate"><span class="pre">R</span></code> as follows</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;ks&#39;</span><span class="p">)</span>
-
-<span class="n">y.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">vec</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">byrow</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="c1"># Turn y into a column</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">y.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="w"> </span><span class="c1"># Turn y into a column</span>
 <span class="n">cond</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="s">&quot;B&quot;</span><span class="p">),</span><span class="m">50</span><span class="p">)</span><span class="w"> </span><span class="c1"># Create a predictor for the two conditions</span>
 
 <span class="n">two.sample.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">y.long</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">cond</span><span class="p">)</span>
@@ -590,7 +588,7 @@ Coefficients:
 (Intercept)   0.9602     0.1575   6.095 2.16e-08 ***
 condB         0.2067     0.2228   0.928    0.356    
 ---
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Residual standard error: 1.114 on 98 degrees of freedom
 Multiple R-squared:  0.008703,	Adjusted R-squared:  -0.001412 
@@ -660,11 +658,8 @@ F-statistic: 0.8604 on 1 and 98 DF,  p-value: 0.3559
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">),</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">)),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
-<span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">vec</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="n">subject</span><span class="p">))</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">),</span><span class="n">each</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
 <span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
-
-<span class="nf">par</span><span class="p">(</span><span class="n">cex.lab</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.axis</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.main</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.sub</span><span class="o">=</span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
 
 <span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
 <span class="w">     </span><span class="n">y.long</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
@@ -679,7 +674,7 @@ F-statistic: 0.8604 on 1 and 98 DF,  p-value: 0.3559
 </div>
 </details>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/3026975b14401ec68e2b5890d66684dfc5e7fcb9b7283c30da197f868ec5f41b.png"><img alt="_images/3026975b14401ec68e2b5890d66684dfc5e7fcb9b7283c30da197f868ec5f41b.png" src="_images/3026975b14401ec68e2b5890d66684dfc5e7fcb9b7283c30da197f868ec5f41b.png" style="width: 900px; height: 420px;" /></a>
+<a class="reference internal image-reference" href="_images/beddc7bb4e9832f2add074624cadeac936fedb85a990fc97c7fb849ffe45b9a6.png"><img alt="_images/beddc7bb4e9832f2add074624cadeac936fedb85a990fc97c7fb849ffe45b9a6.png" src="_images/beddc7bb4e9832f2add074624cadeac936fedb85a990fc97c7fb849ffe45b9a6.png" style="width: 840px; height: 420px;" /></a>
 </div>
 </div>
 <p>Here we can see that there are 3 main sources of variation in these data:</p>
@@ -698,8 +693,6 @@ F-statistic: 0.8604 on 1 and 98 DF,  p-value: 0.3559
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">res.two.sample</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">resid</span><span class="p">(</span><span class="n">two.sample.mod</span><span class="p">)</span>
 
-<span class="nf">par</span><span class="p">(</span><span class="n">cex.lab</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.axis</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.main</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.sub</span><span class="o">=</span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
-
 <span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
 <span class="w">     </span><span class="n">res.two.sample</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
 <span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Subject&#39;</span><span class="p">,</span>
@@ -714,7 +707,7 @@ F-statistic: 0.8604 on 1 and 98 DF,  p-value: 0.3559
 </div>
 </details>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/b58420a4770cc961d7a119498ea08203e191510d9c35d5ec5073f9640ed44ae5.png"><img alt="_images/b58420a4770cc961d7a119498ea08203e191510d9c35d5ec5073f9640ed44ae5.png" src="_images/b58420a4770cc961d7a119498ea08203e191510d9c35d5ec5073f9640ed44ae5.png" style="width: 900px; height: 420px;" /></a>
+<a class="reference internal image-reference" href="_images/6bc0b678fcd595dd5a7e2425d2cd7ba13b1aedf4da230b299f1cd63932863073.png"><img alt="_images/6bc0b678fcd595dd5a7e2425d2cd7ba13b1aedf4da230b299f1cd63932863073.png" src="_images/6bc0b678fcd595dd5a7e2425d2cd7ba13b1aedf4da230b299f1cd63932863073.png" style="width: 840px; height: 420px;" /></a>
 </div>
 </div>
 <p>Now that we have removed any variation associated with the two conditions, we can turn to variability associated with the individual subjects. This is known as <em>between-subjects</em> variance. To remove it, we can calculate the mean value of each subject and then subtract it from the data. This results in the plot below.</p>
@@ -725,7 +718,7 @@ F-statistic: 0.8604 on 1 and 98 DF,  p-value: 0.3559
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">res.matrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">invvec</span><span class="p">(</span><span class="n">res.two.sample</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">byrow</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">res.matrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="n">res.two.sample</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">byrow</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 <span class="n">sub.means</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rowMeans</span><span class="p">(</span><span class="n">res.matrix</span><span class="p">)</span>
 <span class="n">res.nosub</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">100</span><span class="p">)</span>
 <span class="n">sub.idx</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
@@ -733,8 +726,6 @@ F-statistic: 0.8604 on 1 and 98 DF,  p-value: 0.3559
 <span class="kr">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">100</span><span class="p">){</span>
 <span class="w">    </span><span class="n">res.nosub</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res.two.sample</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sub.means</span><span class="p">[</span><span class="n">sub.idx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
 <span class="p">}</span>
-
-<span class="nf">par</span><span class="p">(</span><span class="n">cex.lab</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.axis</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.main</span><span class="o">=</span><span class="m">1.25</span><span class="p">,</span><span class="w"> </span><span class="n">cex.sub</span><span class="o">=</span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
 
 <span class="nf">plot</span><span class="p">(</span><span class="n">sub.idx</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">50</span><span class="p">],</span>
 <span class="w">     </span><span class="n">res.nosub</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">50</span><span class="p">],</span>
@@ -747,7 +738,7 @@ F-statistic: 0.8604 on 1 and 98 DF,  p-value: 0.3559
 </div>
 </details>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/7d90d80b4391d9b4424f1b89bf2e9fbd330b8bb4d2349e1de466a40da7feb564.png"><img alt="_images/7d90d80b4391d9b4424f1b89bf2e9fbd330b8bb4d2349e1de466a40da7feb564.png" src="_images/7d90d80b4391d9b4424f1b89bf2e9fbd330b8bb4d2349e1de466a40da7feb564.png" style="width: 900px; height: 420px;" /></a>
+<a class="reference internal image-reference" href="_images/3d19053665b30b604baaea822181f548ac9fccb6094a61c5b31a6cd2555ecb33.png"><img alt="_images/3d19053665b30b604baaea822181f548ac9fccb6094a61c5b31a6cd2555ecb33.png" src="_images/3d19053665b30b604baaea822181f548ac9fccb6094a61c5b31a6cd2555ecb33.png" style="width: 840px; height: 420px;" /></a>
 </div>
 </div>
 <p>Notice that a huge amount of the variation in this data was attributable to the variation between different subjects. Now that this has been removed, we can effectively treat our data as <em>one big sample from a single subject</em>. As such, the variability we can see between all pairs of measurements provides us with an indication of how <em>internally consistent</em> a single subject is across the different conditions of the task. With the overall effect of the conditions removed, this remaining variability is not related to the conditions themseleves. Rather, it is related to other sources of random variation that cause an individual’s response to change across multiple repeats of an experiment. This is known as the  <em>within-subject variance</em>.</p>
@@ -766,16 +757,22 @@ In a regular paired t-test, the error variance consists of the differences betwe
 <p>From all we discussed earlier, the aim is therefore to <em>remove</em> the between-subject variance from the residuals so that the error variance of the model only contains the <em>within-subject variance</em>. If we do not do this, then <span class="math notranslate nohighlight">\(\sigma^{2} = \sigma^{2}_{b} + \sigma^{2}_{w}\)</span>, which will be too large to accurately capture the standard error of the mean difference under repeated measurements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">),</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">)),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
-<span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">vec</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="n">subject</span><span class="p">))</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
+
+<span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">),</span><span class="n">each</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
 <span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
 
 <span class="n">paired.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">y.long</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">subject</span><span class="p">)</span>
 <span class="nf">summary</span><span class="p">(</span><span class="n">paired.mod</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="nf">Anova</span><span class="p">(</span><span class="n">paired.mod</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading required package: carData
+</pre></div>
+</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call:
 lm(formula = y.long ~ cond + subject)
 
@@ -837,11 +834,22 @@ subject48   -0.627914   0.414100  -1.516 0.135860
 subject49   -0.103401   0.414100  -0.250 0.803864    
 subject50   -0.359054   0.414100  -0.867 0.390129    
 ---
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Residual standard error: 0.4141 on 49 degrees of freedom
 Multiple R-squared:  0.9315,	Adjusted R-squared:  0.8616 
 F-statistic: 13.33 on 50 and 49 DF,  p-value: 2.636e-16
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Anova Table (Type II tests)
+
+Response: y.long
+           Sum Sq Df F value    Pr(&gt;F)    
+cond        1.068  1  6.2262   0.01601 *  
+subject   113.201 49 13.4723 2.348e-16 ***
+Residuals   8.402 49                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 </pre></div>
 </div>
 </div>

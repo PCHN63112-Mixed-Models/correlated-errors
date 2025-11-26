@@ -369,6 +369,7 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivational-example">Motivational Example</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-lme4-package">The <code class="docutils literal notranslate"><span class="pre">lme4</span></code> Package</a></li>
 </ul>
             </nav>
@@ -383,6 +384,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="introducing-mixed-effects-models">
 <h1>Introducing Mixed-effects Models<a class="headerlink" href="#introducing-mixed-effects-models" title="Link to this heading">#</a></h1>
+<p>… However, it is a little unsatisfying to have a method that only works <em>asymptotically</em> and does not take the true structure of the data into account. Althoughy this may be fine for your use-case, it would be better to have an approach that works <em>irrespective</em> of the sample size and is able to flexibly accommodate the actual structure of the data. This is the domain of <em>linear mixed-effects</em> (LME) models.</p>
 <p>… In addition, it is important to recognise that there are many instances where a GLS model is able to achieve everything that an LME model can achieve in a much easier fashion. However, the GLS framework has some specific limitations which have motivated an alternative framework. These include:</p>
 <ul class="simple">
 <li><p>An inability to deal with missing values in some subjects</p></li>
@@ -395,49 +397,24 @@
 <p class="admonition-title">Variable Terminology</p>
 <p>Note that mixed-effects models are also known as <em>random-effects models</em>, <em>linear mixed models</em> and <em>hierarchical linear models</em>. These are all exactly the same thing, so try not to get confused if you come across these different terms.</p>
 </div>
+<section id="motivational-example">
+<h2>Motivational Example<a class="headerlink" href="#motivational-example" title="Link to this heading">#</a></h2>
+<p>… A little later we will introduce the <code class="docutils literal notranslate"><span class="pre">lme4</span></code> package as an alternative to <code class="docutils literal notranslate"><span class="pre">nlme</span></code>, but for now we will stick with the format that we know.</p>
+</section>
 <section id="the-lme4-package">
 <h2>The <code class="docutils literal notranslate"><span class="pre">lme4</span></code> Package<a class="headerlink" href="#the-lme4-package" title="Link to this heading">#</a></h2>
 <p>We will learn much more about the syntax and theory behind these methods as this unit progresses. For now, just notice what happens when we specify the same paired <span class="math notranslate nohighlight">\(t\)</span>-test from earlier, but with <code class="docutils literal notranslate"><span class="pre">subject</span></code> specifically treated as a random effect.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;lme4&#39;</span><span class="p">)</span>
-<span class="nf">library</span><span class="p">(</span><span class="s">&#39;nlme&#39;</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;nlme&#39;</span><span class="p">)</span>
 
 <span class="c1"># Mixed Model</span>
-<span class="n">mix.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lmer</span><span class="p">(</span><span class="n">y.long</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="o">|</span><span class="n">subject</span><span class="p">))</span>
-<span class="nf">summary</span><span class="p">(</span><span class="n">mix.mod</span><span class="p">)</span>
-
-<span class="n">mix.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lme</span><span class="p">(</span><span class="n">y.long</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">cond</span><span class="p">,</span><span class="w"> </span><span class="n">random</span><span class="o">=~</span><span class="m">1</span><span class="o">|</span><span class="n">subject</span><span class="p">)</span>
+<span class="n">mix.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lme</span><span class="p">(</span><span class="n">y.long</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">cond</span><span class="p">,</span><span class="w"> </span><span class="n">random</span><span class="o">=</span><span class="p">(</span><span class="o">~</span><span class="m">1</span><span class="o">|</span><span class="n">subject</span><span class="p">))</span>
 <span class="nf">summary</span><span class="p">(</span><span class="n">mix.mod</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Linear mixed model fit by REML [&#39;lmerMod&#39;]
-Formula: y.long ~ cond + (1 | subject)
-
-REML criterion at convergence: 240.6
-
-Scaled residuals: 
-    Min      1Q  Median      3Q     Max 
--2.4842 -0.5269 -0.0009  0.4361  1.9063 
-
-Random effects:
- Groups   Name        Variance Std.Dev.
- subject  (Intercept) 1.0694   1.0341  
- Residual             0.1715   0.4141  
-Number of obs: 100, groups:  subject, 50
-
-Fixed effects:
-            Estimate Std. Error t value
-(Intercept)  0.96020    0.15753   6.095
-condB        0.20666    0.08282   2.495
-
-Correlation of Fixed Effects:
-      (Intr)
-condB -0.263
-</pre></div>
-</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Linear mixed-effects model fit by REML
   Data: NULL 
        AIC      BIC    logLik
@@ -466,7 +443,7 @@ Number of Groups: 50
 </div>
 </div>
 </div>
-<p>Although this is useful, the power of mixed-effects models is that they can do much more than the traditional repeated measures ANOVA. Also, notice that the correct tests have been produced automatically for each effect, without any need to identify the correct error term. This alone is a big advantage over the traditional repeated-measures ANOVA.</p>
+<p>So notice that this now agrees <em>precisely</em> with the paired <span class="math notranslate nohighlight">\(t\)</span>-test. This is true even in a small sample and without the need to appeal to asymptotic statistics. Like GLS, this has been achieved without the need to messily include the subjects as an effect in the model, but is still able to take the subjects as indicative of the structure of the data as well as accommodate the correlation. So, this appears to fix all our problems. The main issue going forward is actually <em>understanding</em> what the model is doing. Unfortunately, this is a harderer task than with GLS and will be the focus of the next few lessons on this unit.</p>
 </section>
 </section>
 
@@ -535,6 +512,7 @@ Number of Groups: 50
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivational-example">Motivational Example</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-lme4-package">The <code class="docutils literal notranslate"><span class="pre">lme4</span></code> Package</a></li>
 </ul>
   </nav></div>
