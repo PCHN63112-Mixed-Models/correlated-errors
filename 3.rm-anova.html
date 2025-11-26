@@ -374,6 +374,12 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioned-error-models">Partitioned Error Models</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rm-anova-in-r">RM ANOVA in <code class="docutils literal notranslate"><span class="pre">R</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-aov-function">Using the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-ezanova-function">Using the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> Function</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-we-should-not-use-rm-anova">Why We Should <em>Not</em> USe RM ANOVA</a></li>
 </ul>
             </nav>
         </div>
@@ -400,6 +406,59 @@
 <p>…We have already seen models that contain random variables, as every single linear model so far has contained a <em>random error term</em>. As such,</p>
 <p>…The way the ANOVA calculated this error is through the usual decomposition of sums-of-squares…If we run an ANOVA on the paired model from earlier, we can see the <em>mean-squares</em> for the subejct effects. This <em>is</em> the estimate of the between-subejcts variance…</p>
 </section>
+</section>
+<section id="rm-anova-in-r">
+<h2>RM ANOVA in <code class="docutils literal notranslate"><span class="pre">R</span></code><a class="headerlink" href="#rm-anova-in-r" title="Link to this heading">#</a></h2>
+<section id="using-the-aov-function">
+<h3>Using the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> Function<a class="headerlink" href="#using-the-aov-function" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">summary</span><span class="p">(</span><span class="nf">aov</span><span class="p">(</span><span class="n">y.long</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">Error</span><span class="p">(</span><span class="n">subject</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="nb">eval</span><span class="p">(</span><span class="n">predvars</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span> <span class="nb">object</span> <span class="s1">&#39;y.long&#39;</span> <span class="ow">not</span> <span class="n">found</span>
+<span class="ne">Traceback</span>:
+
+<span class="mi">1</span><span class="o">.</span> <span class="n">summary</span><span class="p">(</span><span class="n">aov</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">long</span> <span class="o">~</span> <span class="n">cond</span> <span class="o">+</span> <span class="n">Error</span><span class="p">(</span><span class="n">subject</span><span class="p">)))</span>
+<span class="mi">2</span><span class="o">.</span> <span class="n">aov</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">long</span> <span class="o">~</span> <span class="n">cond</span> <span class="o">+</span> <span class="n">Error</span><span class="p">(</span><span class="n">subject</span><span class="p">))</span>
+<span class="mi">3</span><span class="o">.</span> <span class="nb">eval</span><span class="p">(</span><span class="n">ecall</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">frame</span><span class="p">())</span>
+<span class="mi">4</span><span class="o">.</span> <span class="nb">eval</span><span class="p">(</span><span class="n">ecall</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">frame</span><span class="p">())</span>
+<span class="mi">5</span><span class="o">.</span> <span class="n">stats</span><span class="p">::</span><span class="n">lm</span><span class="p">(</span><span class="n">formula</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">long</span> <span class="o">~</span> <span class="n">subject</span><span class="p">,</span> <span class="n">singular</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;qr&quot;</span><span class="p">,</span> 
+ <span class="o">.</span>     <span class="n">qr</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
+<span class="mi">6</span><span class="o">.</span> <span class="nb">eval</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">frame</span><span class="p">())</span>
+<span class="mi">7</span><span class="o">.</span> <span class="nb">eval</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">frame</span><span class="p">())</span>
+<span class="mi">8</span><span class="o">.</span> <span class="n">stats</span><span class="p">::</span><span class="n">model</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">formula</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">long</span> <span class="o">~</span> <span class="n">subject</span><span class="p">,</span> <span class="n">drop</span><span class="o">.</span><span class="n">unused</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
+<span class="mi">9</span><span class="o">.</span> <span class="n">model</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">formula</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">long</span> <span class="o">~</span> <span class="n">subject</span><span class="p">,</span> <span class="n">drop</span><span class="o">.</span><span class="n">unused</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
+<span class="mi">10</span><span class="o">.</span> <span class="nb">eval</span><span class="p">(</span><span class="n">predvars</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+<span class="mi">11</span><span class="o">.</span> <span class="nb">eval</span><span class="p">(</span><span class="n">predvars</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="using-the-ezanova-function">
+<h3>Using the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> Function<a class="headerlink" href="#using-the-ezanova-function" title="Link to this heading">#</a></h3>
+<p>As we can see above, using a partitioned error model with <code class="docutils literal notranslate"><span class="pre">aov()</span></code> is a tricky business and it would be very easy to get this wrong. As an alternative, we can use the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> function from the <code class="docutils literal notranslate"><span class="pre">ez</span></code> package. As the name implies, this is designed to allow for an RM ANOVA without the usual difficulties associated with the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> or <code class="docutils literal notranslate"><span class="pre">lm()</span></code> functions. Unfortuantely, the aim of this package is largely to make the <code class="docutils literal notranslate"><span class="pre">R</span></code> output the same as SPSS. So it does away with the linear model framework. This means, no residuals, no parameter estimates, no diagnostic plots or anything else we have made use of so far. If you <em>have</em> to use an RM ANOVA, this is the simplest way to get it <em>right</em>. However, as we will discuss below, we would disuade you from ever considering RM ANOVA as an option in the future. About the only utility of this is showing doubtful researchers that our better options of GLS and mixed-effects models are, in fact, giving them the same answer as an RM ANOVA.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">ez</span><span class="p">)</span>
+<span class="nf">ezANOVA</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="n">ezANOVA</span><span class="p">():</span> <span class="n">argument</span> <span class="s2">&quot;data&quot;</span> <span class="ow">is</span> <span class="n">missing</span><span class="p">,</span> <span class="k">with</span> <span class="n">no</span> <span class="n">default</span>
+<span class="ne">Traceback</span>:
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="why-we-should-not-use-rm-anova">
+<h2>Why We Should <em>Not</em> USe RM ANOVA<a class="headerlink" href="#why-we-should-not-use-rm-anova" title="Link to this heading">#</a></h2>
 </section>
 </section>
 
@@ -473,6 +532,12 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioned-error-models">Partitioned Error Models</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rm-anova-in-r">RM ANOVA in <code class="docutils literal notranslate"><span class="pre">R</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-aov-function">Using the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-ezanova-function">Using the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> Function</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-we-should-not-use-rm-anova">Why We Should <em>Not</em> USe RM ANOVA</a></li>
 </ul>
   </nav></div>
 
