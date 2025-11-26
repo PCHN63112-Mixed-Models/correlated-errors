@@ -437,7 +437,7 @@
 </div>
 </div>
 </div>
-<p>So this is now very explicitly saying that we want to add <code class="docutils literal notranslate"><span class="pre">subject</span></code> to the model, but that we want it to be treated as an <em>error term</em>.</p>
+<p>So this is now very explicitly saying that we want to add <code class="docutils literal notranslate"><span class="pre">subject</span></code> to the model, but that we want it to be treated as an <em>error term</em>. This tells <code class="docutils literal notranslate"><span class="pre">R</span></code> that we want the sums-of-squares and mean-square to be calculated for <code class="docutils literal notranslate"><span class="pre">subject</span></code>, but what we do not want is for there to be tests on this factor. Instead, we want it to be treated as the <em>denominator</em> of the <span class="math notranslate nohighlight">\(F\)</span>-statistic for certain tests. So, in the ANOVA table, we want <code class="docutils literal notranslate"><span class="pre">subject</span></code> to be an additional error term, rather than an actual effect we are interested in.</p>
 </section>
 <section id="using-the-ezanova-function">
 <h3>Using the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> Function<a class="headerlink" href="#using-the-ezanova-function" title="Link to this heading">#</a></h3>
@@ -460,6 +460,8 @@
 </section>
 <section id="why-we-should-not-use-rm-anova">
 <h2>Why We Should <em>Not</em> USe RM ANOVA<a class="headerlink" href="#why-we-should-not-use-rm-anova" title="Link to this heading">#</a></h2>
+<p>Everything we have discussed above has really been an exercise in telling you why you really do not want to use RM ANOVA. All the unncessary fiddling with error terms and different tests requiring different errors is a complication that we could simply do without. Even if we do manage to successfully work out what needs to go where (or get a function like <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> to sort it for us), we are still left with a method that has a number of meaningful restrictions. … Because of this, the RM ANOVA is both tricky to understand, tricky to use correctly and massively inflexible. It is no wonder that statisticians abandoned this method decades ago! And yet, this is the method that has persisted in psychology until releatively recently.</p>
+<p>This section has largely been motivational to understand why we want to use something more flexible and more modern, but it is important to recognise that you may well end up working with someone who knows nothing beyond the RM ANOVA. In those situations, it is useful to (a) motivate the need for something better and (b) understand how to get the RM ANOVA results in <code class="docutils literal notranslate"><span class="pre">R</span></code>, in case they require further convincing. So, we do not condone the use of the RM ANOVA, but we understand its place in psychology and also understand that there are times where you may want to see what the RM ANOVA says, even if you do not wish to use it.</p>
 </section>
 </section>
 
