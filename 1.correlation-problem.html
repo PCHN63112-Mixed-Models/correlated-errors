@@ -432,6 +432,17 @@
 \right)
 \end{split}\]</div>
 <p>So, everytime we draw data from this multivariate distribution, we actually get <em>two</em> values. The first has a population mean of <span class="math notranslate nohighlight">\(\mu_{1}\)</span> and a variance of <span class="math notranslate nohighlight">\(\sigma^{2}_{1}\)</span>. The second has a population mean of <span class="math notranslate nohighlight">\(\mu_{2}\)</span> and a variance of <span class="math notranslate nohighlight">\(\sigma^{2}_{2}\)</span>. Most importantly, the two values will be <em>correlated</em> by a factor of <span class="math notranslate nohighlight">\(\sigma_{12}\)</span>. If <span class="math notranslate nohighlight">\(\sigma_{12} = 0\)</span> then this will be no different to drawing two values from a univariate normal distribution, as the values will be uncorrelated. The value of the first draw will not influence the value of the second draw in any way. However, if <span class="math notranslate nohighlight">\(|\sigma_{12}| &gt; 0\)</span> then the two draws will be related, with their values becoming more and more similar the larger the correlation becomes.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/19cf21002a675c734bbdcb473890d1ec4359bf4a732fb29fa51dd97a90874453.png" src="_images/19cf21002a675c734bbdcb473890d1ec4359bf4a732fb29fa51dd97a90874453.png" />
+</div>
+</div>
+<p>To see more clearly how this shark-fin shape connects with the idea of correlation, we will see how the probability distribution of <span class="math notranslate nohighlight">\(Y\)</span> changes for a given value of <span class="math notranslate nohighlight">\(X\)</span>. The plots below show the <span class="math notranslate nohighlight">\(y\)</span>-axis of a multivariate normal distribution under <em>no correlation</em> (<em>left</em> column) and under <em>strong correlation</em> (<em>right</em> column). …</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/b6a2c600e305cf9efb650baf4e37049b3665974dbba25e61df97ee23d26f2e10.png" src="_images/b6a2c600e305cf9efb650baf4e37049b3665974dbba25e61df97ee23d26f2e10.png" />
+</div>
+</div>
 <section id="conceptualising-multiple-subjects">
 <h3>Conceptualising Multiple Subjects<a class="headerlink" href="#conceptualising-multiple-subjects" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
@@ -571,7 +582,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/d962bb1bac320ec8f5548bc0266ee5e208fa77a843a6b04a7d2ed7ec485ee87d.png"><img alt="_images/d962bb1bac320ec8f5548bc0266ee5e208fa77a843a6b04a7d2ed7ec485ee87d.png" src="_images/d962bb1bac320ec8f5548bc0266ee5e208fa77a843a6b04a7d2ed7ec485ee87d.png" style="width: 420px; height: 420px;" /></a>
+<img alt="_images/545379d935af2d73d467e12fa40a298d086ed712662291bb9054a2c4475937a6.png" src="_images/545379d935af2d73d467e12fa40a298d086ed712662291bb9054a2c4475937a6.png" />
 </div>
 </div>
 <p>We can now see how the multivariate normal distribution serves as a <em>model</em> of repeated measurements. To put this into our more general framework, this is a more complex <em>variance function</em> that allows for correlation between the measurements.</p>
@@ -654,8 +665,8 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/c6a9f3f41055ae3bc18beb6b65e3b064aa828ce234aea4ac2bea67af6d0a3c29.png"><img alt="_images/c6a9f3f41055ae3bc18beb6b65e3b064aa828ce234aea4ac2bea67af6d0a3c29.png" src="_images/c6a9f3f41055ae3bc18beb6b65e3b064aa828ce234aea4ac2bea67af6d0a3c29.png" style="width: 420px; height: 420px;" /></a>
-<a class="reference internal image-reference" href="_images/9262ad09e44a1f756a859f20cbd7e5497fae820ff1115d0361b12a007f07ef59.png"><img alt="_images/9262ad09e44a1f756a859f20cbd7e5497fae820ff1115d0361b12a007f07ef59.png" src="_images/9262ad09e44a1f756a859f20cbd7e5497fae820ff1115d0361b12a007f07ef59.png" style="width: 420px; height: 420px;" /></a>
+<img alt="_images/a7b6b0b2c72a070da05b2d62d5b454485746d14ea900c74610145744ccb92403.png" src="_images/a7b6b0b2c72a070da05b2d62d5b454485746d14ea900c74610145744ccb92403.png" />
+<img alt="_images/01621cb2dfa975f83ca9f7f88e406791a181fd78c406f2a75729bc239ed36f03.png" src="_images/01621cb2dfa975f83ca9f7f88e406791a181fd78c406f2a75729bc239ed36f03.png" />
 </div>
 </div>
 <p>Notice that the distribution of repeated measurement differences is much <em>narrower</em> than the distribution of independent differences. This is the theory in action. … This is why there is a <em>power</em> advantage to repeated measurements. … The variability of the difference is much smaller because the conditions are going to be <em>more similar</em> when they are correlated. As such, we do not expect wild differences between them. The two conditions should generally be very similar and thus their difference should be consistently smaller than in the independent case, where much larger differences are possible.</p>
