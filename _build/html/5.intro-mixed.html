@@ -385,13 +385,13 @@
   <section class="tex2jax_ignore mathjax_ignore" id="introducing-mixed-effects-models">
 <h1>Introducing Mixed-effects Models<a class="headerlink" href="#introducing-mixed-effects-models" title="Link to this heading">#</a></h1>
 <p>… However, it is a little unsatisfying to have a method that only works <em>asymptotically</em> and does not take the true structure of the data into account. Althoughy this may be fine for your use-case, it would be better to have an approach that works <em>irrespective</em> of the sample size and is able to flexibly accommodate the actual structure of the data. This is the domain of <em>linear mixed-effects</em> (LME) models.</p>
-<p>… In addition, it is important to recognise that there are many instances where a GLS model is able to achieve everything that an LME model can achieve in a much easier fashion. However, the GLS framework has some specific limitations which have motivated an alternative framework. These include:</p>
+<p>… In addition, it is important to recognise that there are many instances where a GLS model is able to achieve everything that an LME model can achieve in a much easier fashion. However, there are many aspects to real-world data that the GLS framework is unable to accommodate. These include:</p>
 <ul class="simple">
-<li><p>An inability to deal with missing values in some subjects</p></li>
-<li><p>An inability to model data where we have <em>multiple repeats</em> per-subjecte and per-condition</p></li>
-<li><p>An inability to generalise to non-normally distributed data</p></li>
-<li><p>An inability to capture a hierarchical structure in the data</p></li>
-<li><p>An inability to provide a framework where different element of our data are to be considered random variable (e.g. subjects and stimuli)</p></li>
+<li><p>Missing values in some subjects</p></li>
+<li><p>Data with <em>multiple repeats</em> per-subjecte and per-condition</p></li>
+<li><p>Non-normally distributed data</p></li>
+<li><p>A hierarchical structure</p></li>
+<li><p>Different amounts of data per-subject</p></li>
 </ul>
 <div class="tip admonition">
 <p class="admonition-title">Variable Terminology</p>
