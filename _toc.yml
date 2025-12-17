@@ -8,5 +8,4 @@ chapters:
 - file: 2.paired-t
 - file: 3.rm-anova
 - file: 4.gls
-- file: 5.intro-mixed
 - file: summary
