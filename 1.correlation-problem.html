@@ -371,6 +371,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurement-designs">Repeated Measurement Designs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurements-and-correlation">Repeated Measurements and Correlation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-probability-model-for-repeated-measurements">A Probability Model for Repeated Measurements</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-multivariate-normal-distribution">The Multivariate Normal Distribution</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptualising-multiple-subjects">Conceptualising Multiple Subjects</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-normal-simulations-in-r">Multivariate Normal Simulations in <code class="docutils literal notranslate"><span class="pre">R</span></code></a></li>
 </ul>
@@ -421,7 +422,7 @@
 </section>
 <section id="repeated-measurements-and-correlation">
 <h2>Repeated Measurements and Correlation<a class="headerlink" href="#repeated-measurements-and-correlation" title="Link to this heading">#</a></h2>
-<p>Now that we have established what repeated measurements are in the context of experimental design, we can turn to the main topic of this part of the lesson: <em>why are repeated measurements a problem</em>? To understand the issue, it is useful to see some example repeated measurement data.</p>
+<p>Now that we have established what repeated measurements are in the context of experimental design, we can turn to the main topic of this part of the lesson: <em>why are repeated measurements a problem</em>? To understand the issue, it is useful to see some example repeated measurement data. Below, we load the <code class="docutils literal notranslate"><span class="pre">selfesteem</span></code> data set from the <code class="docutils literal notranslate"><span class="pre">datarium</span></code> package. These contains measures of self-esteem taken from 10 subjects across 3 different time-points, as shown below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;datarium&#39;</span><span class="p">)</span>
@@ -446,7 +447,18 @@
 </div>
 </div>
 </div>
-<p>Because these are measurements <em>across time</em> and <em>ordered</em>, it would be more correct to characterise this as a <em>longitudinal</em> design. But, to keep things simple, we will ignore the temporal aspect for now and just focus on the time-points as if they were any repeated measurements where order does not matter.</p>
+<p>Because these are measurements <em>across time</em> and <em>ordered</em>, it would be more correct to characterise this as a <em>longitudinal</em> design. But, to keep things simple, we will ignore the temporal aspect for now and just focus on the time-points as if they were any repeated measurements where order does not matter. To see the core issue here, let us examine the pairs plots between the time-points</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">pairs</span><span class="p">(</span><span class="n">selfesteem</span><span class="p">[,</span><span class="m">2</span><span class="o">:</span><span class="m">4</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/41bdf115c23fdeac5d8b2e10295abcb061da8c8c9d34b20c2f16054f0ea429b3.png" src="_images/41bdf115c23fdeac5d8b2e10295abcb061da8c8c9d34b20c2f16054f0ea429b3.png" />
+</div>
+</div>
+<p>Although somewhat subtle, notice that there appears to be a relationship between time-points, particularly those that are closer (such as <code class="docutils literal notranslate"><span class="pre">t2</span></code> and <code class="docutils literal notranslate"><span class="pre">t3</span></code>). Let us calculate the correlation</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">cor</span><span class="p">(</span><span class="n">selfesteem</span><span class="p">[,</span><span class="m">2</span><span class="o">:</span><span class="m">4</span><span class="p">])</span>
@@ -462,12 +474,80 @@ t3  0.360602 -0.5230331  1.0000000
 </div>
 </div>
 </div>
-<p>If we go back to our statistical modelling framework from PCHN63101, the key insight is that repeated measurements do <em>not</em> affect the mean function. Instead, repeated measurements change the <em>variance function</em>.</p>
-<p>… The very act of multiplying these probabilities together to form the likelihood is an <em>implicit</em> assumption of independence. Probabilities only multiply to produce a correct overall probability when they are indpendent. If they are not independent, the value produced will be <em>wrong</em>.</p>
+<p>So, now we see the core problem here: <em>repeated measurements are correlated</em>. Although this dataset is in the <em>wide</em> format, it is important to realise that <code class="docutils literal notranslate"><span class="pre">t1</span></code>, <code class="docutils literal notranslate"><span class="pre">t2</span></code> and <code class="docutils literal notranslate"><span class="pre">t3</span></code> are <em>not</em> different variables. They are all measurements of <code class="docutils literal notranslate"><span class="pre">selfesteem</span></code> organised by subject. The reality is that these are all the <em>same</em> variable, as is made clearer by converting this dataset to <em>long</em> format</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">reshape2</span><span class="p">)</span>
+
+<span class="c1"># reshape wide -&gt; long</span>
+<span class="n">selfesteem.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">melt</span><span class="p">(</span><span class="n">selfesteem</span><span class="p">,</span><span class="w">               </span><span class="c1"># wide data frame</span>
+<span class="w">                        </span><span class="n">id.vars</span><span class="o">=</span><span class="s">&#39;id&#39;</span><span class="p">,</span><span class="w">             </span><span class="c1"># what stays fixed?</span>
+<span class="w">                        </span><span class="n">variable.name</span><span class="o">=</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1"># name for the new predictor</span>
+<span class="w">                        </span><span class="n">value.name</span><span class="o">=</span><span class="s">&quot;selfesteem&quot;</span><span class="p">)</span><span class="w">  </span><span class="c1"># name for the new outcome</span>
+
+<span class="n">selfesteem.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">selfesteem.long</span><span class="p">[</span><span class="nf">order</span><span class="p">(</span><span class="n">selfesteem.long</span><span class="o">$</span><span class="n">id</span><span class="p">),]</span><span class="w"> </span><span class="c1"># order by ID</span>
+<span class="nf">rownames</span><span class="p">(</span><span class="n">selfesteem.long</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">30</span><span class="p">)</span><span class="w">                         </span><span class="c1"># fix row names</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">selfesteem.long</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   id time selfesteem
+1   1   t1   4.005027
+2   1   t2   5.182286
+3   1   t3   7.107831
+4   2   t1   2.558124
+5   2   t2   6.912915
+6   2   t3   6.308434
+7   3   t1   3.244241
+8   3   t2   4.443434
+9   3   t3   9.778410
+10  4   t1   3.419538
+11  4   t2   4.711696
+12  4   t3   8.347124
+13  5   t1   2.871243
+14  5   t2   3.908429
+15  5   t3   6.457287
+16  6   t1   2.045868
+17  6   t2   5.340549
+18  6   t3   6.653224
+19  7   t1   3.525992
+20  7   t2   5.580695
+21  7   t3   6.840157
+22  8   t1   3.179425
+23  8   t2   4.370234
+24  8   t3   7.818623
+25  9   t1   3.507964
+26  9   t2   4.399808
+27  9   t3   8.471229
+28 10   t1   3.043798
+29 10   t2   4.489376
+30 10   t3   8.581100
+</pre></div>
+</div>
+</div>
+</div>
+<p>So, now we have our single outcome variable <span class="math notranslate nohighlight">\(y\)</span>, suitable for use in a linear model. Except that we now have an outcome variable where <em>individual elements are not independent</em>. Rather than each row representing an independent draw from some probability distribution, we now have rows that are <em>correlated</em>, based on whether they come from the same subject.</p>
+<div class="tip admonition">
+<p class="admonition-title">Why Are Repeated Measurements Correlated?</p>
+<p>This is, in effect, a principle of reality. There is an <em>internal consistency</em> to people that means that they will produce a similar pattern of results across repeats.</p>
+</div>
+<p>Why does the correlation matter? Recall that a core assumption of the normal linear model is that the data/errors are <span class="math notranslate nohighlight">\(i.i.d.\)</span> We previously wrote this as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    y &amp;= \mu + \epsilon \\
+    \epsilon &amp;\sim^{i.i.d.}\mathcal{N}(0,\sigma^{2})
+\end{alignat*}
+\end{split}\]</div>
+<p>Under repeated measurements, the <span class="math notranslate nohighlight">\(independent\)</span> criteria is clearly broken. Where this is most important is for <em>estimation</em>. Both OLS and MLE/REML assume independence when performing estimation. When the data are <em>dependent</em>, this causes bias to creep in, rendering some of the parameter estimates <em>larger</em> or <em>smaller</em> than they should be. We will discuss this in more detail further below, but this should be enough for the moment to see why this might be a problem for the approaches we discussed last semester.</p>
 </section>
 <section id="a-probability-model-for-repeated-measurements">
 <h2>A Probability Model for Repeated Measurements<a class="headerlink" href="#a-probability-model-for-repeated-measurements" title="Link to this heading">#</a></h2>
-<p>Given all the above, how do we move forward with conceptualising a repeated measurements design in terms of population distributions and sampling? The key insight comes from moving from a <em>univariate</em> distribution to a <em>multivariate</em> distribution. Here, we will use the example of a multivariate normal distribution because it is easiest to conceptualise.</p>
+<p>Given all the above, it is useful to see how we can conceptualise repeated measurement data in terms of a probability model. This will provide us with a framework for both understanding repeated measurements, but also as a starting point for <em>modelling</em> repeated measurements.</p>
+<section id="the-multivariate-normal-distribution">
+<h3>The Multivariate Normal Distribution<a class="headerlink" href="#the-multivariate-normal-distribution" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{bmatrix}
@@ -498,6 +578,7 @@ t3  0.360602 -0.5230331  1.0000000
 </div>
 </div>
 <p>Notice that when there is <em>no correlation</em>, the shape of the distribution of <span class="math notranslate nohighlight">\(Y\)</span> does not change with the value of <span class="math notranslate nohighlight">\(X\)</span>. In other words, the value of <span class="math notranslate nohighlight">\(X\)</span> has no bearing on the probability of different values of <span class="math notranslate nohighlight">\(Y\)</span>. This is the essence of <em>independence</em>. However, when there <em>is</em> correlation, the shape of the distribution of <span class="math notranslate nohighlight">\(Y\)</span> <em>shifts</em> depending upon the value of <span class="math notranslate nohighlight">\(X\)</span>. Notice in the <em>right</em> column that when <span class="math notranslate nohighlight">\(X = -1\)</span>, the distribution of <span class="math notranslate nohighlight">\(Y\)</span> is centred close to <span class="math notranslate nohighlight">\(E(Y) = -1\)</span>. Similarly, when <span class="math notranslate nohighlight">\(X = 1\)</span>, the distribution of <span class="math notranslate nohighlight">\(Y\)</span> is centred close to <span class="math notranslate nohighlight">\(E(Y) = 1\)</span>. This change in expected value is seen as the “shark-fin” shape to the density. In essence, the most probable value of <span class="math notranslate nohighlight">\(Y\)</span> changes based on the value of <span class="math notranslate nohighlight">\(X\)</span>. The stronger the correlation, the closer the expected value of one random value approaches the sampled value of the other. This is the essence of <em>dependence</em>.</p>
+</section>
 <section id="conceptualising-multiple-subjects">
 <h3>Conceptualising Multiple Subjects<a class="headerlink" href="#conceptualising-multiple-subjects" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
@@ -809,6 +890,7 @@ t3  0.360602 -0.5230331  1.0000000
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurement-designs">Repeated Measurement Designs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurements-and-correlation">Repeated Measurements and Correlation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-probability-model-for-repeated-measurements">A Probability Model for Repeated Measurements</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-multivariate-normal-distribution">The Multivariate Normal Distribution</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptualising-multiple-subjects">Conceptualising Multiple Subjects</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-normal-simulations-in-r">Multivariate Normal Simulations in <code class="docutils literal notranslate"><span class="pre">R</span></code></a></li>
 </ul>
