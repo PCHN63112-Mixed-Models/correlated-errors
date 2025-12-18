@@ -4,8 +4,9 @@
 format: jb-book
 root: 0.intro
 chapters:
-- file: 1.correlation-problem
-- file: 2.paired-t
-- file: 3.rm-anova
-- file: 4.gls
+- file: 1.designs
+- file: 2.probability
+- file: 3.paired-t
+- file: 4.rm-anova
+- file: 5.gls
 - file: summary
