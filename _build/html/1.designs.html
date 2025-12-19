@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Repeated Measurement Designs &#8212; Linear Models with Correlated Errors</title>
+    <title>Repeated Measurements &#8212; Linear Models with Correlated Errors</title>
   
   
   
@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '1.designs';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Probability Models for Repeated Measurements" href="2.probability.html" />
+    <link rel="next" title="Probability Models" href="2.probability.html" />
     <link rel="prev" title="Introduction" href="0.intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -182,8 +182,8 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Repeated Measurement Designs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2.probability.html">Probability Models for Repeated Measurements</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Repeated Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2.probability.html">Probability Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3.paired-t.html">The Paired <em>t</em>-test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4.rm-anova.html">The Repeated Measures ANOVA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="5.gls.html">Generalised Least Squares</a></li>
@@ -373,7 +373,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Repeated Measurement Designs</h1>
+    <h1>Repeated Measurements</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -383,7 +383,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Repeated Measurement Designs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurement-designs">Repeated Measurement Designs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurements-and-correlation">Repeated Measurements and Correlation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-correlation-a-problem">Why is Correlation a Problem?</a></li>
 </ul>
@@ -397,19 +397,19 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="repeated-measurement-designs">
-<h1>Repeated Measurement Designs<a class="headerlink" href="#repeated-measurement-designs" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="repeated-measurements">
+<h1>Repeated Measurements<a class="headerlink" href="#repeated-measurements" title="Link to this heading">#</a></h1>
 <p>As alluded to in the introduction, experiments where multiple measurements are taken from the same subject are problematic from an analysis perspective. These are known as <em>repeated measurement</em>, <em>repeated measures</em> or <em>within-subject</em> designs. In this first part, we will explore <em>why</em> these designs cause problems, before spending the rest of the lesson discussing some traditional remedies. This is all ground work to allow us to begin on the core topic of <em>linear mixed-effects models</em> next week.</p>
-<section id="id1">
-<h2>Repeated Measurement Designs<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
-<p>Up until now the only experimental designs we have considered, from an analysis perspective, are those where a <em>single</em> measurement is taken from each subject<a class="footnote-reference brackets" href="#subject-foot" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. This means that every row of our data sets and every value of <span class="math notranslate nohighlight">\(y\)</span> was considered a <em>separate</em> subject. Thinking back to the idea of factorial experiments, this means that <em>different</em> experimental conditions represent different groups of individuals. No single individual was present in <em>both</em> groups and thus different subjects were randomised to different experimental conditions. These are known as <em>independent measures</em> or <em>between-subjects</em> designs. For example, the illustration in  <a class="reference internal" href="#between-sub-fig"><span class="std std-numref">Fig. 1</span></a>. shows a between-subjects design where half the sample undergo a happy mood induction and the other half undergo a sad mood induction.</p>
+<section id="repeated-measurement-designs">
+<h2>Repeated Measurement Designs<a class="headerlink" href="#repeated-measurement-designs" title="Link to this heading">#</a></h2>
+<p>Up until now the only experimental designs we have considered, from an analysis perspective, are those where a <em>single</em> measurement is taken from each subject<a class="footnote-reference brackets" href="#subject-foot" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. This means that every row of our data sets and every value of <span class="math notranslate nohighlight">\(y\)</span> was considered a <em>separate</em> subject. Thinking back to the idea of factorial experiments, this means that <em>different</em> experimental conditions represent different groups of individuals. No single individual was present in <em>both</em> groups and thus different subjects were randomised to different experimental conditions. These are known as <em>independent measures</em> or <em>between-subjects</em> designs. For example, the illustration in  <a class="reference internal" href="#between-sub-fig"><span class="std std-numref">Fig. 1</span></a>. shows a between-subjects design where half the sample undergo a happy mood induction and the other half undergo a sad mood induction.</p>
 <figure class="align-default" id="between-sub-fig">
 <a class="reference internal image-reference" href="_images/between-subjects-design.png"><img alt="_images/between-subjects-design.png" src="_images/between-subjects-design.png" style="width: 600px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 1 </span><span class="caption-text">An example of a between-subjects design for a happy and sad mood induction experiment.</span><a class="headerlink" href="#between-sub-fig" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>A different form of design comes from an experiment where each subject participates in <em>every</em> experimental condition. For instance, each subject performs a task that has 3 different difficulty conditions (<em>easy</em>, <em>medium</em>, <em>hard</em>). If each subject performs each of these conditions then we have 3 measurements per-subject and this is known as a <em>repeated measures</em> or <em>within-subject</em> design<a class="footnote-reference brackets" href="#long-foot" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>. In this example, there is nothing fundamental about the experiment that forces it to be repeated measurements. A between-subjects variant could easily be conducted where each subject participates in only <em>one</em> of the experimental conditions. As such, for this particular example, repeated measurements are a <em>choice</em> rather than a fundamental reality of the data. This experimental setup is illustrated in <a class="reference internal" href="#within-sub-fig"><span class="std std-numref">Fig. 2</span></a>.</p>
+<p>A different form of design comes from an experiment where each subject participates in <em>every</em> experimental condition. For instance, each subject performs a task that has 3 different difficulty conditions (<em>easy</em>, <em>medium</em>, <em>hard</em>). If each subject performs each of these conditions then we have 3 measurements per-subject and this is known as a <em>repeated measures</em> or <em>within-subject</em> design<a class="footnote-reference brackets" href="#long-foot" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>. In this example, there is nothing fundamental about the experiment that forces it to be repeated measurements. A between-subjects variant could easily be conducted where each subject participates in only <em>one</em> of the experimental conditions. As such, for this particular example, repeated measurements are a <em>choice</em> rather than a fundamental reality of the data. This experimental setup is illustrated in <a class="reference internal" href="#within-sub-fig"><span class="std std-numref">Fig. 2</span></a>.</p>
 <figure class="align-default" id="within-sub-fig">
 <a class="reference internal image-reference" href="_images/within-subject-design.png"><img alt="_images/within-subject-design.png" src="_images/within-subject-design.png" style="width: 500px;" /></a>
 <figcaption>
@@ -491,11 +491,11 @@ t3  0.360602 -0.5230331  1.0000000
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="subject-foot" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>We will refer generically to <em>subjects</em> throughout these materials, as the assumption is that you will generally be working with behavioural data from humans. However, it is worth knowing that statistics has the more general concept of a <em>unit of analysis</em>, which could be <em>humans</em>, <em>rats</em>, <em>genes</em>, <em>schools</em> or anything else that our inference is based upon.</p>
 </aside>
 <aside class="footnote brackets" id="long-foot" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">2</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
 <p>When repeated measurements are taken across longer temporal gaps (e.g. different days, weeks or months), these types of design are often known as <em>longitudinal</em> designs. Similarly, if many measurements are taken in close succession over time, these types of data are often viewed as a <em>time series</em>. The only real difference is that the measurements have a <em>specific order</em> to them and the analysis has to take this order into account. For most repeated measurement designs, the order of the repeats does not matter and is often randomised across subjects.</p>
 </aside>
 </aside>
@@ -546,7 +546,7 @@ t3  0.360602 -0.5230331  1.0000000
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Probability Models for Repeated Measurements</p>
+        <p class="prev-next-title">Probability Models</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -566,7 +566,7 @@ t3  0.360602 -0.5230331  1.0000000
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Repeated Measurement Designs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurement-designs">Repeated Measurement Designs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurements-and-correlation">Repeated Measurements and Correlation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-correlation-a-problem">Why is Correlation a Problem?</a></li>
 </ul>
