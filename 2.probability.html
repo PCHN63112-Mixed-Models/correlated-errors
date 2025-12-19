@@ -678,36 +678,29 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 <p>We can repeat this again for <em>multiple</em> subjects to see the full conceptualisation of this experiment. If we had <span class="math notranslate nohighlight">\(n=15\)</span> then we can simulate our simple repeated measurements experiment using</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">set.seed</span><span class="p">(</span><span class="m">666</span><span class="p">)</span>
-
-<span class="n">y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">30</span><span class="p">),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">15</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
-
-<span class="c1"># sample 15 subjects</span>
-<span class="kr">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">15</span><span class="p">){</span>
-<span class="w">  </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">,]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="n">Mu</span><span class="p">,</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma</span><span class="p">)</span>
-<span class="p">}</span>
-
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">set.seed</span><span class="p">(</span><span class="m">777</span><span class="p">)</span>
+<span class="n">y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">15</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="n">Mu</span><span class="p">,</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma</span><span class="p">)</span>
 <span class="nf">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            [,1]     [,2]
- [1,]  2.0776587 4.351648
- [2,]  1.0217269 3.304453
- [3,] -0.3429377 1.136714
- [4,]  1.0146228 1.507065
- [5,]  0.3130229 1.286439
- [6,]  4.5995057 4.479913
- [7,]  3.3642435 3.276321
- [8,]  2.1512212 3.103264
- [9,]  2.7051883 3.923322
-[10,]  1.1988280 2.696046
-[11,]  1.7175282 1.969306
-[12,]  3.3025749 4.104900
-[13,]  2.4977389 2.560266
-[14,]  1.4889437 1.373391
-[15,]  1.4166047 1.567217
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           [,1]     [,2]
+ [1,] 2.1571710 3.772133
+ [2,] 1.3168746 2.926946
+ [3,] 2.6566917 3.312552
+ [4,] 1.4093942 2.833913
+ [5,] 3.3962213 4.712967
+ [6,] 3.2315357 2.947249
+ [7,] 2.1202807 3.264324
+ [8,] 3.2996450 3.804416
+ [9,] 1.4016128 3.207103
+[10,] 1.1858382 3.095126
+[11,] 1.5763201 2.846384
+[12,] 2.6030285 2.499737
+[13,] 0.2235982 1.207587
+[14,] 2.4386245 2.497327
+[15,] 4.3641379 5.021615
 </pre></div>
 </div>
 </div>
@@ -720,12 +713,12 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 0.7796051
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 0.7651892
 </pre></div>
 </div>
 </div>
 </div>
-<p>which, as we can see, matches the value of <span class="math notranslate nohighlight">\(\rho\)</span> we used for the simulations.</p>
+<p>which, as we can see, is not too far off the value of <span class="math notranslate nohighlight">\(\rho\)</span> we used for the simulations. Obviously, the more data we have the more precise this estimate of the correlation would be and the closer to the true value it would become.</p>
 </section>
 <section id="the-univariate-long-view">
 <h3>The Univariate (<em>Long</em>) View<a class="headerlink" href="#the-univariate-long-view" title="Link to this heading">#</a></h3>
