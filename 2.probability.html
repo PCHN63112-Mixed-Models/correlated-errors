@@ -455,11 +455,15 @@
 \boldsymbol{\Sigma}
 \right).
 \]</div>
-<p>Or, more compactly,</p>
+<p>Or, more compactly, as</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{y}_{i} \sim\mathcal{N}\left(\boldsymbol{\mu},\boldsymbol{\Sigma}\right)
+\]</div>
+<p>with</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{alignat*}{1}
-    \mathbf{y}_{i} &amp;\sim\mathcal{N}\left(\boldsymbol{\mu},\boldsymbol{\Sigma}\right) \\
     \mathbf{y}_{i} &amp;= 
     \begin{bmatrix}
         y_{i1} &amp; y_{i2} &amp; y_{i3}
@@ -512,9 +516,13 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 \end{split}\]</div>
 <p>Or, more compactly, as</p>
 <div class="math notranslate nohighlight">
+\[
+\mathbf{y}_{i} \sim\mathcal{N}\left(\boldsymbol{\mu},\boldsymbol{\Sigma}\right)
+\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{alignat*}{1}
-    \mathbf{y}_{i} &amp;\sim\mathcal{N}\left(\boldsymbol{\mu},\boldsymbol{\Sigma}\right) \\
     \mathbf{y}_{i} &amp;= 
     \begin{bmatrix}
         y_{i1} &amp; y_{i2}
@@ -530,12 +538,16 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 \end{bmatrix}
 \end{alignat*}
 \end{split}\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma_{12} = \sigma_{21} = \rho\sigma_{1}\sigma_{2}.
+\]</div>
 </section>
 <section id="taking-draws-from-a-multivariate-normal">
 <h3>Taking Draws from a Multivariate Normal<a class="headerlink" href="#taking-draws-from-a-multivariate-normal" title="Link to this heading">#</a></h3>
-<p>Taking all the above into account, the multivariate normal distribution is able to describes the behaviour of <em>multiple</em> random variables by describing the data-generating process of a random vector. This includes both the expected value of each column of the vector <em>and</em>, most crucially, how <em>correlated</em> those values are.</p>
-<p>In the case of a 2-dimensional multivariate normal, every time we draw data we get <em>two</em> values back. The first has a population mean of <span class="math notranslate nohighlight">\(\mu_{1}\)</span> and a variance of <span class="math notranslate nohighlight">\(\sigma^{2}_{1}\)</span>. The second has a population mean of <span class="math notranslate nohighlight">\(\mu_{2}\)</span> and a variance of <span class="math notranslate nohighlight">\(\sigma^{2}_{2}\)</span>. Most importantly, the two values will be <em>correlated</em> by a factor of <span class="math notranslate nohighlight">\(\sigma_{12}\)</span>. If <span class="math notranslate nohighlight">\(\sigma_{12} = 0\)</span> then this will be no different to drawing two values separately from a univariate normal distribution. However, if <span class="math notranslate nohighlight">\(|\sigma_{12}| &gt; 0\)</span>, then the two values will be related, with their values becoming more and more similar the larger the covariance becomes.</p>
-<p>To see this most clearly, we can simulate drawing data from a multivariate normal disribution in <code class="docutils literal notranslate"><span class="pre">R</span></code> by using the <code class="docutils literal notranslate"><span class="pre">mvrnorm()</span></code> function from the <code class="docutils literal notranslate"><span class="pre">MASS</span></code> package. To do so, we provide a <em>mean vector</em> and a <em>variance-covariance matrix</em>. For instance, we can draw from the multivariate normal defined by</p>
+<p>As we have see above, the multivariate normal distribution is able to describes the behaviour of <em>multiple</em> random variables by describing the data-generating process of a <em>random vector</em>. This includes both the expected value of each element of the vector <em>and</em>, most crucially, how <em>correlated</em> those values are. In the case of a 2-dimensional multivariate normal, every time we draw data from this distribution we get <em>two</em> values back. The first has a population mean of <span class="math notranslate nohighlight">\(\mu_{1}\)</span> and a variance of <span class="math notranslate nohighlight">\(\sigma^{2}_{1}\)</span>. The second has a population mean of <span class="math notranslate nohighlight">\(\mu_{2}\)</span> and a variance of <span class="math notranslate nohighlight">\(\sigma^{2}_{2}\)</span>. Most importantly, the two values will be <em>correlated</em> by a factor of <span class="math notranslate nohighlight">\(\sigma_{12}\)</span>. If <span class="math notranslate nohighlight">\(\sigma_{12} = 0\)</span> then this will be no different to drawing two values separately from a univariate normal distribution and there is little point in using the multivariate normal. However, if <span class="math notranslate nohighlight">\(|\sigma_{12}| &gt; 0\)</span>, then the two values will be related, where the strength of this relationship scales with the magnitude of the covariance.</p>
+<p>To see how the multivariate normal works as a sampling model, we can simulate drawing data from a multivariate normal distribution in <code class="docutils literal notranslate"><span class="pre">R</span></code>. Base <code class="docutils literal notranslate"><span class="pre">R</span></code> does not have any multivariate distribution functions, but we can use the <code class="docutils literal notranslate"><span class="pre">mvrnorm()</span></code> function from the <code class="docutils literal notranslate"><span class="pre">MASS</span></code> package. To do so, we provide a <em>mean vector</em> and a <em>variance-covariance matrix</em>, alongside the number of independent draws we want to take. For instance, we can draw a single pair of values from the multivariate normal defined by</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \mathbf{y}_{i} \sim\mathcal{N}\left(
@@ -554,12 +566,12 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">MASS</span><span class="p">)</span>
 <span class="nf">set.seed</span><span class="p">(</span><span class="m">666</span><span class="p">)</span>
 
-<span class="n">var.1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span><span class="w">                                  </span><span class="c1"># Variance 1</span>
-<span class="n">var.2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">4</span><span class="w">                                  </span><span class="c1"># Variance 2</span>
-<span class="n">rho</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.8</span><span class="w">                                </span><span class="c1"># Correlation</span>
-<span class="n">cov</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rho</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var.1</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var.2</span><span class="p">)</span><span class="w">        </span><span class="c1"># Covariance</span>
+<span class="n">var.1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span><span class="w">                           </span><span class="c1"># Variance 1</span>
+<span class="n">var.2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">4</span><span class="w">                           </span><span class="c1"># Variance 2</span>
+<span class="n">rho</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.8</span><span class="w">                         </span><span class="c1"># Correlation</span>
+<span class="n">cov</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rho</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var.1</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var.2</span><span class="p">)</span><span class="w"> </span><span class="c1"># Covariance</span>
 
-<span class="n">Mu</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">3</span><span class="p">)</span><span class="w">                             </span><span class="c1"># Mean vector</span>
+<span class="n">Mu</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">3</span><span class="p">)</span><span class="w">                                  </span><span class="c1"># Mean vector</span>
 <span class="n">Sigma</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">var.1</span><span class="p">,</span><span class="w"> </span><span class="n">cov</span><span class="p">,</span>
 <span class="w">                  </span><span class="n">cov</span><span class="p">,</span><span class="w">   </span><span class="n">var.2</span><span class="p">),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="c1"># Variance-covariance matrix</span>
 
@@ -574,7 +586,7 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 </div>
 </div>
 </div>
-<p>So we can see that we get <em>two</em> values back whenever we sample from this distribution. These can be thought of as random draw from the same experimental unit. For instance, condition 1 and condition 2 from subject <span class="math notranslate nohighlight">\(i\)</span>. The mean vector is given by</p>
+<p>So, we can see that we get <em>two</em> values back whenever we sample from this distribution. These can be thought of as random draw from the same experimental unit. For instance, we can think of these as representing responses from subject <span class="math notranslate nohighlight">\(i\)</span> in experimental condition 1 and experimental condition 2. This is parameterised by the mean vector</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">print</span><span class="p">(</span><span class="n">Mu</span><span class="p">)</span>
@@ -587,7 +599,7 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 </div>
 </div>
 </div>
-<p>and the variance-covariance matrix is given by</p>
+<p>and by the variance-covariance matrix</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">print</span><span class="p">(</span><span class="n">Sigma</span><span class="p">)</span>
@@ -602,17 +614,19 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 </div>
 </div>
 </div>
+<p>Note that the correlation was set to <span class="math notranslate nohighlight">\(\rho = 0.8\)</span> in the code above and was converted into covariance based on the variances of <span class="math notranslate nohighlight">\(y_{1}\)</span> and <span class="math notranslate nohighlight">\(y_{2}\)</span>. As we can see, covariance is not constrained to <span class="math notranslate nohighlight">\(\left[-1, 1\right]\)</span> like correlation is and so does not have the same ease of interpretation. As such, whenever we want to <em>interpret</em> dependence, correlation is more useful. However, for calculations involving variance, covariance is needed so that the units are compatible.</p>
 </section>
 </section>
 <section id="visualising-the-multivariate-normal">
 <h2>Visualising the Multivariate Normal<a class="headerlink" href="#visualising-the-multivariate-normal" title="Link to this heading">#</a></h2>
-<p>Although we have now discussed the mechanics of the multivariate normal, an easier way to conceptualise how the multivariate normal works is to <em>visualise</em> it. The most important element to recognise here is that the multivariate normal represents a probability density across <em>multiple</em> dimensions. As such, in order to visualise it, we have to restrict ourselves to only 2-dimensions. A basic 2-dimensional normal distribution is shown below.</p>
+<p>Although we have now discussed the mechanics of the multivariate normal, an easier way to conceptualise how the multivariate normal works is to <em>visualise</em> it. The most important element to recognise here is that the multivariate normal represents a probability density across <em>multiple</em> dimensions. As such, in order to visualise it, we have to restrict ourselves to only 2-dimensions. The multivariate normal can have many more dimensions than this, we just cannot visualise it. This is similar in spirit to multiple regression, where we can have as many predictor as we want, but can only visualise the regression plane when we have 2 of them.</p>
+<p>A basic 2-dimensional normal distribution is shown below.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <img alt="_images/0573262a4b51e5bee92123b1ddee88e6488fc915a7f8c0e52bf8dd530209698b.png" src="_images/0573262a4b51e5bee92123b1ddee88e6488fc915a7f8c0e52bf8dd530209698b.png" />
 </div>
 </div>
-<p>Because this is 2-dimensional, it is defined as the probability of the random vector</p>
+<p>Because this is 2-dimensional, it is defined as a probability distribution for the random vector</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbf{y} =
@@ -620,7 +634,13 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
     y_{1} &amp; y_{2}
 \end{bmatrix}.
 \]</div>
-<p>Each of the random variables in the vector gets its own axis. The probability density is then the <em>joint-probability</em> of all possible pairs of values for <span class="math notranslate nohighlight">\(y_{1}\)</span> and <span class="math notranslate nohighlight">\(y_{2}\)</span>. Pick any point on the surface and it represents the probability of the associated points on the <span class="math notranslate nohighlight">\(y_{1}\)</span> axis and the <span class="math notranslate nohighlight">\(y_{2}\)</span> axis <em>occurring together</em>.</p>
+<p>Each of the random variables in this vector gets its own axis. So the first horizontal axis represents possible values of <span class="math notranslate nohighlight">\(y_{1}\)</span>, and the second horizontal axis represents possible values of <span class="math notranslate nohighlight">\(y_{2}\)</span>. The density of the distribution then gives the <em>joint-probability</em> of all possible pairs of values for <span class="math notranslate nohighlight">\(y_{1}\)</span> and <span class="math notranslate nohighlight">\(y_{2}\)</span>. Pick any point on the surface and it represents the probability of the associated points on the <span class="math notranslate nohighlight">\(y_{1}\)</span> axis and the <span class="math notranslate nohighlight">\(y_{2}\)</span> axis <em>occurring together</em>. From this we can see that the <em>most probable</em> joint values are when <span class="math notranslate nohighlight">\(y_{1}\)</span> and <span class="math notranslate nohighlight">\(y_{2}\)</span> are equal to their expected value. In other words, the peak of the distribution occurs at the mean of <span class="math notranslate nohighlight">\(y_{1}\)</span> <em>and</em> the mean of <span class="math notranslate nohighlight">\(y_{2}\)</span>. For any other values, the joint-probability depends upon the variance within each dimension, as well as the covariance.</p>
+<p>We can also view this distribution from the <em>top-down</em> as a heat map, where <em>brighter</em> colours correspond to <em>greater</em> density. This can be a useful perspective once we see how correlation influences the shape of the multivariate normal.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/d811a7c5b7964eab7ed7c926709533041163b84f65f549476b472f4938d82425.png" src="_images/d811a7c5b7964eab7ed7c926709533041163b84f65f549476b472f4938d82425.png" />
+</div>
+</div>
 <p>In the example above, the variance-covariance matrix was defined as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -630,13 +650,18 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
     0 &amp; \sigma^{2}
 \end{bmatrix}
 \end{split}\]</div>
-<p>In other words, the variance of each dimension is the same and there is <em>no correlation</em>. Now, let us see what happens to the shape of this distribution when there <em>is</em> correlation. Setting <span class="math notranslate nohighlight">\(\rho = 0.8\)</span> results in the shape shown below.</p>
+<p>In other words, the variance of each dimension is the same and there is <em>no correlation</em>. This creates the perfect symmetry we see in the shape above. Now, let us see what happens when there <em>is</em> correlation. If we keep everything else the same but set <span class="math notranslate nohighlight">\(\rho = 0.8\)</span>, we get the distribution shown below.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/389033ae5d18ec5125f0a8aa397a2b3fc3090a2dec940adbfdcb7e6d7acb8125.png" src="_images/389033ae5d18ec5125f0a8aa397a2b3fc3090a2dec940adbfdcb7e6d7acb8125.png" />
+<img alt="_images/ff1f24691688478f481b8b1301a2400655f8b00d4e0561b89ea97aa5c539f86b.png" src="_images/ff1f24691688478f481b8b1301a2400655f8b00d4e0561b89ea97aa5c539f86b.png" />
 </div>
 </div>
-<p>This has been rotated to make the new shape clear. As we can see, correlation has created a “shark-fin” shape to the probability density. This is how <em>dependence</em> between the elements of <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> is captured.</p>
+<p>As we can see, correlation has created a “shark-fin” in the probability density. This is clearest when we see the top-down density plot of this distribution.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/21079e76788e3750af6568237509e8798b68bbd4e8d4d7121126d03aa70b9495.png" src="_images/21079e76788e3750af6568237509e8798b68bbd4e8d4d7121126d03aa70b9495.png" />
+</div>
+</div>
 <p>To see more clearly how this shark-fin shape connects with the idea of correlation, we will see how the probability distribution of <span class="math notranslate nohighlight">\(Y\)</span> changes for a given value of <span class="math notranslate nohighlight">\(X\)</span>. The plots below show a rotated view of the multivariate normal where we are focussing on the <span class="math notranslate nohighlight">\(y\)</span>-axis. The <em>left</em> column shows no correlation (<span class="math notranslate nohighlight">\(\rho=0\)</span>) and the <em>right</em> column shows a strong correlation (<span class="math notranslate nohighlight">\(\rho=0.8\)</span>). The distribution of <span class="math notranslate nohighlight">\(Y\)</span> when <span class="math notranslate nohighlight">\(X\)</span> is fixed to a certain value is superimposed in blue. This is a <em>slice</em> through the multivariate normal distribution. The <em>top</em> row shows <span class="math notranslate nohighlight">\(P(Y|X=-1)\)</span> and the <em>bottom</em> row shows <span class="math notranslate nohighlight">\(P(Y|X=1)\)</span>. Take a moment to study these so you are clear what they are showing.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
@@ -667,22 +692,22 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            [,1]       [,2]
- [1,]  1.6249079  4.9410232
- [2,]  0.6632978  2.7406514
- [3,] -0.2946361 -1.2397953
- [4,]  1.2830165  0.2267966
- [5,]  0.4778926 -0.5719454
- [6,]  4.7513683  6.8841384
- [7,]  3.6189443  4.3400158
- [8,]  2.1540491  3.2499235
- [9,]  2.5638620  4.7821121
-[10,]  1.0988052  2.0152912
-[11,]  2.0052749  1.3637106
-[12,]  3.2515909  5.4534497
-[13,]  2.7797272  2.7343741
-[14,]  1.9262472  0.3720039
-[15,]  1.7674857  0.5919539
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            [,1]     [,2]
+ [1,]  2.0776587 4.351648
+ [2,]  1.0217269 3.304453
+ [3,] -0.3429377 1.136714
+ [4,]  1.0146228 1.507065
+ [5,]  0.3130229 1.286439
+ [6,]  4.5995057 4.479913
+ [7,]  3.3642435 3.276321
+ [8,]  2.1512212 3.103264
+ [9,]  2.7051883 3.923322
+[10,]  1.1988280 2.696046
+[11,]  1.7175282 1.969306
+[12,]  3.3025749 4.104900
+[13,]  2.4977389 2.560266
+[14,]  1.4889437 1.373391
+[15,]  1.4166047 1.567217
 </pre></div>
 </div>
 </div>
@@ -695,7 +720,7 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 0.7986812
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 0.7796051
 </pre></div>
 </div>
 </div>
@@ -797,37 +822,13 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   id time selfesteem
-1   1   t1   4.005027
-2   1   t2   5.182286
-3   1   t3   7.107831
-4   2   t1   2.558124
-5   2   t2   6.912915
-6   2   t3   6.308434
-7   3   t1   3.244241
-8   3   t2   4.443434
-9   3   t3   9.778410
-10  4   t1   3.419538
-11  4   t2   4.711696
-12  4   t3   8.347124
-13  5   t1   2.871243
-14  5   t2   3.908429
-15  5   t3   6.457287
-16  6   t1   2.045868
-17  6   t2   5.340549
-18  6   t3   6.653224
-19  7   t1   3.525992
-20  7   t2   5.580695
-21  7   t3   6.840157
-22  8   t1   3.179425
-23  8   t2   4.370234
-24  8   t3   7.818623
-25  9   t1   3.507964
-26  9   t2   4.399808
-27  9   t3   8.471229
-28 10   t1   3.043798
-29 10   t2   4.489376
-30 10   t3   8.581100
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">Error</span>:
+
+<span class="o">!</span><span class="w"> </span>object<span class="w"> </span><span class="s1">&#39;selfesteem&#39;</span><span class="w"> </span>not<span class="w"> </span>found
+
+    <span class="err">▆</span>
+
+<span class="g g-Whitespace"> </span><span class="mi">1</span><span class="o">.</span> <span class="err">└─</span><span class="n">reshape2</span><span class="p">::</span><span class="n">melt</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -923,10 +924,6 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 <span class="nf">hist</span><span class="p">(</span><span class="n">diff.ind</span><span class="p">,</span><span class="w"> </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-8</span><span class="p">,</span><span class="m">6</span><span class="p">),</span><span class="w"> </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Mean Difference&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s">&#39;Uncorrelated&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/a7b6b0b2c72a070da05b2d62d5b454485746d14ea900c74610145744ccb92403.png" src="_images/a7b6b0b2c72a070da05b2d62d5b454485746d14ea900c74610145744ccb92403.png" />
-<img alt="_images/01621cb2dfa975f83ca9f7f88e406791a181fd78c406f2a75729bc239ed36f03.png" src="_images/01621cb2dfa975f83ca9f7f88e406791a181fd78c406f2a75729bc239ed36f03.png" />
 </div>
 </div>
 <p>Notice that the distribution of repeated measurement differences is much <em>narrower</em> than the distribution of independent differences. This is the theory in action. … This is why there is a <em>power</em> advantage to repeated measurements. … The variability of the difference is much smaller because the conditions are going to be <em>more similar</em> when they are correlated. As such, we do not expect wild differences between them. The two conditions should generally be very similar and thus their difference should be consistently smaller than in the independent case, where much larger differences are possible.</p>
