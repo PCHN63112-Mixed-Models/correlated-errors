@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Repeated Measurements &#8212; Linear Models with Correlated Errors</title>
+    <title>Repeated Measurement Designs &#8212; Linear Models with Correlated Errors</title>
   
   
   
@@ -65,7 +65,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '1.designs';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Probability Models for Repeated Measurements" href="2.probability.html" />
+    <link rel="next" title="Probability Models" href="2.probability.html" />
     <link rel="prev" title="Introduction" href="0.intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -171,8 +171,8 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Repeated Measurements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2.probability.html">Probability Models for Repeated Measurements</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Repeated Measurement Designs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2.probability.html">Probability Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3.paired-t.html">The Paired <em>t</em>-test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4.rm-anova.html">The Repeated Measures ANOVA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="5.gls.html">Generalised Least Squares</a></li>
@@ -359,7 +359,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Repeated Measurements</h1>
+    <h1>Repeated Measurement Designs</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -369,7 +369,6 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurement-designs">Repeated Measurement Designs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurements-and-correlation">Repeated Measurements and Correlation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-correlation-a-problem">Why is Correlation a Problem?</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-and-the-linear-model-assumptions">Correlation and the Linear Model Assumptions</a></li>
@@ -389,11 +388,9 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="repeated-measurements">
-<h1>Repeated Measurements<a class="headerlink" href="#repeated-measurements" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="repeated-measurement-designs">
+<h1>Repeated Measurement Designs<a class="headerlink" href="#repeated-measurement-designs" title="Link to this heading">#</a></h1>
 <p>As alluded to in the introduction, experiments where multiple measurements are taken from the same subject are problematic from an analysis perspective. These are known as <em>repeated measurement</em>, <em>repeated measures</em> or <em>within-subject</em> designs. In this first part, we will explore <em>why</em> these designs cause problems, before spending the rest of the lesson discussing some traditional remedies. This is all ground work to allow us to begin on the core topic of <em>linear mixed-effects models</em> next week.</p>
-<section id="repeated-measurement-designs">
-<h2>Repeated Measurement Designs<a class="headerlink" href="#repeated-measurement-designs" title="Link to this heading">#</a></h2>
 <p>Up until now the only experimental designs we have considered, from an analysis perspective, are those where a <em>single</em> measurement is taken from each subject<a class="footnote-reference brackets" href="#subject-foot" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. This means that every row of our data sets and every value of <span class="math notranslate nohighlight">\(y\)</span> was considered a <em>separate</em> subject. Thinking back to the idea of factorial experiments, this means that <em>different</em> experimental conditions represent different groups of individuals. No single individual was present in <em>both</em> groups and thus different subjects were randomised to different experimental conditions. These are known as <em>independent measures</em> or <em>between-subjects</em> designs. For example, the illustration in  <a class="reference internal" href="#between-sub-fig"><span class="std std-numref">Fig. 1</span></a>. shows a between-subjects design where half the sample undergo a happy mood induction and the other half undergo a sad mood induction.</p>
 <figure class="align-default" id="between-sub-fig">
 <a class="reference internal image-reference" href="_images/between-subjects-design.png"><img alt="_images/between-subjects-design.png" src="_images/between-subjects-design.png" style="width: 600px;" /></a>
@@ -416,7 +413,6 @@
 </figcaption>
 </figure>
 <p>These types of designs have a variety of names, none of which are ideal. Psychologists often call these <em>mixed</em> designs, as a shorthand for <em>mixed measures</em>. This can seem sensible, but unfortunately <em>mixed</em> could also mean <em>mixed-effects</em>, which is the focus of this section of the unit. To add to the confusion, mixed-measures designs can be analysed using mixed-effects methods, but the two are not always equivalent. A psychologist and a statistician could have a perfectly reasonable conversation about “mixed models”, not even realising they are talking about different things. Statisticians will often call these <em>split-plot</em> designs, due to their history in the world of agriculture, but this is not a term psychologists often use. For our purpose, we can collapse these types of designs under the generic banner of <em>repeated measurement</em> designs to avoid any confusion. When doing this, we can define repeated measurement designs as those <em>with at least</em> one within-subject manipulation. This does not exclude the possibility of any other type of manipulation and thus covers both “pure” within-subject designs and mixed within-subject/between-subjects designs</p>
-</section>
 <section id="repeated-measurements-and-correlation">
 <h2>Repeated Measurements and Correlation<a class="headerlink" href="#repeated-measurements-and-correlation" title="Link to this heading">#</a></h2>
 <p>Now that we have established what repeated measurements are in the context of experimental design, we can turn to the main topic of this part of the lesson: <em>why are repeated measurements a problem</em>? To understand the issue, it is useful to see some example repeated measurement data. Below, we load the <code class="docutils literal notranslate"><span class="pre">selfesteem</span></code> data set from the <code class="docutils literal notranslate"><span class="pre">datarium</span></code> package. These contains measures of self-esteem taken from 10 subjects across 3 different time-points, as shown below.</p>
@@ -673,7 +669,7 @@ t3  0.360602 -0.5230331  1.0000000
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Probability Models for Repeated Measurements</p>
+        <p class="prev-next-title">Probability Models</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -694,7 +690,6 @@ t3  0.360602 -0.5230331  1.0000000
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurement-designs">Repeated Measurement Designs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurements-and-correlation">Repeated Measurements and Correlation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-correlation-a-problem">Why is Correlation a Problem?</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-and-the-linear-model-assumptions">Correlation and the Linear Model Assumptions</a></li>
