@@ -374,10 +374,10 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-the-standard-error-using-simulation">Checking the Standard Error Using Simulation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-paired-t-test-as-a-linear-model">The Paired <span class="math notranslate nohighlight">\(t\)</span>-test as a Linear Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-sample-t-test-as-an-lm">Two-sample <span class="math notranslate nohighlight">\(t\)</span>-test as an LM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling-the-difference">Modelling the <em>Difference</em></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioning-the-error">Partitioning the Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explicit-two-sample-t-test-as-a-linear-model">Explicit Two-sample <span class="math notranslate nohighlight">\(t\)</span>-test as a Linear Model</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-does-the-standard-error-come-from">Where Does the Standard Error Come From?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-residuals-and-sources-of-variance">The Residuals and Sources of Variance</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recreating-the-paired-t-test-in-the-linear-model">Recreating the Paired <span class="math notranslate nohighlight">\(t\)</span>-test in the Linear Model</a></li>
 </ul>
 </li>
@@ -395,7 +395,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="the-paired-t-test">
 <h1>The Paired <em>t</em>-test<a class="headerlink" href="#the-paired-t-test" title="Link to this heading">#</a></h1>
-<p>As we have now seen, correlation causes problems in terms of both the properties of the least-squares estimates, as well as the accuracy of the standard errors. We will put the issue of least-squares to one side, for the moment, and just focus on the standard errors. To ease us into this topic, we will start by explore how the humble <span class="math notranslate nohighlight">\(t\)</span>-test can be adapted to accommodate repeated measurements.</p>
+<p>As we have now seen, correlation causes problems in terms of accurately capturing the uncertainty of our parameter estimates. If our data are dependent, we need to include this in the model somehow otherwise our inference will be inaccurate. This is not just a problem for NHST, it is a problem for any inferential method that requires a measure of <em>uncertainty</em> about the parameter values. In this part of the lesson, we will turn to the most basic approach for dealing with dependent data: the <em>paired</em> <span class="math notranslate nohighlight">\(t\)</span>-test.</p>
 <section id="two-sample-vs-paired-t-tests">
 <h2>Two-sample vs Paired <em>t</em>-tests<a class="headerlink" href="#two-sample-vs-paired-t-tests" title="Link to this heading">#</a></h2>
 <p>From your statistical education so far, you should be aware that there are two variants of the basic <span class="math notranslate nohighlight">\(t\)</span>-test for multiple samples. The first is the traditional <em>two-sample</em> test, and the second is the <em>paired</em> test. The <em>two-sample</em> test is suitable for cases when the data from two groups are <em>independent</em>, whereas the <em>paired</em> test is suitable for cases when the data come from repeated measurements. As the name implies, we think of the data as <em>pairs</em> of values that each subject has provided. Because they come from the same subject, the pairs will be <em>correlated</em> and thus the test must be adjusted. <em>How</em> this is done is really the focus of this section.</p>
@@ -504,13 +504,10 @@ t = \frac{\mu_{1} - \mu_{2}}{\text{SE}\{\mu_{1} - \mu_{2}\}},
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><style>
-.list-inline {list-style: none; margin:0; padding: 0}
-.list-inline>li {display: inline-block}
-.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
-</style>
-<ol class=list-inline><li>0.223</li><li>0.083</li></ol>
-</div></div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 0.223 0.083
+</pre></div>
+</div>
+</div>
 </div>
 <p>So, in the <em>two-sample</em> case the standard error is <span class="math notranslate nohighlight">\(0.223\)</span>, which is larger than the standard error in the <em>paired</em> case, which is <span class="math notranslate nohighlight">\(0.083\)</span>.</p>
 </section>
@@ -539,10 +536,10 @@ t = \frac{\mu_{1} - \mu_{2}}{\text{SE}\{\mu_{1} - \mu_{2}\}},
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading required package: survival
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading required package: survival
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/faa324c3054dbbd6f804030d7327f4600b9b70fec2b7cdded2f4d05eb06e8e69.png"><img alt="_images/faa324c3054dbbd6f804030d7327f4600b9b70fec2b7cdded2f4d05eb06e8e69.png" src="_images/faa324c3054dbbd6f804030d7327f4600b9b70fec2b7cdded2f4d05eb06e8e69.png" style="width: 840px; height: 420px;" /></a>
+<img alt="_images/9d51d868493116a2a87070345d6c12ebd121cfe8560a4ee93d2948fbe26064c4.png" src="_images/9d51d868493116a2a87070345d6c12ebd121cfe8560a4ee93d2948fbe26064c4.png" />
 </div>
 </div>
 <p>The standard error from the simulations is then given by</p>
@@ -553,17 +550,131 @@ t = \frac{\mu_{1} - \mu_{2}}{\text{SE}\{\mu_{1} - \mu_{2}\}},
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">0.088</div></div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 0.088
+</pre></div>
+</div>
+</div>
 </div>
 <p>This is very close to estimated standard error of 0.083 from the <em>paired</em> test, and is not anywhere near the estimated standard error of 0.223 from the <em>two-sample</em> test. As such, we can see that the <em>paired</em> test is able to accurately estimate the correct standard error under cases of correlation.</p>
 <p>This should not be surprising, however, the key question for us is <em>how</em> the <em>paired</em> <span class="math notranslate nohighlight">\(t\)</span>-test is able to do this.</p>
 </section>
 </section>
-<section id="the-paired-t-test-as-a-linear-model">
-<h2>The Paired <span class="math notranslate nohighlight">\(t\)</span>-test as a Linear Model<a class="headerlink" href="#the-paired-t-test-as-a-linear-model" title="Link to this heading">#</a></h2>
-<p>To begin understanding how this works, it is useful to reframe the <span class="math notranslate nohighlight">\(t\)</span>-test in terms of a linear model.</p>
-<section id="two-sample-t-test-as-an-lm">
-<h3>Two-sample <span class="math notranslate nohighlight">\(t\)</span>-test as an LM<a class="headerlink" href="#two-sample-t-test-as-an-lm" title="Link to this heading">#</a></h3>
+<section id="modelling-the-difference">
+<h2>Modelling the <em>Difference</em><a class="headerlink" href="#modelling-the-difference" title="Link to this heading">#</a></h2>
+<p>The first method we can use is actually a bit of a <em>cheat</em> in order to side-step the issue of dependence entirely. However, conceptually, this is a really key step because it introduces the idea that we can correctly model repeated measurements by <em>removing something from the data</em>. In this first method, we remove it manually by subtracting the two repeats and analysing the <em>difference</em>. Further below we will see how this removal can be done <em>within the model itself</em>.</p>
+<p>… So the key insight is that when we take <span class="math notranslate nohighlight">\(D_{i} = y_{i1} - y_{i2}\)</span>, we have <em>removed</em> some element from the data that allows us to analyse the difference between the conditions without taking correlation into account. How is this possible? Precisely because, by subtracting these two values, we have <em>removed</em> the correlation. Thus, there is some shared component between <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span> that cancels-out when we subtract them. In cancelling-out, the correlation is gone and we can treat <span class="math notranslate nohighlight">\(D_{i}\)</span> as a vector of independent measurements.</p>
+<p>We can get more clarity on this by writing it formally. Let us <em>add</em> a shared component to the definition of both <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span>. We will call this <span class="math notranslate nohighlight">\(S_{i}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    y_{i1} &amp;= \mu_{1} + S_{i} + \epsilon_{i1} \\
+    y_{i2} &amp;= \mu_{2} + S_{i} + \epsilon_{i2} 
+\end{alignat*}.
+\end{split}\]</div>
+<p>So, the reason why <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span> are correlated is because they <em>share</em> the same component <span class="math notranslate nohighlight">\(S_{i}\)</span>. This captures the idea that these measurements come the same <em>subject</em>. If we then <em>subtract</em> these values, <span class="math notranslate nohighlight">\(S_{i}\)</span> will cancel-out</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    (y_{i1} - y_{i2}) = D_{i} &amp;= (\mu_{1} - \mu_{2}) + (S_{i} - S_{i}) + (\epsilon_{i1} - \epsilon_{i2}) \\
+                              &amp;= \mu^{(D)} + \epsilon_{i}^{(D)}
+\end{alignat*}.
+\end{split}\]</div>
+<p>So, this tells us that <span class="math notranslate nohighlight">\(S_{i}\)</span> precisely captures the correlation, because removing it renders the data <em>independent</em>.</p>
+<section id="partitioning-the-error">
+<h3>Partitioning the Error<a class="headerlink" href="#partitioning-the-error" title="Link to this heading">#</a></h3>
+<p>To begin with, let us just examine the overall variance of the data for the first 15 subjects.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">),</span><span class="n">each</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
+<span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
+<span class="w">     </span><span class="n">y.long</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
+<span class="w">     </span><span class="n">col</span><span class="o">=</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">cond</span><span class="p">),</span>
+<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Subject&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Y&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">)</span>
+
+<span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="nf">mean</span><span class="p">(</span><span class="n">y.long</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">Error</span>:
+
+<span class="o">!</span><span class="w"> </span>object<span class="w"> </span><span class="s1">&#39;y.long&#39;</span><span class="w"> </span>not<span class="w"> </span>found
+
+    <span class="err">▆</span>
+
+<span class="g g-Whitespace"> </span><span class="mi">1</span><span class="o">.</span> <span class="err">├─</span><span class="n">base</span><span class="p">::</span><span class="n">plot</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="g g-Whitespace"> </span><span class="mi">2</span><span class="o">.</span> <span class="err">└─</span><span class="n">graphics</span><span class="p">::</span><span class="n">plot</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="g g-Whitespace"> </span><span class="mi">3</span><span class="o">.</span>   <span class="err">└─</span><span class="n">grDevices</span><span class="p">::</span><span class="n">xy</span><span class="o">.</span><span class="n">coords</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">,</span> <span class="n">log</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we can see that there are 3 main sources of variation in these data:</p>
+<ol class="arabic simple">
+<li><p>The two conditions have different means, thus measures from one condition tend to be larger than the other. In this example, the mean difference is only 0.21, so this is quite a subtle effect. But it is there. This is the <em>structured</em> variance we are interested in (can’t remember what term was used for this?)</p></li>
+<li><p>The data come from different subjects, thus the degree to which the data fall above or below the grand means depends upon the individual subject. This is one source of <em>error variance</em> that explains why the data deviate from their expected value.</p></li>
+<li><p>Within each subject, there is variation between the two measures. The magnitude of this difference is sometimes bigger and sometimes smaller than the condition difference of 0.21. This is <em>another</em> source of <em>error variance</em>.</p></li>
+</ol>
+<p>So, we have one <em>structured</em> source of variation here (the difference between the experimental conditions), as well as <em>two</em> sources of error: the data come from different subjects and responses within each subject will also be different. The “subject” source captures the <em>internal consistency</em> of individual subjects (i.e. how correlated the responses are), whereas as the “within-subject” source captures the natural random variation we get between measurements, irrespective of whether they come from the same subject or not.</p>
+<p>To understand this more, we can work through <em>removing</em> each of these sources from the data to see how it can be decomposed. To begin with, we can remove the constant effect of each condition. To do so, we can simply take the residuals from the <code class="docutils literal notranslate"><span class="pre">two.sample.mod</span></code>, given that the predicted values from this model <em>are</em> the condition means. Once the effect of the conditions is removed, we have the plot below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">res.two.sample</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">resid</span><span class="p">(</span><span class="n">two.sample.mod</span><span class="p">)</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
+<span class="w">     </span><span class="n">res.two.sample</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
+<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Subject&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Residuals&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">col</span><span class="o">=</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">cond</span><span class="p">),</span>
+<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span>
+<span class="w">     </span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-3</span><span class="p">,</span><span class="m">3</span><span class="p">))</span>
+
+<span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="m">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now that we have removed any variation associated with the two conditions, we can turn to variability associated with the individual subjects. This is known as <em>between-subjects</em> variance. To remove it, we can calculate the mean value of each subject and then subtract it from the data. This results in the plot below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">res.matrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="n">res.two.sample</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">byrow</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="n">sub.means</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rowMeans</span><span class="p">(</span><span class="n">res.matrix</span><span class="p">)</span>
+<span class="n">res.nosub</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">100</span><span class="p">)</span>
+<span class="n">sub.idx</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
+
+<span class="kr">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">100</span><span class="p">){</span>
+<span class="w">    </span><span class="n">res.nosub</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res.two.sample</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sub.means</span><span class="p">[</span><span class="n">sub.idx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+<span class="p">}</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="n">sub.idx</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">50</span><span class="p">],</span>
+<span class="w">     </span><span class="n">res.nosub</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">50</span><span class="p">],</span>
+<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Subject&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Residuals - Subjects&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span>
+<span class="w">     </span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-3</span><span class="p">,</span><span class="m">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that a huge amount of the variation in this data was attributable to the variation between different subjects. Now that this has been removed, we can effectively treat our data as <em>one big sample from a single subject</em>. As such, the variability we can see between all pairs of measurements provides us with an indication of how <em>internally consistent</em> a single subject is across the different conditions of the task. With the overall effect of the conditions removed, this remaining variability is not related to the conditions themseleves. Rather, it is related to other sources of random variation that cause an individual’s response to change across multiple repeats of an experiment. This is known as the  <em>within-subject variance</em>.</p>
+<p>The variance associated with the two conditions is of direct interest because this captures our experimental effect of interest. Both the <em>between-subjects</em> and <em>within-subject</em> variance are effectively sources of <em>error</em> because they indicate different ways that the raw data may differ from the means of the conditions. One of these errors comes from the fact that different people may respond consistently higher or lower than the mean. The other comes from the fact that, even if an individual did not respond differently from the mean, natural variation across repeats will always be there.</p>
+<p>This partitioning of variance can be formally stated as</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Var}(y) = \sigma^{2} = \sigma^{2}_{b} + \sigma^{2}_{w}.
+\]</div>
+<p>As such, we now have <em>three</em> choices when it comes to calculating standard errors. Do we use the pooled variance of <span class="math notranslate nohighlight">\(\sigma^{2}\)</span>? The between-subjects variance of <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>, or the within-subject variance of <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>?</p>
+<p>Key Point
+In a regular paired t-test, the error variance consists of the differences between the means of the groups and the raw data. Howevever, when we have repeated measurements, this difference can be further divided into two sources … This is consistent with the idea of the <em>between-subjects variance</em> <span class="math notranslate nohighlight">\(\left(\sigma^{2}_{b}\right)\)</span> and the <em>within-subject variance</em> <span class="math notranslate nohighlight">\(\left(\sigma^{2}_{w}\right)\)</span> … As such, the difference with a <em>paired</em> test is that is uses the <em>within-subject variance</em> exclusively for determining the denominator of the <span class="math notranslate nohighlight">\(t\)</span>-statistic.</p>
+</section>
+<section id="explicit-two-sample-t-test-as-a-linear-model">
+<h3>Explicit Two-sample <span class="math notranslate nohighlight">\(t\)</span>-test as a Linear Model<a class="headerlink" href="#explicit-two-sample-t-test-as-a-linear-model" title="Link to this heading">#</a></h3>
 <p>To see this, we first start with the familiar case of the <em>two-sample</em> model. We can fit this as an LM within <code class="docutils literal notranslate"><span class="pre">R</span></code> as follows</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -572,27 +683,6 @@ t = \frac{\mu_{1} - \mu_{2}}{\text{SE}\{\mu_{1} - \mu_{2}\}},
 
 <span class="n">two.sample.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">y.long</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">cond</span><span class="p">)</span>
 <span class="nf">summary</span><span class="p">(</span><span class="n">two.sample.mod</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call:
-lm(formula = y.long ~ cond)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--2.52090 -0.85738  0.01796  0.70661  2.41932 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   0.9602     0.1575   6.095 2.16e-08 ***
-condB         0.2067     0.2228   0.928    0.356    
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 1.114 on 98 degrees of freedom
-Multiple R-squared:  0.008703,	Adjusted R-squared:  -0.001412 
-F-statistic: 0.8604 on 1 and 98 DF,  p-value: 0.3559
 </pre></div>
 </div>
 </div>
@@ -625,8 +715,6 @@ F-statistic: 0.8604 on 1 and 98 DF,  p-value: 0.3559
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html">0.222786743589523</div></div>
 </div>
 <p>which agrees with out results so far. As the element of most interest here is the estimate of <span class="math notranslate nohighlight">\(\sigma^{2}\)</span>, the next obvious question is where does this come from?</p>
 <p>As a review, the error variance in a linear model is estimated using</p>
@@ -643,114 +731,8 @@ F-statistic: 0.8604 on 1 and 98 DF,  p-value: 0.3559
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html">1.2408483279806</div><div class="output text_html">1.2408483279806</div></div>
 </div>
 <p>As such, if this is the element that differs between the <em>two-sample</em> and <em>paired</em> model, then our final suspect must be the <em>model residuals</em>. More specifically, the residuals must be <em>larger</em> in the <em>two-sample</em> case and <em>smaller</em> in the <em>paired</em> case. This is the only way the standard errors can differ. But this still does not explain <em>why</em> this is the case?</p>
-</section>
-<section id="the-residuals-and-sources-of-variance">
-<h3>The Residuals and Sources of Variance<a class="headerlink" href="#the-residuals-and-sources-of-variance" title="Link to this heading">#</a></h3>
-<p>To begin with, let us just examine the overall variance of the data for the first 15 subjects.</p>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">50</span><span class="p">),</span><span class="n">each</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
-<span class="n">subject</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
-
-<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
-<span class="w">     </span><span class="n">y.long</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
-<span class="w">     </span><span class="n">col</span><span class="o">=</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">cond</span><span class="p">),</span>
-<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Subject&#39;</span><span class="p">,</span>
-<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Y&#39;</span><span class="p">,</span>
-<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">)</span>
-
-<span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="nf">mean</span><span class="p">(</span><span class="n">y.long</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</details>
-<div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/beddc7bb4e9832f2add074624cadeac936fedb85a990fc97c7fb849ffe45b9a6.png"><img alt="_images/beddc7bb4e9832f2add074624cadeac936fedb85a990fc97c7fb849ffe45b9a6.png" src="_images/beddc7bb4e9832f2add074624cadeac936fedb85a990fc97c7fb849ffe45b9a6.png" style="width: 840px; height: 420px;" /></a>
-</div>
-</div>
-<p>Here we can see that there are 3 main sources of variation in these data:</p>
-<ol class="arabic simple">
-<li><p>The two conditions have different means, thus measures from one condition tend to be larger than the other. In this example, the mean difference is only 0.21, so this is quite a subtle effect. But it is there.</p></li>
-<li><p>The data come from different subjects, thus the degree to which the data fall above or below the grand means depends upon the individual subject.</p></li>
-<li><p>Within each subject, there is variation between the two measures. The magnitude of this difference is sometimes bigger and sometimes smaller than the condition difference of 0.21. As such, it cannot completely be explained by the effect of the conditions and thus represents an additional source of variation.</p></li>
-</ol>
-<p>To understand this more, we can work through <em>removing</em> each of these sources from the data to see how it can be decomposed. To begin with, we can remove the constant effect of each condition. To do so, we can simply take the residuals from the <code class="docutils literal notranslate"><span class="pre">two.sample.mod</span></code>, given that the predicted values from this model <em>are</em> the condition means. Once the effect of the conditions is removed, we have the plot below.</p>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">res.two.sample</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">resid</span><span class="p">(</span><span class="n">two.sample.mod</span><span class="p">)</span>
-
-<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
-<span class="w">     </span><span class="n">res.two.sample</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">30</span><span class="p">],</span>
-<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Subject&#39;</span><span class="p">,</span>
-<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Residuals&#39;</span><span class="p">,</span>
-<span class="w">     </span><span class="n">col</span><span class="o">=</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">cond</span><span class="p">),</span>
-<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span>
-<span class="w">     </span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-3</span><span class="p">,</span><span class="m">3</span><span class="p">))</span>
-
-<span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="m">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</details>
-<div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/6bc0b678fcd595dd5a7e2425d2cd7ba13b1aedf4da230b299f1cd63932863073.png"><img alt="_images/6bc0b678fcd595dd5a7e2425d2cd7ba13b1aedf4da230b299f1cd63932863073.png" src="_images/6bc0b678fcd595dd5a7e2425d2cd7ba13b1aedf4da230b299f1cd63932863073.png" style="width: 840px; height: 420px;" /></a>
-</div>
-</div>
-<p>Now that we have removed any variation associated with the two conditions, we can turn to variability associated with the individual subjects. This is known as <em>between-subjects</em> variance. To remove it, we can calculate the mean value of each subject and then subtract it from the data. This results in the plot below.</p>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">res.matrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="n">res.two.sample</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">byrow</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
-<span class="n">sub.means</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rowMeans</span><span class="p">(</span><span class="n">res.matrix</span><span class="p">)</span>
-<span class="n">res.nosub</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">100</span><span class="p">)</span>
-<span class="n">sub.idx</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
-
-<span class="kr">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">100</span><span class="p">){</span>
-<span class="w">    </span><span class="n">res.nosub</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res.two.sample</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sub.means</span><span class="p">[</span><span class="n">sub.idx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
-<span class="p">}</span>
-
-<span class="nf">plot</span><span class="p">(</span><span class="n">sub.idx</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">50</span><span class="p">],</span>
-<span class="w">     </span><span class="n">res.nosub</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">50</span><span class="p">],</span>
-<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Subject&#39;</span><span class="p">,</span>
-<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Residuals - Subjects&#39;</span><span class="p">,</span>
-<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span>
-<span class="w">     </span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-3</span><span class="p">,</span><span class="m">3</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</details>
-<div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/3d19053665b30b604baaea822181f548ac9fccb6094a61c5b31a6cd2555ecb33.png"><img alt="_images/3d19053665b30b604baaea822181f548ac9fccb6094a61c5b31a6cd2555ecb33.png" src="_images/3d19053665b30b604baaea822181f548ac9fccb6094a61c5b31a6cd2555ecb33.png" style="width: 840px; height: 420px;" /></a>
-</div>
-</div>
-<p>Notice that a huge amount of the variation in this data was attributable to the variation between different subjects. Now that this has been removed, we can effectively treat our data as <em>one big sample from a single subject</em>. As such, the variability we can see between all pairs of measurements provides us with an indication of how <em>internally consistent</em> a single subject is across the different conditions of the task. With the overall effect of the conditions removed, this remaining variability is not related to the conditions themseleves. Rather, it is related to other sources of random variation that cause an individual’s response to change across multiple repeats of an experiment. This is known as the  <em>within-subject variance</em>.</p>
-<p>The variance associated with the two conditions is of direct interest because this captures our experimental effect of interest. Both the <em>between-subjects</em> and <em>within-subject</em> variance are effectively sources of <em>error</em> because they indicate different ways that the raw data may differ from the means of the conditions. One of these errors comes from the fact that different people may respond consistently higher or lower than the mean. The other comes from the fact that, even if an individual did not respond differently from the mean, natural variation across repeats will always be there.</p>
-<p>This partitioning of variance can be formally stated as</p>
-<div class="math notranslate nohighlight">
-\[
-\text{Var}(y) = \sigma^{2} = \sigma^{2}_{b} + \sigma^{2}_{w}.
-\]</div>
-<p>As such, we now have <em>three</em> choices when it comes to calculating standard errors. Do we use the pooled variance of <span class="math notranslate nohighlight">\(\sigma^{2}\)</span>? The between-subjects variance of <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>, or the within-subject variance of <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>?</p>
-<p>Key Point
-In a regular paired t-test, the error variance consists of the differences between the means of the groups and the raw data. Howevever, when we have repeated measurements, this difference can be further divided into two sources … This is consistent with the idea of the <em>between-subjects variance</em> <span class="math notranslate nohighlight">\(\left(\sigma^{2}_{b}\right)\)</span> and the <em>within-subject variance</em> <span class="math notranslate nohighlight">\(\left(\sigma^{2}_{w}\right)\)</span> … As such, the difference with a <em>paired</em> test is that is uses the <em>within-subject variance</em> exclusively for determining the denominator of the <span class="math notranslate nohighlight">\(t\)</span>-statistic.</p>
 </section>
 <section id="recreating-the-paired-t-test-in-the-linear-model">
 <h3>Recreating the Paired <span class="math notranslate nohighlight">\(t\)</span>-test in the Linear Model<a class="headerlink" href="#recreating-the-paired-t-test-in-the-linear-model" title="Link to this heading">#</a></h3>
@@ -766,87 +748,6 @@ In a regular paired t-test, the error variance consists of the differences betwe
 <span class="nf">summary</span><span class="p">(</span><span class="n">paired.mod</span><span class="p">)</span>
 
 <span class="nf">print</span><span class="p">(</span><span class="nf">Anova</span><span class="p">(</span><span class="n">paired.mod</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call:
-lm(formula = y.long ~ cond + subject)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--0.9091 -0.1826  0.0000  0.1826  0.9091 
-
-Coefficients:
-             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  1.736326   0.295727   5.871 3.69e-07 ***
-condB        0.206655   0.082820   2.495 0.016005 *  
-subject2     1.196331   0.414100   2.889 0.005741 ** 
-subject3    -1.051564   0.414100  -2.539 0.014328 *  
-subject4     1.209435   0.414100   2.921 0.005268 ** 
-subject5    -2.817765   0.414100  -6.805 1.33e-08 ***
-subject6     0.004824   0.414100   0.012 0.990752    
-subject7    -1.953810   0.414100  -4.718 2.02e-05 ***
-subject8    -1.475991   0.414100  -3.564 0.000825 ***
-subject9    -2.414923   0.414100  -5.832 4.25e-07 ***
-subject10   -0.754529   0.414100  -1.822 0.074547 .  
-subject11    1.325056   0.414100   3.200 0.002413 ** 
-subject12   -2.394042   0.414100  -5.781 5.08e-07 ***
-subject13    0.105629   0.414100   0.255 0.799729    
-subject14   -2.346537   0.414100  -5.667 7.61e-07 ***
-subject15   -0.587411   0.414100  -1.419 0.162367    
-subject16   -0.786589   0.414100  -1.900 0.063391 .  
-subject17    0.099602   0.414100   0.241 0.810926    
-subject18   -0.387452   0.414100  -0.936 0.354043    
-subject19   -1.267217   0.414100  -3.060 0.003583 ** 
-subject20    0.031173   0.414100   0.075 0.940299    
-subject21   -1.371237   0.414100  -3.311 0.001748 ** 
-subject22   -1.836987   0.414100  -4.436 5.18e-05 ***
-subject23    0.489084   0.414100   1.181 0.243274    
-subject24   -1.011166   0.414100  -2.442 0.018269 *  
-subject25   -0.685651   0.414100  -1.656 0.104162    
-subject26   -2.120863   0.414100  -5.122 5.09e-06 ***
-subject27   -1.783486   0.414100  -4.307 7.93e-05 ***
-subject28   -2.387982   0.414100  -5.767 5.34e-07 ***
-subject29   -1.722743   0.414100  -4.160 0.000128 ***
-subject30   -1.988735   0.414100  -4.803 1.52e-05 ***
-subject31    0.001599   0.414100   0.004 0.996935    
-subject32   -1.323223   0.414100  -3.195 0.002444 ** 
-subject33    0.643038   0.414100   1.553 0.126893    
-subject34   -1.307154   0.414100  -3.157 0.002730 ** 
-subject35   -0.497410   0.414100  -1.201 0.235455    
-subject36   -0.464979   0.414100  -1.123 0.266967    
-subject37   -0.307461   0.414100  -0.742 0.461341    
-subject38   -2.122708   0.414100  -5.126 5.01e-06 ***
-subject39   -0.543883   0.414100  -1.313 0.195163    
-subject40    1.240640   0.414100   2.996 0.004283 ** 
-subject41   -0.026287   0.414100  -0.063 0.949642    
-subject42   -1.178307   0.414100  -2.845 0.006457 ** 
-subject43   -1.173931   0.414100  -2.835 0.006642 ** 
-subject44    1.036230   0.414100   2.502 0.015723 *  
-subject45   -0.225670   0.414100  -0.545 0.588250    
-subject46   -1.772234   0.414100  -4.280 8.66e-05 ***
-subject47   -1.008887   0.414100  -2.436 0.018518 *  
-subject48   -0.627914   0.414100  -1.516 0.135860    
-subject49   -0.103401   0.414100  -0.250 0.803864    
-subject50   -0.359054   0.414100  -0.867 0.390129    
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 0.4141 on 49 degrees of freedom
-Multiple R-squared:  0.9315,	Adjusted R-squared:  0.8616 
-F-statistic: 13.33 on 50 and 49 DF,  p-value: 2.636e-16
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Anova Table (Type II tests)
-
-Response: y.long
-           Sum Sq Df F value    Pr(&gt;F)    
-cond        1.068  1  6.2262   0.01601 *  
-subject   113.201 49 13.4723 2.348e-16 ***
-Residuals   8.402 49                      
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 </pre></div>
 </div>
 </div>
@@ -970,10 +871,10 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-the-standard-error-using-simulation">Checking the Standard Error Using Simulation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-paired-t-test-as-a-linear-model">The Paired <span class="math notranslate nohighlight">\(t\)</span>-test as a Linear Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-sample-t-test-as-an-lm">Two-sample <span class="math notranslate nohighlight">\(t\)</span>-test as an LM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling-the-difference">Modelling the <em>Difference</em></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioning-the-error">Partitioning the Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explicit-two-sample-t-test-as-a-linear-model">Explicit Two-sample <span class="math notranslate nohighlight">\(t\)</span>-test as a Linear Model</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-does-the-standard-error-come-from">Where Does the Standard Error Come From?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-residuals-and-sources-of-variance">The Residuals and Sources of Variance</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recreating-the-paired-t-test-in-the-linear-model">Recreating the Paired <span class="math notranslate nohighlight">\(t\)</span>-test in the Linear Model</a></li>
 </ul>
 </li>

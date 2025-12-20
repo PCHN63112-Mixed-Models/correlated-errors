@@ -371,7 +371,13 @@
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurement-designs">Repeated Measurement Designs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurements-and-correlation">Repeated Measurements and Correlation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-correlation-a-problem">Why is Correlation a Problem?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-correlation-a-problem">Why is Correlation a Problem?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-and-the-linear-model-assumptions">Correlation and the Linear Model Assumptions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-and-the-standard-errors">Correlation and the Standard Errors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#theory">Theory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -474,6 +480,140 @@ t3  0.360602 -0.5230331  1.0000000
 </section>
 <section id="why-is-correlation-a-problem">
 <h2>Why is Correlation a Problem?<a class="headerlink" href="#why-is-correlation-a-problem" title="Link to this heading">#</a></h2>
+<section id="correlation-and-the-linear-model-assumptions">
+<h3>Correlation and the Linear Model Assumptions<a class="headerlink" href="#correlation-and-the-linear-model-assumptions" title="Link to this heading">#</a></h3>
+<p>… In order to work with the linear model machinery, we need our outcome to be a <em>single</em> variable, rather than <em>multiple</em> variables.</p>
+<p>Although this dataset is in the <em>wide</em> format, it is important to realise that <code class="docutils literal notranslate"><span class="pre">t1</span></code>, <code class="docutils literal notranslate"><span class="pre">t2</span></code> and <code class="docutils literal notranslate"><span class="pre">t3</span></code> are <em>not</em> different variables. They are all measurements of <code class="docutils literal notranslate"><span class="pre">selfesteem</span></code> organised by subject. The reality is that these are all the <em>same</em> variable, as is made clearer by converting this dataset to <em>long</em> format</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">reshape2</span><span class="p">)</span>
+
+<span class="c1"># reshape wide -&gt; long</span>
+<span class="n">selfesteem.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">melt</span><span class="p">(</span><span class="n">selfesteem</span><span class="p">,</span><span class="w">               </span><span class="c1"># wide data frame</span>
+<span class="w">                        </span><span class="n">id.vars</span><span class="o">=</span><span class="s">&#39;id&#39;</span><span class="p">,</span><span class="w">             </span><span class="c1"># what stays fixed?</span>
+<span class="w">                        </span><span class="n">variable.name</span><span class="o">=</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1"># name for the new predictor</span>
+<span class="w">                        </span><span class="n">value.name</span><span class="o">=</span><span class="s">&quot;selfesteem&quot;</span><span class="p">)</span><span class="w">  </span><span class="c1"># name for the new outcome</span>
+
+<span class="n">selfesteem.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">selfesteem.long</span><span class="p">[</span><span class="nf">order</span><span class="p">(</span><span class="n">selfesteem.long</span><span class="o">$</span><span class="n">id</span><span class="p">),]</span><span class="w"> </span><span class="c1"># order by ID</span>
+<span class="nf">rownames</span><span class="p">(</span><span class="n">selfesteem.long</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">30</span><span class="p">)</span><span class="w">                         </span><span class="c1"># fix row names</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">selfesteem.long</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">Error</span>:
+
+
+
+<span class="o">!</span><span class="w"> </span>object<span class="w"> </span><span class="s1">&#39;selfesteem&#39;</span><span class="w"> </span>not<span class="w"> </span>found
+
+
+
+    <span class="err">▆</span>
+
+
+
+<span class="g g-Whitespace"> </span><span class="mi">1</span><span class="o">.</span> <span class="err">└─</span><span class="n">reshape2</span><span class="p">::</span><span class="n">melt</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>So, now we have our single outcome variable <span class="math notranslate nohighlight">\(y\)</span>, suitable for use in a linear model. Except that we now have an outcome variable where <em>individual elements are not independent</em>. Rather than each row representing an independent draw from some probability distribution, we now have rows that are <em>correlated</em>, based on whether they come from the same subject.</p>
+<div class="tip admonition">
+<p class="admonition-title">Why Are Repeated Measurements Correlated?</p>
+<p>This is, in effect, a principle of reality. There is an <em>internal consistency</em> to people that means that they will produce a similar pattern of results across repeats.</p>
+</div>
+<p>Why does the correlation matter? Recall that a core assumption of the normal linear model is that the data/errors are <span class="math notranslate nohighlight">\(i.i.d.\)</span> We previously wrote this as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    y &amp;= \mu + \epsilon \\
+    \epsilon &amp;\sim^{i.i.d.}\mathcal{N}(0,\sigma^{2})
+\end{alignat*}
+\end{split}\]</div>
+<p>Under repeated measurements, the <span class="math notranslate nohighlight">\(independent\)</span> criteria is clearly broken. Where this is most important is for <em>estimation</em>. Both OLS and MLE/REML assume independence when performing estimation. When the data are <em>dependent</em>, this causes bias to creep in, rendering some of the parameter estimates <em>larger</em> or <em>smaller</em> than they should be. We will discuss this in more detail further below, but this should be enough for the moment to see why this might be a problem for the approaches we discussed last semester.</p>
+</section>
+<section id="correlation-and-the-standard-errors">
+<h3>Correlation and the Standard Errors<a class="headerlink" href="#correlation-and-the-standard-errors" title="Link to this heading">#</a></h3>
+<p>Given everything above, what are the implications for our statistical model when there is correlation between measurements? As we have discussed, nothing about the <em>mean function</em> changes. So if we are only interested in estimating effects as defined within the mean function, nothing changes. This means that regression slopes, cell means and mean differences remain unchanged. However, what <em>does</em> change is the <em>variance function</em>. The biggest practical implication of this is that <em>correlation changes the standard errors</em>. This means that our <em>uncertainty</em> is different under correlation. If we get this wrong, the standard errors will be wrong, the test statistical will be wrong, the confidence intervals will be wrong and the <span class="math notranslate nohighlight">\(p\)</span>-values will be wrong. In short, neglecting to model the correlational structure will make our <em>inference wrong</em>. In a more general sense, neglecting the correlational structure will lead to a poor model of the data-generating process, because correlation is a <em>fundamental</em> element of how the data came to be. If we ignore it, we can never hope to have an accurate picture of where our data came from.</p>
+</section>
+<section id="theory">
+<h3>Theory<a class="headerlink" href="#theory" title="Link to this heading">#</a></h3>
+<p>The simplest demonstration of how correlation affects uncertainty comes directly from the properties of a random variable. It is a standard result in probability theory that the variance of the <em>difference</em> between two random variables (<span class="math notranslate nohighlight">\(y_{1}\)</span> and <span class="math notranslate nohighlight">\(y_{2}\)</span>) is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Var}\left(y_{1} - y_{2}\right) = \text{Var}\left(y_{1}\right) + \text{Var}\left(y_{2}\right) - 2\text{Cov}\left(y_{1},y_{2}\right).
+\]</div>
+<p>To understand this, consider the fact that subtracting two random variables produces a <em>new</em> random variable that captures their <em>difference</em>. This new random variable will also have a distribution. So what we are thinking above in the above equation is the <em>width</em> of the distribution of the <em>difference</em> between <span class="math notranslate nohighlight">\(y_{1}\)</span> and <span class="math notranslate nohighlight">\(y_{2}\)</span>. What this is saying is that the width of this distribution is a function of the variances from the two individual distributions <em>and</em> their degree of correlation. If the correlation is <em>positive</em> the variance will shrink, if the correlation is <em>negative</em> the variance will <em>grow</em>. Either way, our uncertainty around the difference between these two random variables <em>depends</em> upon their degree of correlation</p>
+</section>
+<section id="simulation">
+<h3>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">#</a></h3>
+<p>To see this, we can run a simulation in <code class="docutils literal notranslate"><span class="pre">R</span></code>. First, we use the <code class="docutils literal notranslate"><span class="pre">mvrnorm()</span></code> function from the <code class="docutils literal notranslate"><span class="pre">MASS</span></code> package to simulate 1,000 realisations of two repeated measurements with a correlation of <span class="math notranslate nohighlight">\(\rho = 0.8\)</span>. To do this, we use the following sampling model:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{bmatrix}
+    y_{i1} \\
+    y_{i2} \\
+\end{bmatrix}
+\sim\mathcal{N}\left(
+\begin{bmatrix}
+    2 \\
+    3 \\
+\end{bmatrix},
+\begin{bmatrix}
+    1 &amp; 0.8 \\
+    0.8 &amp; 1 \\
+\end{bmatrix}
+\right)
+\end{split}\]</div>
+<p>We can then compare this to 1,000 realisations of two independent measurements with a correlation of <span class="math notranslate nohighlight">\(\rho = 0\)</span>. To do this, we use the following sampling model</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{bmatrix}
+    y_{i1} \\
+    y_{i2} \\
+\end{bmatrix}
+\sim\mathcal{N}\left(
+\begin{bmatrix}
+    2 \\
+    3 \\
+\end{bmatrix},
+\begin{bmatrix}
+    1 &amp; 0 \\
+    0 &amp; 1 \\
+\end{bmatrix}
+\right).
+\end{split}\]</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">R</span></code> code is</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">Sigma.dep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="n">cov</span><span class="p">,</span>
+<span class="w">                      </span><span class="n">cov</span><span class="p">,</span><span class="n">var</span><span class="p">),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
+
+<span class="n">Sigma.ind</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w">   </span><span class="m">0</span><span class="p">,</span>
+<span class="w">                        </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">var</span><span class="p">),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
+
+<span class="n">y.dep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="n">Mu</span><span class="p">,</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma.dep</span><span class="p">)</span><span class="w"> </span><span class="c1"># dependence</span>
+<span class="n">y.ind</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="n">Mu</span><span class="p">,</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma.ind</span><span class="p">)</span><span class="w"> </span><span class="c1"># independence</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In both cases, we conceptualise the columns of <code class="docutils literal notranslate"><span class="pre">y.dep</span></code> and <code class="docutils literal notranslate"><span class="pre">y.ind</span></code> as two different conditions of an experiment. As such, our interest lies in the <em>difference</em> between the columns. As a final step, we subtract the columns and then compare the distributions of differences.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">diff.dep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">y.dep</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y.dep</span><span class="p">[,</span><span class="m">2</span><span class="p">]</span>
+<span class="n">diff.ind</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">y.ind</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y.ind</span><span class="p">[,</span><span class="m">2</span><span class="p">]</span>
+
+<span class="nf">hist</span><span class="p">(</span><span class="n">diff.dep</span><span class="p">,</span><span class="w"> </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-8</span><span class="p">,</span><span class="m">6</span><span class="p">),</span><span class="w"> </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Mean Difference&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s">&#39;Correlated&#39;</span><span class="p">)</span>
+<span class="nf">hist</span><span class="p">(</span><span class="n">diff.ind</span><span class="p">,</span><span class="w"> </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-8</span><span class="p">,</span><span class="m">6</span><span class="p">),</span><span class="w"> </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Mean Difference&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s">&#39;Uncorrelated&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that the distribution of repeated measurement differences is much <em>narrower</em> than the distribution of independent differences. This is the theory in action. … This is why there is a <em>power</em> advantage to repeated measurements. … The variability of the difference is much smaller because the conditions are going to be <em>more similar</em> when they are correlated. As such, we do not expect wild differences between them. The two conditions should generally be very similar and thus their difference should be consistently smaller than in the independent case, where much larger differences are possible.</p>
+<p>We can see how this will affect the <span class="math notranslate nohighlight">\(t\)</span>-statistic by calculating</p>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="subject-foot" role="note">
@@ -485,6 +625,7 @@ t3  0.360602 -0.5230331  1.0000000
 <p>When repeated measurements are taken across longer temporal gaps (e.g. different days, weeks or months), these types of design are often known as <em>longitudinal</em> designs. Similarly, if many measurements are taken in close succession over time, these types of data are often viewed as a <em>time series</em>. The only real difference is that the measurements have a <em>specific order</em> to them and the analysis has to take this order into account. For most repeated measurement designs, the order of the repeats does not matter and is often randomised across subjects.</p>
 </aside>
 </aside>
+</section>
 </section>
 </section>
 
@@ -555,7 +696,13 @@ t3  0.360602 -0.5230331  1.0000000
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurement-designs">Repeated Measurement Designs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurements-and-correlation">Repeated Measurements and Correlation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-correlation-a-problem">Why is Correlation a Problem?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-correlation-a-problem">Why is Correlation a Problem?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-and-the-linear-model-assumptions">Correlation and the Linear Model Assumptions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-and-the-standard-errors">Correlation and the Standard Errors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#theory">Theory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
