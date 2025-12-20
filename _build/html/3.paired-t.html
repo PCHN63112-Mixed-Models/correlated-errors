@@ -376,6 +376,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling-the-difference">Modelling the <em>Difference</em></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioning-the-error">Partitioning the Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix">Partitioning the Error as a Decomposition of the Variance-covariance Matrix</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explicit-two-sample-t-test-as-a-linear-model">Explicit Two-sample <span class="math notranslate nohighlight">\(t\)</span>-test as a Linear Model</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-does-the-standard-error-come-from">Where Does the Standard Error Come From?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recreating-the-paired-t-test-in-the-linear-model">Recreating the Paired <span class="math notranslate nohighlight">\(t\)</span>-test in the Linear Model</a></li>
@@ -673,6 +674,10 @@ t = \frac{\mu_{1} - \mu_{2}}{\text{SE}\{\mu_{1} - \mu_{2}\}},
 <p>Key Point
 In a regular paired t-test, the error variance consists of the differences between the means of the groups and the raw data. Howevever, when we have repeated measurements, this difference can be further divided into two sources … This is consistent with the idea of the <em>between-subjects variance</em> <span class="math notranslate nohighlight">\(\left(\sigma^{2}_{b}\right)\)</span> and the <em>within-subject variance</em> <span class="math notranslate nohighlight">\(\left(\sigma^{2}_{w}\right)\)</span> … As such, the difference with a <em>paired</em> test is that is uses the <em>within-subject variance</em> exclusively for determining the denominator of the <span class="math notranslate nohighlight">\(t\)</span>-statistic.</p>
 </section>
+<section id="partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix">
+<h3>Partitioning the Error as a Decomposition of the Variance-covariance Matrix<a class="headerlink" href="#partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix" title="Link to this heading">#</a></h3>
+<p>Now, we will connect what we have done above with the idea of modelling the variance-covariance matrix. Rather than doing this <em>explicitly</em>, the method above was an <em>implicit</em> modelling of the covariance structure…</p>
+</section>
 <section id="explicit-two-sample-t-test-as-a-linear-model">
 <h3>Explicit Two-sample <span class="math notranslate nohighlight">\(t\)</span>-test as a Linear Model<a class="headerlink" href="#explicit-two-sample-t-test-as-a-linear-model" title="Link to this heading">#</a></h3>
 <p>To see this, we first start with the familiar case of the <em>two-sample</em> model. We can fit this as an LM within <code class="docutils literal notranslate"><span class="pre">R</span></code> as follows</p>
@@ -873,6 +878,7 @@ In a regular paired t-test, the error variance consists of the differences betwe
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling-the-difference">Modelling the <em>Difference</em></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioning-the-error">Partitioning the Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix">Partitioning the Error as a Decomposition of the Variance-covariance Matrix</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explicit-two-sample-t-test-as-a-linear-model">Explicit Two-sample <span class="math notranslate nohighlight">\(t\)</span>-test as a Linear Model</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-does-the-standard-error-come-from">Where Does the Standard Error Come From?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recreating-the-paired-t-test-in-the-linear-model">Recreating the Paired <span class="math notranslate nohighlight">\(t\)</span>-test in the Linear Model</a></li>
