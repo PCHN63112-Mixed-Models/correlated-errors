@@ -379,7 +379,6 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptualising-multiple-subjects">Conceptualising Multiple Subjects</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-multivariate-wide-view">The Multivariate (<em>Wide</em>) View</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-univariate-long-view">The Univariate (<em>Long</em>) View</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#independent-versus-dependent-data">Independent Versus Dependent Data</a></li>
 </ul>
 </li>
 </ul>
@@ -617,7 +616,7 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 <p>A basic 2-dimensional normal distribution is shown below.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/dec3b29fdc4b4b44c29f0044e9f9736d33d5c46e1258a2481039b7386f6b5048.png" src="_images/dec3b29fdc4b4b44c29f0044e9f9736d33d5c46e1258a2481039b7386f6b5048.png" />
+<img alt="_images/2c4b2c39a7293d1547fe9740641de6eb6fb9e68b5fc029c13cef00f3ca30df0f.png" src="_images/2c4b2c39a7293d1547fe9740641de6eb6fb9e68b5fc029c13cef00f3ca30df0f.png" />
 </div>
 </div>
 <p>Because this is 2-dimensional, it is defined as a probability distribution for the random vector</p>
@@ -629,12 +628,6 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 \end{bmatrix}.
 \]</div>
 <p>Each of the random variables in this vector gets its own axis. So the first horizontal axis represents possible values of <span class="math notranslate nohighlight">\(y_{1}\)</span>, and the second horizontal axis represents possible values of <span class="math notranslate nohighlight">\(y_{2}\)</span>. The density of the distribution then gives the <em>joint-probability</em> of all possible pairs of values for <span class="math notranslate nohighlight">\(y_{1}\)</span> and <span class="math notranslate nohighlight">\(y_{2}\)</span>. Pick any point on the surface and it represents the probability of the points on the <span class="math notranslate nohighlight">\(y_{1}\)</span> axis and the <span class="math notranslate nohighlight">\(y_{2}\)</span> axis <em>occurring together</em>. From this we can see that the <em>most probable</em> joint values are when <span class="math notranslate nohighlight">\(y_{1}\)</span> and <span class="math notranslate nohighlight">\(y_{2}\)</span> are equal to their expected value. In other words, the peak of the distribution occurs at the mean of <span class="math notranslate nohighlight">\(y_{1}\)</span> <em>and</em> the mean of <span class="math notranslate nohighlight">\(y_{2}\)</span>. For any other values, the joint-probability depends upon the variance within each dimension, as well as the covariance.</p>
-<p>We can also view this distribution from the <em>top-down</em> as a heat map, where <em>brighter</em> colours correspond to <em>greater</em> density. This can be a useful perspective once we see how correlation influences the shape of the distribution.</p>
-<div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<img alt="_images/d811a7c5b7964eab7ed7c926709533041163b84f65f549476b472f4938d82425.png" src="_images/d811a7c5b7964eab7ed7c926709533041163b84f65f549476b472f4938d82425.png" />
-</div>
-</div>
 <p>In the example above, the variance-covariance matrix was defined as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -647,16 +640,10 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 <p>In other words, the variance of each dimension was set to be the same and there was <em>no correlation</em>. This creates the perfect symmetry we see in the shape above. Now, let us see what happens when there <em>is</em> correlation. If we keep everything else the same but set <span class="math notranslate nohighlight">\(\rho = 0.8\)</span>, we get the distribution shown below.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/871d30651e863c0bda159445c5e4e12875cfc2404a39508f2dc45914c7fcc0ae.png" src="_images/871d30651e863c0bda159445c5e4e12875cfc2404a39508f2dc45914c7fcc0ae.png" />
+<img alt="_images/0a4f1e139aa68a91084920f167dfbe8131ae2008e487f03d75adc706f2d4dd97.png" src="_images/0a4f1e139aa68a91084920f167dfbe8131ae2008e487f03d75adc706f2d4dd97.png" />
 </div>
 </div>
-<p>As we can see, correlation has created a “shark fin” shape in the probability density. This is clearest when we see the top-down density plot.</p>
-<div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<img alt="_images/21079e76788e3750af6568237509e8798b68bbd4e8d4d7121126d03aa70b9495.png" src="_images/21079e76788e3750af6568237509e8798b68bbd4e8d4d7121126d03aa70b9495.png" />
-</div>
-</div>
-<p>To see more clearly how this shape connects with the idea of correlation, we will see how the probability distribution of <span class="math notranslate nohighlight">\(y_{2}\)</span> changes for a given value of <span class="math notranslate nohighlight">\(y_{1}\)</span>. The plots below show a rotated view of the multivariate normal where we are focussing on the <span class="math notranslate nohighlight">\(y_{2}\)</span>-axis. The <em>left</em> column shows no correlation (<span class="math notranslate nohighlight">\(\rho=0\)</span>) and the <em>right</em> column shows a strong correlation (<span class="math notranslate nohighlight">\(\rho=0.8\)</span>). The distribution of <span class="math notranslate nohighlight">\(y_{2}\)</span> when <span class="math notranslate nohighlight">\(y_{1}\)</span> is fixed to a certain value is superimposed in blue. This is a <em>slice</em> through the multivariate normal. The <em>top</em> row shows <span class="math notranslate nohighlight">\(P(y_{2}|y_{1}=-1)\)</span> and the <em>bottom</em> row shows <span class="math notranslate nohighlight">\(P(y_{2}|y_{1}=1)\)</span>. Take a moment to study these so you are clear what they are showing.</p>
+<p>As we can see, correlation has created a “shark fin” shape in the probability density. To see how this connects with the idea of correlation, we will see how the probability distribution of <span class="math notranslate nohighlight">\(y_{2}\)</span> changes for a given value of <span class="math notranslate nohighlight">\(y_{1}\)</span>. The plots below show a rotated view of the multivariate normal where we are focussing on the <span class="math notranslate nohighlight">\(y_{2}\)</span>-axis. The <em>left</em> column shows no correlation (<span class="math notranslate nohighlight">\(\rho=0\)</span>) and the <em>right</em> column shows a strong correlation (<span class="math notranslate nohighlight">\(\rho=0.8\)</span>). The distribution of <span class="math notranslate nohighlight">\(y_{2}\)</span> when <span class="math notranslate nohighlight">\(y_{1}\)</span> is fixed to a certain value is superimposed in blue. This is a <em>slice</em> through the multivariate normal. The <em>top</em> row shows <span class="math notranslate nohighlight">\(P(y_{2}|y_{1}=-1)\)</span> and the <em>bottom</em> row shows <span class="math notranslate nohighlight">\(P(y_{2}|y_{1}=1)\)</span>. Take a moment to study these so you are clear what they are showing.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <img alt="_images/ef55936d1dd76bf7e1140ffd0f2b19206f933229e5f8c2ceb353b8e04ca4cd7f.png" src="_images/ef55936d1dd76bf7e1140ffd0f2b19206f933229e5f8c2ceb353b8e04ca4cd7f.png" />
@@ -669,8 +656,12 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 <p>We have now seen how we can think about correlated values of our outcome as draws from a multivariate normal distribution with a given variance-covariance matrix. However, we have only be thinking about <em>one</em> subject so far. To complete this picture, we need to think about how we conceptualise <em>multiple</em> subjects. This is important because there are two entirely equivalent ways to do this that map on to two different data structures that you may come across: <em>wide</em>-formatted data and <em>long</em>-formatted data.</p>
 <section id="the-multivariate-wide-view">
 <h3>The Multivariate (<em>Wide</em>) View<a class="headerlink" href="#the-multivariate-wide-view" title="Link to this heading">#</a></h3>
-<p>… This is associated with <em>wide-formatted</em> data.</p>
-<p>We can repeat this again for <em>multiple</em> subjects to see the full conceptualisation of this experiment. If we had <span class="math notranslate nohighlight">\(n=15\)</span> then we can simulate our simple repeated measurements experiment using</p>
+<p>Starting with out existing conceptualisation of a subject as a <em>row</em>-vector drawn from a multivariate normal, the natural extension is to add more rows for each additional subject. This corresponds to a <em>matrix</em> of values, where each row is an independent draw from a multivariate normal distribution. Indeed, this is exactly what is implied by the notation</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{y}_{i} \sim\mathcal{N}\left(\boldsymbol{\mu},\boldsymbol{\Sigma}\right), 
+\]</div>
+<p>because <span class="math notranslate nohighlight">\(i\)</span> indexes each <em>row</em> of the outcome variable. This therefore implies that <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> as a whole (with no subscript) is a <em>matrix</em>. To see this in <code class="docutils literal notranslate"><span class="pre">R</span></code>, we can set the value of <code class="docutils literal notranslate"><span class="pre">n=</span></code> in the call to <code class="docutils literal notranslate"><span class="pre">mvrnorm()</span></code> to our total sample size and we will get back a matrix of responses. Each row represents a subject and each column represents a separate repeated measurement. This may be familiar to you as <em>wide-formatted</em> data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">set.seed</span><span class="p">(</span><span class="m">777</span><span class="p">)</span>
@@ -700,7 +691,7 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 </div>
 </div>
 </div>
-<p>So, now we have 15 measurements from condition 1 and 15 measurements from conditon 2. These are arranged per-subject, so the first row is the two measurements from subject 1, the second row is the two measurments from subject 2 and so on. Importantly, the two columns are <em>correlated</em>, which we can see using</p>
+<p>As expected, the two columns are <em>correlated</em>, which we can see using</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">print</span><span class="p">(</span><span class="nf">cor</span><span class="p">(</span><span class="n">y</span><span class="p">[,</span><span class="m">1</span><span class="p">],</span><span class="n">y</span><span class="p">[,</span><span class="m">2</span><span class="p">]))</span>
@@ -713,11 +704,12 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 </div>
 </div>
 </div>
-<p>which, as we can see, is not too far off the value of <span class="math notranslate nohighlight">\(\rho\)</span> we used for the simulations. Obviously, the more data we have the more precise this estimate of the correlation would be and the closer to the true value it would become.</p>
+<p>which is not too far off the value of <span class="math notranslate nohighlight">\(\rho=0.8\)</span> that we used for the simulations. The more data we have the more precise this estimate of the correlation would be and the closer to the true value it would become.</p>
 </section>
 <section id="the-univariate-long-view">
 <h3>The Univariate (<em>Long</em>) View<a class="headerlink" href="#the-univariate-long-view" title="Link to this heading">#</a></h3>
-<p>… The way to see this is to recognise that it does not matter whether we conceptualise each subject as a <em>row</em> or <em>column</em> vector, the probability model remains the same. So, the following two expressions are entirely equivalent</p>
+<p>As an alternative, we can also view our outcome as a <em>single column-vector</em> of measurements, rather than a matrix. This is important because all the linear models we have seen thus far are <em>univariate</em>, as they only have a single outcome variable. If we want to analyse repeated measurements within this framework, we need to organise our data in a univariate fashion<a class="footnote-reference brackets" href="#multivar-foot" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. This means we have to stack subjects as <em>one column</em>. So, there is nothing in the structure of the outcome variable that indicates where the independent measurements are and where the dependent measurements are. This may seem a step backwards, and it does bring additional complication. However, there are advantages here. For instance, if there are <em>missing values</em> across repeats, they can simply be omitted in the univariate format. However, a matrix cannot have empty entries, which would force us to either impute some value or to abandon the data entirely<a class="footnote-reference brackets" href="#missing-foot" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
+<p>Importantly, the organisation of the data makes no difference to the <em>probability model</em>, only to the geometry and mechanics of the model we fit to the data. To see this, we need to recognise that it does not matter whether we conceptualise each subject as a <em>row</em> or <em>column</em> vector. Either way, the probability model remains the same. So, the following expression for a single subject</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{bmatrix}
@@ -728,11 +720,12 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
     \mu_{1} &amp; \mu_{2}
 \end{bmatrix}, 
 \begin{bmatrix}
-    \sigma^{2}_{1} &amp; \sigma_{12}  \\
-    \sigma_{21}    &amp; \sigma^{2}_{2}
+    \sigma^{2}  &amp; \sigma_{12} \\
+    \sigma_{21} &amp; \sigma^{2}
 \end{bmatrix}
-\right)
+\right),
 \end{split}\]</div>
+<p>is entirely equivalent to</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{bmatrix}
@@ -745,42 +738,59 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
     \mu_{2}
 \end{bmatrix}, 
 \begin{bmatrix}
-    \sigma^{2}_{1} &amp; \sigma_{12}  \\
-    \sigma_{21}    &amp; \sigma^{2}_{2}
+    \sigma^{2}  &amp; \sigma_{12}  \\
+    \sigma_{21} &amp; \sigma^{2}
 \end{bmatrix}
-\right)
+\right).
 \end{split}\]</div>
-<p>If we take the <em>second</em> perspective of each subject being a <em>column-vector</em>, we can now <em>stack</em> the subjects to produce a single outcome variable, suitable for use in our linear model framework.</p>
-<p>… This is associated with <em>long-formatted</em> data.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{bmatrix}
-    y_{11} \\
-    y_{12} \\
-    y_{21} \\
-    y_{22} \\
-\end{bmatrix}
-\sim\mathcal{N}\left(
-\begin{bmatrix}
-    \mu_{1} \\
-    \mu_{2} \\
-    \mu_{1} \\
-    \mu_{2} \\
-\end{bmatrix}, 
-\begin{bmatrix}
-    \sigma^{2}_{1} &amp; \sigma_{12}    &amp; 0              &amp; 0               \\
-    \sigma_{21}    &amp; \sigma^{2}_{2} &amp; 0              &amp; 0               \\
-    0              &amp; 0              &amp; \sigma^{2}_{1} &amp; \sigma_{12}     \\
-    0              &amp; 0              &amp; \sigma_{21}    &amp; \sigma^{2}_{2}  \\
-\end{bmatrix}
-\right)
-\end{split}\]</div>
-<p>This is a 6-dimensional normal distribution, so we would struggly to visualise this in any meaningful way. However, as mentioned last semester, dimensions are just a mathematical tool for keeping track of information. We do not <em>have</em> to be able to visualise them in order for this to be useful or make sense. The more important element here is the <em>structure</em>.</p>
-<p>As we can see, each subject is given by the <em>first</em> index of <span class="math notranslate nohighlight">\(y\)</span>. So, we have two measurements from subject 1, two measurements from subject 2 and two measurements from subject 3. We conceptualise this dataset as a single draw from a 6-dimensional normal distribution. The mean vector tells us that the population means for each condition are identical across subjects, so our interest is estimating <span class="math notranslate nohighlight">\(\mu_{1}\)</span> and <span class="math notranslate nohighlight">\(\mu_{2}\)</span>. If the data came from 6 different subjects, this would be no different from assuming <span class="math notranslate nohighlight">\(y_{i1} \sim \mathcal{N}(\mu_{1}, \sigma^{2}_{1})\)</span> and <span class="math notranslate nohighlight">\(y_{i2} \sim \mathcal{N}(\mu_{2}, \sigma^{2}_{2})\)</span>. However, because these are <em>repeated measurements</em>, the important aspect here is the correlation structure embedded in the <em>variance-covariance</em> matrix. This has a <em>block-diagonal</em> structure, which implies that there is <em>no correlation</em> between measurements from <em>different</em> subjects. This seems fair, as it is usually unlikely that separate subjects would affect each other. However, <em>within</em> each subject we assume a separate variance for each condition (<span class="math notranslate nohighlight">\(\sigma^{2}_{1}\)</span>, <span class="math notranslate nohighlight">\(\sigma^{2}_{2}\)</span>) and some <em>non-zero</em> covariance (<span class="math notranslate nohighlight">\(\sigma_{12} = \sigma_{21}\)</span>) that captures how correlated the responses are from an individual subject.</p>
-</section>
-<section id="independent-versus-dependent-data">
-<h3>Independent Versus Dependent Data<a class="headerlink" href="#independent-versus-dependent-data" title="Link to this heading">#</a></h3>
-<p>… Hopefully it is now clear that the core difference between repeated measurements data and independent measurements data is the form that <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> takes. Ignoring the idea that the two experimental conditions can have different variances (because we know this is an additional and somewhat unrelated complication), under repeated measurements the model for 3 subjects would be</p>
+<p>If we take the <em>second</em> perspective of each subject being a <em>column-vector</em>, we can now <em>stack</em> the subjects to produce a single outcome variable, suitable for use in our linear model framework. We can see an example of this below in <code class="docutils literal notranslate"><span class="pre">R</span></code>. This takes a little more work because the default output from <code class="docutils literal notranslate"><span class="pre">mvrnorm()</span></code> is <em>wide</em>-formatted data. Do not worry too much about the way this is converted, the point is that the numbers and their origin do not change between these approaches. The only difference is the way the data are organised. This may be familiar to you as <em>long-formatted</em> data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">set.seed</span><span class="p">(</span><span class="m">777</span><span class="p">)</span>
+<span class="n">y</span><span class="w">      </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">15</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="n">Mu</span><span class="p">,</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma</span><span class="p">)</span>
+<span class="n">y.vec</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="n">y.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.matrix</span><span class="p">(</span><span class="n">y.vec</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">30</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">y.long</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           [,1]
+ [1,] 2.1571710
+ [2,] 3.7721330
+ [3,] 1.3168746
+ [4,] 2.9269463
+ [5,] 2.6566917
+ [6,] 3.3125521
+ [7,] 1.4093942
+ [8,] 2.8339131
+ [9,] 3.3962213
+[10,] 4.7129669
+[11,] 3.2315357
+[12,] 2.9472488
+[13,] 2.1202807
+[14,] 3.2643236
+[15,] 3.2996450
+[16,] 3.8044165
+[17,] 1.4016128
+[18,] 3.2071032
+[19,] 1.1858382
+[20,] 3.0951262
+[21,] 1.5763201
+[22,] 2.8463840
+[23,] 2.6030285
+[24,] 2.4997373
+[25,] 0.2235982
+[26,] 1.2075869
+[27,] 2.4386245
+[28,] 2.4973271
+[29,] 4.3641379
+[30,] 5.0216151
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we do this, we can then conceptualise the <em>whole</em> outcome variable across <em>all</em> subjects as a draw from a multivariate normal distribution. For instance, if we had 3 subjects each with 2 repeated measurements then the outcome vector would contain 6 values. The mean vector would contain 6 expected values and the variance-covariance matrix would be <span class="math notranslate nohighlight">\(6 \times 6\)</span>. Importantly, this covariance structure would model non-zero covariance <em>within</em> each subject, but would encode zero covariance between the subjects, given that they are treated as independent. This type of structure is known as a <em>block diagonal</em> matrix and would be written as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{bmatrix}
@@ -808,9 +818,10 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
     0           &amp; 0           &amp; 0           &amp; 0           &amp; \sigma^{2}  &amp; \sigma_{12} \\
     0           &amp; 0           &amp; 0           &amp; 0           &amp; \sigma_{21} &amp; \sigma^{2}  \\
 \end{bmatrix}
-\right).
+\right)
 \end{split}\]</div>
-<p>If instead, the two experimental conditions were from an <em>independent</em> measure experiment, the model for 6 subjects would be</p>
+<p>This is a 6-dimensional normal distribution, so we would struggle to visualise this in any meaningful way. However, dimensions are just a mathematical tool for keeping track of information. We do not <em>have</em> to be able to visualise them in order for it to be meaningful. The more important element here is the <em>structure</em>. In particular, there is nothing about the structure of the outcome vector <em>or</em> the mean vector that encodes the organisation of the data within and between subjects. This could just be 6 independent measurements taken from two separate experimental conditions. The key is recognising that the structure of the data as repeated measurements is entirely encoded by the variance-covariance matrix.</p>
+<p>Just to drive this point home, an equivalent dataset of <em>independent</em> measurements would have the form</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{bmatrix}
@@ -840,7 +851,23 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 \end{bmatrix}
 \right).
 \end{split}\]</div>
-<p>So notice that the core difference here is the structure of the variance-covariance matrix. When there is dependence, we need some non-zero covariance value to capture the <em>correlation</em> between the repeated-measurements on each subject. When we simulated dependent and independent data in the previous part of the lesson, we saw that the presence of correlation directly impacted the standard errors of the estimates. Importantly, if we <em>do not</em> include correlation as a part of our model, we will get the estimated standard errors <em>wrong</em>. This then has a direct impact on inference, both in terms of NHST but also in terms of assessing <em>uncertainty</em> using confidence intervals. In short, if we do not include correlation somehow, our inference will be <em>wrong</em>.</p>
+<p>Because there is no dependency between these measurements, they can simply be treated as individual draws from a univariate distribution of the form</p>
+<div class="math notranslate nohighlight">
+\[
+y_{ij} \sim \mathcal{N}\left(\mu_{j},\sigma^{2}\right),
+\]</div>
+<p>which is <em>exactly</em> the probability model we were working with last semester. The key focus of our statistical model for repeated measurements is therefore the structure of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>. It has nothing to do with the parameter estimates that form the mean function. According to the models above, this will be <em>identical</em> whether we have repeated measurements or not. We already know this because our simulations from the previous part of the lesson showed that correlation directly impacted the <em>standard errors</em>, rather than the estimates themselves. As such, if the covariance structure does <em>not</em> include correlation, we will get the estimated standard errors <em>wrong</em>. This then has a direct impact on inference, both in terms of NHST but also in terms of assessing <em>uncertainty</em> using confidence intervals. As such, the fundamental difference between the models we discussed last semester and methods for repeated measurements is <em>precisely</em> the accommodation of correlation via a more complex covariance structure.</p>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="multivar-foot" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>There are multivariate versions of the linear model where the outcome is treated as a <em>matrix</em> rather than a <em>vector</em>. Indeed, these can be used for repeated measurements and do have some advantages. However, they are beyond the scope of this unit. <a class="reference external" href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781118391686">Methods of Multivariate Analysis</a> by Rencher and Christensen is an excellent exposition on this topic, if you want to know more.</p>
+</aside>
+<aside class="footnote brackets" id="missing-foot" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>You might think we can just add a 0 wherever data is missing. However, 0 still carries meaning and will bias the parameter estimates towards it. If this value is unusual, it may cause high leverage or it could end up being an outlier. Rather than representing <em>nothing</em>, we are actually making a very <em>strong</em> claim about the real value of this data point. You might think the <em>mean</em> is a better choice, but this actually carries similar issues and makes the mean appear more certain than it is. Ultimately, every method of imputation is questionable on the grounds that you are claiming to know what that data would have been, had it been collected.</p>
+</aside>
+</aside>
 </section>
 </section>
 </section>
@@ -920,7 +947,6 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptualising-multiple-subjects">Conceptualising Multiple Subjects</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-multivariate-wide-view">The Multivariate (<em>Wide</em>) View</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-univariate-long-view">The Univariate (<em>Long</em>) View</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#independent-versus-dependent-data">Independent Versus Dependent Data</a></li>
 </ul>
 </li>
 </ul>
