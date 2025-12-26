@@ -462,7 +462,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/41bdf115c23fdeac5d8b2e10295abcb061da8c8c9d34b20c2f16054f0ea429b3.png" src="_images/41bdf115c23fdeac5d8b2e10295abcb061da8c8c9d34b20c2f16054f0ea429b3.png" />
+<img alt="_images/b746e74d386d958a87b0d5371a3b5efc062e2c92d52ce812e83b4e9bd2612d17.png" src="_images/b746e74d386d958a87b0d5371a3b5efc062e2c92d52ce812e83b4e9bd2612d17.png" />
 </div>
 </div>
 <p>Although somewhat subtle, notice that there appears to be a relationship between time-points, particularly those that are close (such as <code class="docutils literal notranslate"><span class="pre">t2</span></code> and <code class="docutils literal notranslate"><span class="pre">t3</span></code>). Let us calculate the correlation</p>
@@ -512,19 +512,37 @@ t3  0.360602 -0.5230331  1.0000000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">Error</span>:
-
-
-
-<span class="o">!</span><span class="w"> </span>object<span class="w"> </span><span class="s1">&#39;selfesteem&#39;</span><span class="w"> </span>not<span class="w"> </span>found
-
-
-
-    <span class="err">▆</span>
-
-
-
-<span class="g g-Whitespace"> </span><span class="mi">1</span><span class="o">.</span> <span class="err">└─</span><span class="n">reshape2</span><span class="p">::</span><span class="n">melt</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   id time selfesteem
+1   1   t1   4.005027
+2   1   t2   5.182286
+3   1   t3   7.107831
+4   2   t1   2.558124
+5   2   t2   6.912915
+6   2   t3   6.308434
+7   3   t1   3.244241
+8   3   t2   4.443434
+9   3   t3   9.778410
+10  4   t1   3.419538
+11  4   t2   4.711696
+12  4   t3   8.347124
+13  5   t1   2.871243
+14  5   t2   3.908429
+15  5   t3   6.457287
+16  6   t1   2.045868
+17  6   t2   5.340549
+18  6   t3   6.653224
+19  7   t1   3.525992
+20  7   t2   5.580695
+21  7   t3   6.840157
+22  8   t1   3.179425
+23  8   t2   4.370234
+24  8   t3   7.818623
+25  9   t1   3.507964
+26  9   t2   4.399808
+27  9   t3   8.471229
+28 10   t1   3.043798
+29 10   t2   4.489376
+30 10   t3   8.581100
 </pre></div>
 </div>
 </div>
@@ -609,6 +627,13 @@ t3  0.360602 -0.5230331  1.0000000
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="err">`</span><span class="n">mvrnorm</span><span class="p">()</span><span class="err">`</span><span class="p">:</span>
+
+<span class="o">!</span><span class="w"> </span>could<span class="w"> </span>not<span class="w"> </span>find<span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="s2">&quot;mvrnorm&quot;</span>
+</pre></div>
+</div>
+</div>
 </div>
 <p>In both cases, we conceptualise the columns of <code class="docutils literal notranslate"><span class="pre">y.dep</span></code> and <code class="docutils literal notranslate"><span class="pre">y.ind</span></code> as two different conditions of an experiment. As such, our interest lies in the <em>difference</em> between the columns. As a final step, we subtract the columns and then compare the distributions of differences.</p>
 <div class="cell docutils container">
@@ -624,6 +649,46 @@ t3  0.360602 -0.5230331  1.0000000
 </div>
 <p>Notice that the distribution of repeated measurement differences is much <em>narrower</em> than the distribution of independent differences. This is the theory in action. … This is why there is a <em>power</em> advantage to repeated measurements. … The variability of the difference is much smaller because the conditions are going to be <em>more similar</em> when they are correlated. As such, we do not expect wild differences between them. The two conditions should generally be very similar and thus their difference should be consistently smaller than in the independent case, where much larger differences are possible.</p>
 <p>We can see how this will affect the <span class="math notranslate nohighlight">\(t\)</span>-statistic by calculating</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">MASS</span><span class="p">)</span>
+
+<span class="n">n.sims</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1000</span>
+<span class="n">mu.1</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">5</span><span class="w">      </span>
+<span class="n">mu.2</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">8</span>
+<span class="n">var</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span>
+<span class="n">cor</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.8</span>
+<span class="n">cov</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cor</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+
+<span class="n">Mu</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">mu.1</span><span class="p">,</span><span class="n">mu.2</span><span class="p">)</span>
+<span class="n">Sigma</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="n">cov</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">cov</span><span class="p">,</span><span class="n">var</span><span class="p">),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
+<span class="n">mean.diff.sim</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="n">n.sims</span><span class="p">)</span>
+<span class="nf">for </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="n">n.sims</span><span class="p">){</span>
+<span class="w">  </span><span class="n">y.sim</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">100</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="n">Mu</span><span class="p">,</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma</span><span class="p">)</span>
+<span class="w">  </span><span class="n">mean.diff.sim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">y.sim</span><span class="p">[,</span><span class="m">1</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">y.sim</span><span class="p">[,</span><span class="m">2</span><span class="p">])</span>
+<span class="p">}</span>
+
+<span class="nf">par</span><span class="p">(</span><span class="n">mfrow</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+<span class="nf">hist</span><span class="p">(</span><span class="n">mean.diff.sim</span><span class="p">,</span><span class="w"> </span><span class="n">probability</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-3.5</span><span class="p">,</span><span class="m">-2.5</span><span class="p">))</span>
+<span class="nf">curve</span><span class="p">(</span><span class="nf">dnorm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">mean</span><span class="o">=</span><span class="n">mu.1</span><span class="o">-</span><span class="n">mu.2</span><span class="p">,</span><span class="w"> </span><span class="n">sd</span><span class="o">=</span><span class="nf">sd</span><span class="p">(</span><span class="n">mean.diff.sim</span><span class="p">)),</span><span class="w"> </span>
+<span class="w">      </span><span class="n">col</span><span class="o">=</span><span class="s">&quot;darkblue&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">lwd</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">add</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="n">Mu</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">mu.1</span><span class="p">,</span><span class="n">mu.2</span><span class="p">)</span>
+<span class="n">Sigma</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="m">0</span><span class="p">,</span>
+<span class="w">                  </span><span class="m">0</span><span class="p">,</span><span class="n">var</span><span class="p">),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
+<span class="n">mean.diff.sim</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="n">n.sims</span><span class="p">)</span>
+<span class="nf">for </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="n">n.sims</span><span class="p">){</span>
+<span class="w">  </span><span class="n">y.sim</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">100</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="n">Mu</span><span class="p">,</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma</span><span class="p">)</span>
+<span class="w">  </span><span class="n">mean.diff.sim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">y.sim</span><span class="p">[,</span><span class="m">1</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">y.sim</span><span class="p">[,</span><span class="m">2</span><span class="p">])</span>
+<span class="p">}</span>
+<span class="nf">hist</span><span class="p">(</span><span class="n">mean.diff.sim</span><span class="p">,</span><span class="w"> </span><span class="n">probability</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-3.5</span><span class="p">,</span><span class="m">-2.5</span><span class="p">))</span>
+<span class="nf">curve</span><span class="p">(</span><span class="nf">dnorm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">mean</span><span class="o">=</span><span class="n">mu.1</span><span class="o">-</span><span class="n">mu.2</span><span class="p">,</span><span class="w"> </span><span class="n">sd</span><span class="o">=</span><span class="nf">sd</span><span class="p">(</span><span class="n">mean.diff.sim</span><span class="p">)),</span><span class="w"> </span>
+<span class="w">      </span><span class="n">col</span><span class="o">=</span><span class="s">&quot;darkred&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">lwd</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">add</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="subject-foot" role="note">
