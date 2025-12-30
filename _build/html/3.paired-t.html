@@ -620,25 +620,25 @@ mean difference
 </section>
 <section id="removing-the-effect-of-the-subjects">
 <h3>Removing the Effect of the Subjects<a class="headerlink" href="#removing-the-effect-of-the-subjects" title="Link to this heading">#</a></h3>
-<p>Given what we have demonstrated above, the key insight is that taking <span class="math notranslate nohighlight">\(D_{i} = y_{i1} - y_{i2}\)</span> allows us to treat the values of <span class="math notranslate nohighlight">\(D_{i}\)</span> as <em>independent</em>. Effectively, the element that makes repeated measurements difficult has been <em>removed</em> via this subtraction. Given that we know that <em>correlation</em> is the issue, taking <span class="math notranslate nohighlight">\(D_{i} = y_{i1} - y_{i2}\)</span> <em>must</em> be removing the correlation from the data. This is fairly intuitive because we have reduced correlated pairs of data down to only a single value per-subject. Given that the subjects are taken as independent, the values of <span class="math notranslate nohighlight">\(D_{i}\)</span> must also be independent. In effect, there are <em>no</em> repeated measurements anymore. However, expressing this formally is a useful stepping-stone to more general methods, particularly when we have more than two repeated measurements.</p>
-<p>To see what is happening, let us <em>add</em> a shared component to the model of <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span>. We will call this <span class="math notranslate nohighlight">\(S_{i}\)</span></p>
+<p>Given what we have demonstrated above, the key insight is that taking <span class="math notranslate nohighlight">\(y_{i\Delta} = y_{i1} - y_{i2}\)</span> allows us to treat the values of <span class="math notranslate nohighlight">\(y_{i\Delta}\)</span> as <em>independent</em>. Effectively, the element that makes repeated measurements difficult has been <em>removed</em> via this subtraction. Given that we know that <em>correlation</em> is the issue, taking <span class="math notranslate nohighlight">\(y_{i\Delta} = y_{i1} - y_{i2}\)</span> <em>must</em> be removing the correlation from the data. This is fairly intuitive because we have reduced correlated pairs of data down to only a single value per-subject. Given that the subjects are taken as independent, the values of <span class="math notranslate nohighlight">\(y_{i\Delta}\)</span> must also be independent. In effect, there are <em>no</em> repeated measurements anymore. However, expressing this formally is a useful stepping-stone to more general methods.</p>
+<p>To see what is happening, let us return to our basic <span class="math notranslate nohighlight">\(t\)</span>-test model from last semester where we parameterise each group mean in terms of the grand mean plus a group-specific deflection. The mean for the first repeated measurement is therefore <span class="math notranslate nohighlight">\(\mu_{1} = \mu + \alpha_{1}\)</span> and the mean for the second repeated measurement is <span class="math notranslate nohighlight">\(\mu_{2} = \mu + \alpha_{2}\)</span>. To capture the concept of <em>dependence</em> between these repeats, we add a <em>shared component</em> called <span class="math notranslate nohighlight">\(S_{i}\)</span>. For the two repeated measurements, the model is therefore</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{alignat*}{1}
-    y_{i1} &amp;= \mu_{1} + S_{i} + \epsilon_{i1} \\
-    y_{i2} &amp;= \mu_{2} + S_{i} + \epsilon_{i2} 
+    y_{i1} &amp;= \mu + \alpha_{1} + S_{i} + \epsilon_{i1} \\
+    y_{i2} &amp;= \mu + \alpha_{2} + S_{i} + \epsilon_{i2} 
 \end{alignat*}.
 \end{split}\]</div>
-<p>So, the reason why <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span> are correlated is because they <em>share</em> the same component <span class="math notranslate nohighlight">\(S_{i}\)</span>. This captures the idea that these measurements come from the same <em>subject</em>. If we then <em>subtract</em> <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span>, the term <span class="math notranslate nohighlight">\(S_{i}\)</span> will cancel-out</p>
+<p>So, the reason why <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span> are correlated is because they <em>share</em> the same component <span class="math notranslate nohighlight">\(S_{i}\)</span>. This captures the idea that these measurements come from the <em>same subject</em>. If we then <em>subtract</em> <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span>, the term <span class="math notranslate nohighlight">\(S_{i}\)</span> will cancel-out<a class="footnote-reference brackets" href="#intercept-foot" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{alignat*}{1}
-    D_{i} = y_{i1} - y_{i2} &amp;= (\mu_{1} - \mu_{2}) + (S_{i} - S_{i}) + (\epsilon_{i1} - \epsilon_{i2}) \\
-                            &amp;= (\mu_{1} - \mu_{2}) + (\epsilon_{i1} - \epsilon_{i2})
+    y_{i\Delta} = y_{i1} - y_{i2} &amp;= (\mu - \mu) + (\alpha_{1} - \alpha_{2}) + (S_{i} - S_{i}) + (\epsilon_{i1} - \epsilon_{i2}) \\
+                                  &amp;= (\mu_{1} - \mu_{2}) + (\epsilon_{i1} - \epsilon_{i2})
 \end{alignat*}.
 \end{split}\]</div>
 <p>So, this tells us that <span class="math notranslate nohighlight">\(S_{i}\)</span> precisely captures the <em>correlation</em>, because removing it renders the data <em>independent</em>.</p>
-<p>We can also visualise what is happening, to gain further intuition. The plot below shows each mouse along the <span class="math notranslate nohighlight">\(x\)</span>-axis, with their weight along the <span class="math notranslate nohighlight">\(y\)</span>-axis. The two treatments are shown for each mouse as two different coloured points.</p>
+<p>We can also visualise what is happening here, to gain further intuition. The plot below shows each mouse along the <span class="math notranslate nohighlight">\(x\)</span>-axis, with their weight along the <span class="math notranslate nohighlight">\(y\)</span>-axis. The two treatments are shown for each mouse as two different coloured points and the grand mean is shown as a solid black line</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <img alt="_images/0494806ab5e0a22b25a4f73660817c78d68e0782bac6a59a3ab3f703385a2684.png" src="_images/0494806ab5e0a22b25a4f73660817c78d68e0782bac6a59a3ab3f703385a2684.png" />
@@ -647,36 +647,116 @@ mean difference
 <p>According to the model</p>
 <div class="math notranslate nohighlight">
 \[
-y_{ij} = \mu_{j} + S_{i} + \epsilon_{ij}
+y_{ij} = \mu + \alpha_{j} + S_{i} + \epsilon_{ij}
 \]</div>
-<p>there are <em>three</em> sources of variance in these data. The first is variation associated with the two treatments (the <span class="math notranslate nohighlight">\(\mu_{j}\)</span> terms), the second is variation associated with the different subjects (the <span class="math notranslate nohighlight">\(S_{i}\)</span> terms) and the third is random error unrelated to anything else (the <span class="math notranslate nohighlight">\(\epsilon_{ij}\)</span> terms). These are taken as three separate explanations for why the data shown above deviates from the <em>grand mean</em> (the solid horizontal line).</p>
-<p>In order to understand this in more detail, and how it relates to repeated measurements, we can <em>remove</em> each source of variance from the data and then see what the plot looks like. Starting with the two treatments, if we remove the mean of each treatment from each data point we get the following</p>
+<p>there are <em>three</em> sources of variance that explain why the data deflects from the grand mean. The first is variation associated with the two treatments (the <span class="math notranslate nohighlight">\(\alpha_{j}\)</span> terms), the second is variation associated with the different subjects (the <span class="math notranslate nohighlight">\(S_{i}\)</span> terms) and the third is random error unrelated to anything else (the <span class="math notranslate nohighlight">\(\epsilon_{ij}\)</span> terms).</p>
+<p>In order to understand this in more detail, and how it relates to repeated measurements, we can <em>remove</em> each source of variance from the data and then see what the plot looks like. Starting with the two treatments, if we remove the treatment effects from the data (the <span class="math notranslate nohighlight">\(\alpha_{j}\)</span>) we get the following</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/4f679507b7f8691252f48ad240caa35843d0957629fd89a2568c6f32e9397b96.png" src="_images/4f679507b7f8691252f48ad240caa35843d0957629fd89a2568c6f32e9397b96.png" />
+<img alt="_images/3b3ef361e84f17bc82826cd514ee9f99d48b20404e8e5228bdf9622a9791e600.png" src="_images/3b3ef361e84f17bc82826cd514ee9f99d48b20404e8e5228bdf9622a9791e600.png" />
 </div>
 </div>
-<p>So, after removing the treatment effects, we should be left with pure <em>error</em>. In other words, the plot above shows all the reasons why the data do not adhere to the means of each treatment. Going back to our model, this shows</p>
+<p>Now, after removing the <em>predictable</em> element of the variance, we should be left with only the <em>unpredictable</em> element in terms of pure error. In other words, the plot above shows all the reasons, <em>other</em> than the two experimental conditions, why the data do not adhere to the grand mean. Going back to our model, this shows</p>
 <div class="math notranslate nohighlight">
 \[
-y_{ij} - \mu_{j} = S_{i} + \epsilon_{ij}.
+y_{ij} - \alpha_{j} = \mu + S_{i} + \epsilon_{ij}.
 \]</div>
-<p>So, there are two sources to this error. One relates to the fact that the data come from different subjects and the other is just random noise. Of interest is that the <em>correlation</em> induced by the repeated measurements can be seen above. Notice how the data from each subject is closely linked. For instance, both measurements for mouse 6 are close together and are both <em>above</em> the mean of 0. Similarly, both measurements for mouse 8 are close together and are both <em>below</em> the mean of 0. This implies that each mouse has a unique <em>constant offset</em> that moves their measurements above or below this line <em>together</em>. The fact that this offset moves the measurements <em>together</em> explains why the repeated measurements are <em>correlated</em>. In principle, if we remove this offset we remove the correlation. So, let us see what happens if we remove the constant offset given by <span class="math notranslate nohighlight">\(S_{i}\)</span>. We do this be removing the <em>mean of each subject</em> from the data. This gives</p>
+<p>So, there are two sources to this error. One relates to the fact that the data come from different subjects and the other is just random noise. Of interest is that the <em>correlation</em> induced by the repeated measurements can be seen above. Notice how the data from each subject is closely linked. For instance, both measurements for mouse 6 are close together and are both <em>above</em> the grand mean. Similarly, both measurements for mouse 8 are close together and are both <em>below</em> the grand mean. This implies that each mouse has a unique <em>constant offset</em> that moves their measurements above or below the grand mean <em>as a pair</em>. The fact that this offset moves the measurements <em>together</em> explains why the repeated measurements are <em>correlated</em>. In principle, if we remove this offset we remove the correlation. So, let us see what happens if we remove the constant offset given by <span class="math notranslate nohighlight">\(S_{i}\)</span>. This gives</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/5e01e5a31efdcf5b95e45db8f9be1ec4ffba44b74e6294db689fbafc37208093.png" src="_images/5e01e5a31efdcf5b95e45db8f9be1ec4ffba44b74e6294db689fbafc37208093.png" />
+<img alt="_images/bd980ff3c7139dd7a6d8da67cdddfb582c2448e55e2c5371ffc0e65e331d887f.png" src="_images/bd980ff3c7139dd7a6d8da67cdddfb582c2448e55e2c5371ffc0e65e331d887f.png" />
 </div>
 </div>
 <p>Now we can see that the constant offset that moves each subject in different directions from the grand mean has been removed. Each subject is now <em>on an equal footing</em>. Mouse 6 is no longer far above the grand mean, nor is Mouse 8 far below the grand mean. Going back to our model, this shows</p>
 <div class="math notranslate nohighlight">
 \[
-y_{ij} - \mu_{j} - S_{i} = \epsilon_{ij}.
+y_{ij} - \alpha_{j} - S_{i} = \mu + \epsilon_{ij}.
 \]</div>
-<p>We have therefore removed the element that causes the data to be correlated. Subtracting the <span class="math notranslate nohighlight">\(S_{i}\)</span> effectively removes the value that shifts each subject’s measurements <em>away</em> from the mean by some amount that is <em>unique</em> to each subject, but <em>constant</em> across their own measurements. In the paired <span class="math notranslate nohighlight">\(t\)</span>-test, this removal is <em>implicit</em> in the subtraction of the pairs and the only error that remains is <span class="math notranslate nohighlight">\(\epsilon_{ij}\)</span>. However, we do also have the option of making this removal <em>explicit</em> by including the subject constants in the model itself. This method is known as a <em>partitioned errors</em> model and is the next step towards more general methods we will cover later in the lesson.</p>
+<p>We have therefore removed the element that causes the data to be correlated and the only variation left is the random error term <span class="math notranslate nohighlight">\(\epsilon_{ij}\)</span>. Subtracting the <span class="math notranslate nohighlight">\(S_{i}\)</span> effectively <em>removes</em> the value that shifts each subject’s measurements <em>away</em> from the mean by some amount that is <em>unique</em> to each subject, but <em>constant</em> across their own measurements. This is like each subject having their <em>own intercept</em>. In the paired <span class="math notranslate nohighlight">\(t\)</span>-test, this intercept is <em>implicitly</em> removed in the subtraction. However, we do also have the option of making this removal <em>explicit</em> by including the subject constants in the model itself. This method is known as a <em>partitioned errors</em> model and is useful both as a next step towards more general methods for repeated measurements, but also as a means of highlighting exactly what the removal of the <span class="math notranslate nohighlight">\(S_{i}\)</span> achieves in terms of inference.</p>
 </section>
 </section>
 <section id="the-model-of-partitioned-errors">
 <h2>The Model of <em>Partitioned Errors</em><a class="headerlink" href="#the-model-of-partitioned-errors" title="Link to this heading">#</a></h2>
+<p>In the model above, we mentioned that performing the subtraction</p>
+<div class="math notranslate nohighlight">
+\[
+y_{ij} - \alpha_{j} = \mu + S_{i} + \epsilon_{ij}.
+\]</div>
+<p>resulted in a model that was simply the grand mean <em>plus</em> pure error. In defining this “error”, we split it into two parts, one associated with the subjects and one representing everything else. This process of splitting the error into different chunks is known as <em>partitioning</em> the error. In our original linear model, we only had a single error term and the model for two conditions was</p>
+<div class="math notranslate nohighlight">
+\[
+y_{ij} = \mu + \alpha_{j} + \epsilon_{ij}.
+\]</div>
+<p>Although we implied that the term <span class="math notranslate nohighlight">\(S_{i}\)</span> was <em>added</em> to the model, it is more correct to think of <em>splitting</em> the original error term. If we rename the error term to <span class="math notranslate nohighlight">\(\eta_{ij}\)</span>, then this is more correctly expressed as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    y_{ij}   &amp;= \mu + \alpha_{j} + \eta_{ij} \\
+    \eta_{ij} &amp;= S_{i} + \epsilon_{ij}
+\end{alignat*}
+\end{split}\]</div>
+<p>Remembering that the errors represent the <em>random</em> part of our model, then the model with the single error term is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    y_{ij}   &amp;= \mu + \alpha_{j} + \eta_{ij} \\
+    \eta_{ij} &amp;\sim \mathcal{N}(0, \sigma^{2})
+\end{alignat*}
+\end{split}\]</div>
+<p>which should be familiar from last semester. If we were to then split <span class="math notranslate nohighlight">\(\eta_{ij}\)</span> into different chunks we end up with <em>multiple</em> random error terms</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    y_{ij}        &amp;=    \mu + \alpha_{j} + (S_{i} + \epsilon_{ij}) \\
+    S_{i}         &amp;\sim \mathcal{N}(0, \sigma^{2}_{b}) \\
+    \epsilon_{ij} &amp;\sim \mathcal{N}(0, \sigma^{2}_{w})
+\end{alignat*}
+\end{split}\]</div>
+<p>So now we can see <em>explicitly</em> that there are two sources of error variance, one given by <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> and one given by <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. This means that the expected value of <span class="math notranslate nohighlight">\(y_{ij}\)</span> stays exactly the same as any other model of two groups</p>
+<div class="math notranslate nohighlight">
+\[
+E\left(y_{ij}\right) = \mu + \alpha_{j} = \mu_{j}.
+\]</div>
+<p>This connects directly with the idea that repeated measurements do not affect the mean function. However, what changes is the <em>variance</em> of <span class="math notranslate nohighlight">\(y_{ij}\)</span>, which is now given by</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Var}\left(y_{ij}\right) = \sigma^{2}_{b} + \sigma^{2}_{w}.
+\]</div>
+<p>These types of models are also known as <em>variance components</em> models, because they work precisely by splitting the variance into multiple components, as shown above. So, we can now express this model in terms of its mean and variance function like so</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{2}
+    y_{ij}             &amp;\sim \mathcal{N}(\mu_{j}, \sigma^{2})             &amp;\quad \text{(Population distribution)} \\
+    E(y_{ij})          &amp;=    \mu_{j} = \mu + \alpha_{j}                   &amp;\quad \text{(Mean function)}           \\
+    \text{Var}(y_{ij}) &amp;=    \sigma^{2} = \sigma^{2}_{b} + \sigma^{2}_{w} &amp;\quad \text{(Variance function)}.      \\
+\end{alignat*}
+\end{split}\]</div>
+<p>So, we now have a model with a slightly more complex variance function that accommodates the fact that we have two sources of error whenever there are repeated measurements. This also connects directly with the idea that data from the same subject are <em>correlated</em>. The <em>covariance</em> between two measurements from the same subject is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Cov}(y_{i1},y_{i2}) = \text{Cov}(\mu + \alpha_{1} + S_{i} + \epsilon_{i1}, \mu + \alpha_{2} + S_{i} + \epsilon_{i2}) 
+\]</div>
+<p>Because <span class="math notranslate nohighlight">\(\mu\)</span>, <span class="math notranslate nohighlight">\(\alpha_{1}\)</span> and <span class="math notranslate nohighlight">\(\alpha_{2}\)</span> are <em>population constants</em>, they have 0 variance and thus do not contribute to the definition of covariance, leading to</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Cov}(y_{i1},y_{i2}) = \text{Cov}(S_{i} + \epsilon_{i1}, S_{i} + \epsilon_{i2}) 
+\]</div>
+<p>This can be expanded like so</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Cov}(y_{i1},y_{i2}) = \text{Cov}(S_{i},S_{i}) + \text{Cov}(S_{i},\epsilon_{i2}) + \text{Cov}(\epsilon_{i1},S_{i}) + \text{Cov}(\epsilon_{i1}, \epsilon_{i2}). 
+\]</div>
+<p>The subject effects and the errors are not correlated as these represent independent partitions of the overall error. As such, <span class="math notranslate nohighlight">\(\text{Cov}(S_{i},\epsilon_{i2}) = \text{Cov}(\epsilon_{i1},S_{i}) = 0\)</span>. Similarly, the final errors are uncorrelated because the correlation has been <em>removed</em> by partitioning-out the subject effects. So <span class="math notranslate nohighlight">\(\text{Cov}(\epsilon_{i1}, \epsilon_{i2}) = 0\)</span>. This leaves</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Cov}(y_{i1},y_{i2}) = \text{Cov}(S_{i},S_{i}).
+\]</div>
+<p>A key result from the definition of covariance is that the covariance of a random variable with itself is simply its variance, meaning</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Cov}(y_{i1},y_{i2}) = \text{Cov}(S_{i},S_{i}) = \text{Var}(S_{i}) = \sigma^{2}_{b}.
+\]</div>
+<p>All of which is to say that the variance associated with the subject-specific deflections <em>is</em> the correlation induced by the repeated measurements.</p>
 <section id="partitioning-the-error">
 <h3>Partitioning the Error<a class="headerlink" href="#partitioning-the-error" title="Link to this heading">#</a></h3>
 <p>Notice that a huge amount of the variation in this data was attributable to the variation between different subjects. Now that this has been removed, we can effectively treat our data as <em>one big sample from a single subject</em>. As such, the variability we can see between all pairs of measurements provides us with an indication of how <em>internally consistent</em> a single subject is across the different conditions of the task. With the overall effect of the conditions removed, this remaining variability is not related to the conditions themseleves. Rather, it is related to other sources of random variation that cause an individual’s response to change across multiple repeats of an experiment. This is known as the  <em>within-subject variance</em>.</p>
@@ -693,6 +773,29 @@ In a regular paired t-test, the error variance consists of the differences betwe
 <section id="partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix">
 <h3>Partitioning the Error as a Decomposition of the Variance-covariance Matrix<a class="headerlink" href="#partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix" title="Link to this heading">#</a></h3>
 <p>Now, we will connect what we have done above with the idea of modelling the variance-covariance matrix. Rather than doing this <em>explicitly</em>, the method above was an <em>implicit</em> modelling of the covariance structure…</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{bmatrix}
+    y_{11} \\
+    y_{12} \\
+    y_{21} \\
+    y_{22} \\
+\end{bmatrix}
+\sim\mathcal{N}\left(
+\begin{bmatrix}
+    \mu + \alpha_{1} \\
+    \mu + \alpha_{2} \\
+    \mu + \alpha_{1} \\
+    \mu + \alpha_{2} \\
+\end{bmatrix}, 
+\begin{bmatrix}
+    \sigma^{2}_{b} + \sigma^{2}_{w}  &amp; \sigma^{2}_{b}                  &amp; 0           &amp; 0                     \\
+    \sigma^{2}_{b}                   &amp; \sigma^{2}_{b} + \sigma^{2}_{w} &amp; 0           &amp; 0                      \\
+    0                                &amp; 0                               &amp; \sigma^{2}_{b} + \sigma^{2}_{w}  &amp; \sigma^{2}_{b}            \\
+    0                                &amp; 0           &amp; \sigma^{2}_{b} &amp; \sigma^{2}_{b} + \sigma^{2}_{w}  \\
+\end{bmatrix}
+\right)
+\end{split}\]</div>
 </section>
 <section id="where-does-the-standard-error-come-from">
 <h3>Where Does the Standard Error Come From?<a class="headerlink" href="#where-does-the-standard-error-come-from" title="Link to this heading">#</a></h3>
@@ -768,6 +871,13 @@ In a regular paired t-test, the error variance consists of the differences betwe
 </div>
 </div>
 <p>Now, the output here is a bit of mess due to all the subject effects. However, if you look at the coefficient and test for <code class="docutils literal notranslate"><span class="pre">CondB</span></code>, notice that <span class="math notranslate nohighlight">\(t = 2.495\)</span> and <span class="math notranslate nohighlight">\(p = 0.016\)</span>, which is the same as the <em>paired</em> <span class="math notranslate nohighlight">\(t\)</span>-test from earlier. Furthermore, the degrees of freedom are now correct at <span class="math notranslate nohighlight">\(49\)</span>. As such, adding the subject effects to the model has allowed the <em>between-subjects</em> error to be partitioned out and thus the remaining variance calculated from the residuals is <em>only</em> the <em>within-subject</em> error. This is the error needed to correctly estimate the standard error of the paired difference and thus the model results are now correct.</p>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="intercept-foot" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>So too will the intercept term <span class="math notranslate nohighlight">\(\mu\)</span>, but this just means that the data will be <em>mean centred</em> with 0 representing no difference between the repeated measurements.</p>
+</aside>
+</aside>
 </section>
 </section>
 </section>
