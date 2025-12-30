@@ -757,6 +757,15 @@ E\left(y_{ij}\right) = \mu + \alpha_{j} = \mu_{j}.
 \text{Cov}(y_{i1},y_{i2}) = \text{Cov}(S_{i},S_{i}) = \text{Var}(S_{i}) = \sigma^{2}_{b}.
 \]</div>
 <p>All of which is to say that the variance associated with the subject-specific deflections <em>is</em> the correlation induced by the repeated measurements.</p>
+<p>…
+$<span class="math notranslate nohighlight">\(
+\begin{alignat*}{1}
+    \text{Var}\left(y_{i1} - y_{i2}\right) &amp;= \text{Var}(y_{i1}) + \text{Var}(y_{i2}) - 2\text{Cov}(y_{i1},y_{i2}) \\
+                                           &amp;= \left[\sigma^{2}_{b} + \sigma^{2}_{w}\right] + \left[\sigma^{2}_{b} + \sigma^{2}_{w}\right] - 2\sigma^{2}_{b} \\
+                                           &amp;= \sigma^{2}_{w} + \sigma^{2}_{w}
+\end{alignat*}
+\)</span>$</p>
+<p>So, we can see that the correlation <em>cancels-out</em>, which is exactly as expected from our exploration of the <em>model of paired differences</em> from earlier.</p>
 <section id="partitioning-the-error">
 <h3>Partitioning the Error<a class="headerlink" href="#partitioning-the-error" title="Link to this heading">#</a></h3>
 <p>Notice that a huge amount of the variation in this data was attributable to the variation between different subjects. Now that this has been removed, we can effectively treat our data as <em>one big sample from a single subject</em>. As such, the variability we can see between all pairs of measurements provides us with an indication of how <em>internally consistent</em> a single subject is across the different conditions of the task. With the overall effect of the conditions removed, this remaining variability is not related to the conditions themseleves. Rather, it is related to other sources of random variation that cause an individual’s response to change across multiple repeats of an experiment. This is known as the  <em>within-subject variance</em>.</p>
