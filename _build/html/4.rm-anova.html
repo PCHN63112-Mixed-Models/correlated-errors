@@ -369,6 +369,10 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model-of-partitioned-errors">The Model of <em>Partitioned Errors</em></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix">Partitioning the Error as a Decomposition of the Variance-covariance Matrix</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-concept-of-blocking">The Concept of Blocking</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-between-subjects-factors">Adding Between-subjects Factors</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioned-error-models">Partitioned Error Models</a></li>
@@ -393,6 +397,126 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="the-repeated-measures-anova">
 <h1>The Repeated Measures ANOVA<a class="headerlink" href="#the-repeated-measures-anova" title="Link to this heading">#</a></h1>
+<section id="the-model-of-partitioned-errors">
+<h2>The Model of <em>Partitioned Errors</em><a class="headerlink" href="#the-model-of-partitioned-errors" title="Link to this heading">#</a></h2>
+<p>In the model above, we mentioned that performing the subtraction</p>
+<div class="math notranslate nohighlight">
+\[
+y_{ij} - \alpha_{j} = \mu + S_{i} + \epsilon_{ij}.
+\]</div>
+<p>resulted in a model that was simply the grand mean <em>plus</em> pure error. In defining this “error”, we split it into two parts, one associated with the subjects and one representing everything else. This process of splitting the error into different chunks is known as <em>partitioning</em> the error. In our original linear model, we only had a single error term and the model for two conditions was</p>
+<div class="math notranslate nohighlight">
+\[
+y_{ij} = \mu + \alpha_{j} + \epsilon_{ij}.
+\]</div>
+<p>Although we implied that the term <span class="math notranslate nohighlight">\(S_{i}\)</span> was <em>added</em> to the model, it is more correct to think of <em>splitting</em> the original error term. If we rename the error term to <span class="math notranslate nohighlight">\(\eta_{ij}\)</span>, then this is more correctly expressed as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    y_{ij}   &amp;= \mu + \alpha_{j} + \eta_{ij} \\
+    \eta_{ij} &amp;= S_{i} + \epsilon_{ij}
+\end{alignat*}
+\end{split}\]</div>
+<p>Remembering that the errors represent the <em>random</em> part of our model, then the model with the single error term is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    y_{ij}   &amp;= \mu + \alpha_{j} + \eta_{ij} \\
+    \eta_{ij} &amp;\sim \mathcal{N}(0, \sigma^{2})
+\end{alignat*}
+\end{split}\]</div>
+<p>which should be familiar from last semester. If we were to then split <span class="math notranslate nohighlight">\(\eta_{ij}\)</span> into different chunks we end up with <em>multiple</em> random error terms</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    y_{ij}        &amp;=    \mu + \alpha_{j} + (S_{i} + \epsilon_{ij}) \\
+    S_{i}         &amp;\sim \mathcal{N}(0, \sigma^{2}_{b}) \\
+    \epsilon_{ij} &amp;\sim \mathcal{N}(0, \sigma^{2}_{w})
+\end{alignat*}
+\end{split}\]</div>
+<p>So now we can see <em>explicitly</em> that there are two sources of error variance, one given by <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> and one given by <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. This means that the expected value of <span class="math notranslate nohighlight">\(y_{ij}\)</span> stays exactly the same as any other model of two groups</p>
+<div class="math notranslate nohighlight">
+\[
+E\left(y_{ij}\right) = \mu + \alpha_{j} = \mu_{j}.
+\]</div>
+<p>This connects directly with the idea that repeated measurements do not affect the mean function. However, what changes is the <em>variance</em> of <span class="math notranslate nohighlight">\(y_{ij}\)</span>, which is now given by</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Var}\left(y_{ij}\right) = \sigma^{2}_{b} + \sigma^{2}_{w}.
+\]</div>
+<p>These types of models are also known as <em>variance components</em> models, because they work precisely by splitting the variance into multiple components, as shown above. So, we can now express this model in terms of its mean and variance function like so</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{2}
+    y_{ij}             &amp;\sim \mathcal{N}(\mu_{j}, \sigma^{2})             &amp;\quad \text{(Population distribution)} \\
+    E(y_{ij})          &amp;=    \mu_{j} = \mu + \alpha_{j}                   &amp;\quad \text{(Mean function)}           \\
+    \text{Var}(y_{ij}) &amp;=    \sigma^{2} = \sigma^{2}_{b} + \sigma^{2}_{w} &amp;\quad \text{(Variance function)}.      \\
+\end{alignat*}
+\end{split}\]</div>
+<p>So, we now have a model with a slightly more complex variance function that accommodates the fact that we have two sources of error whenever there are repeated measurements. This also connects directly with the idea that data from the same subject are <em>correlated</em>. The <em>covariance</em> between two measurements from the same subject is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Cov}(y_{i1},y_{i2}) = \text{Cov}(\mu + \alpha_{1} + S_{i} + \epsilon_{i1}, \mu + \alpha_{2} + S_{i} + \epsilon_{i2}) 
+\]</div>
+<p>Because <span class="math notranslate nohighlight">\(\mu\)</span>, <span class="math notranslate nohighlight">\(\alpha_{1}\)</span> and <span class="math notranslate nohighlight">\(\alpha_{2}\)</span> are <em>population constants</em>, they have 0 variance and thus do not contribute to the definition of covariance, leading to</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Cov}(y_{i1},y_{i2}) = \text{Cov}(S_{i} + \epsilon_{i1}, S_{i} + \epsilon_{i2}) 
+\]</div>
+<p>This can be expanded like so</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Cov}(y_{i1},y_{i2}) = \text{Cov}(S_{i},S_{i}) + \text{Cov}(S_{i},\epsilon_{i2}) + \text{Cov}(\epsilon_{i1},S_{i}) + \text{Cov}(\epsilon_{i1}, \epsilon_{i2}). 
+\]</div>
+<p>The subject effects and the errors are not correlated as these represent independent partitions of the overall error. As such, <span class="math notranslate nohighlight">\(\text{Cov}(S_{i},\epsilon_{i2}) = \text{Cov}(\epsilon_{i1},S_{i}) = 0\)</span>. Similarly, the final errors are uncorrelated because the correlation has been <em>removed</em> by partitioning-out the subject effects. So <span class="math notranslate nohighlight">\(\text{Cov}(\epsilon_{i1}, \epsilon_{i2}) = 0\)</span>. This leaves</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Cov}(y_{i1},y_{i2}) = \text{Cov}(S_{i},S_{i}).
+\]</div>
+<p>A key result from the definition of covariance is that the covariance of a random variable with itself is simply its variance, meaning</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Cov}(y_{i1},y_{i2}) = \text{Cov}(S_{i},S_{i}) = \text{Var}(S_{i}) = \sigma^{2}_{b}.
+\]</div>
+<p>All of which is to say that the variance associated with the subject-specific deflections <em>is</em> the correlation induced by the repeated measurements.</p>
+<p>…</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    \text{Var}\left(y_{i1} - y_{i2}\right) &amp;= \text{Var}(y_{i1}) + \text{Var}(y_{i2}) - 2\text{Cov}(y_{i1},y_{i2}) \\
+                                           &amp;= \left[\sigma^{2}_{b} + \sigma^{2}_{w}\right] + \left[\sigma^{2}_{b} + \sigma^{2}_{w}\right] - 2\sigma^{2}_{b} \\
+                                           &amp;= \sigma^{2}_{w} + \sigma^{2}_{w}
+\end{alignat*}
+\end{split}\]</div>
+<p>So, we can see that the correlation <em>cancels-out</em>, which is exactly as expected from our exploration of the <em>model of paired differences</em> from earlier.</p>
+<section id="partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix">
+<h3>Partitioning the Error as a Decomposition of the Variance-covariance Matrix<a class="headerlink" href="#partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix" title="Link to this heading">#</a></h3>
+<p>Now, we will connect what we have done above with the idea of modelling the variance-covariance matrix. Rather than doing this <em>explicitly</em>, the method above was an <em>implicit</em> modelling of the covariance structure…</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{bmatrix}
+    y_{11} \\
+    y_{12} \\
+    y_{21} \\
+    y_{22} \\
+\end{bmatrix}
+\sim\mathcal{N}\left(
+\begin{bmatrix}
+    \mu + \alpha_{1} \\
+    \mu + \alpha_{2} \\
+    \mu + \alpha_{1} \\
+    \mu + \alpha_{2} \\
+\end{bmatrix}, 
+\begin{bmatrix}
+    \sigma^{2}_{b} + \sigma^{2}_{w}  &amp; \sigma^{2}_{b}                  &amp; 0           &amp; 0                     \\
+    \sigma^{2}_{b}                   &amp; \sigma^{2}_{b} + \sigma^{2}_{w} &amp; 0           &amp; 0                      \\
+    0                                &amp; 0                               &amp; \sigma^{2}_{b} + \sigma^{2}_{w}  &amp; \sigma^{2}_{b}            \\
+    0                                &amp; 0           &amp; \sigma^{2}_{b} &amp; \sigma^{2}_{b} + \sigma^{2}_{w}  \\
+\end{bmatrix}
+\right)
+\end{split}\]</div>
+</section>
+</section>
 <section id="the-concept-of-blocking">
 <h2>The Concept of Blocking<a class="headerlink" href="#the-concept-of-blocking" title="Link to this heading">#</a></h2>
 </section>
@@ -530,6 +654,10 @@
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model-of-partitioned-errors">The Model of <em>Partitioned Errors</em></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix">Partitioning the Error as a Decomposition of the Variance-covariance Matrix</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-concept-of-blocking">The Concept of Blocking</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-between-subjects-factors">Adding Between-subjects Factors</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioned-error-models">Partitioned Error Models</a></li>
