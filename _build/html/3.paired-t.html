@@ -376,7 +376,12 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-model">Visualising the Model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-in-the-model-of-paired-differences">Inference in the Model of <em>Paired Differences</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-in-the-model-of-paired-differences">Inference in the Model of <em>Paired Differences</em></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-model-with-two-error-terms">A Model with <em>Two</em> Error Terms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-variance-in-the-model-of-paired-differences">Error Variance in the Model of <em>Paired Differences</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-errors-in-the-model-of-paired-differences">Standard Errors in the Model of <em>Paired Differences</em></a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -653,31 +658,91 @@ y_{ij} = \mu + \alpha_{j} + S_{i} + \eta_{ij}
 <section id="inference-in-the-model-of-paired-differences">
 <h2>Inference in the Model of <em>Paired Differences</em><a class="headerlink" href="#inference-in-the-model-of-paired-differences" title="Link to this heading">#</a></h2>
 <p>At the beginning of this part of the lesson, we indicated that a key difference between a <em>paired</em> <span class="math notranslate nohighlight">\(t\)</span>-test and a <em>two-sample</em> <span class="math notranslate nohighlight">\(t\)</span>-test was the standard error used for the test statistic. We will now see how this aligns with the model of <em>paired differences</em> and the idea of <em>removing</em> the variance associated with the <span class="math notranslate nohighlight">\(S_{i}\)</span> terms.</p>
+<section id="a-model-with-two-error-terms">
+<h3>A Model with <em>Two</em> Error Terms<a class="headerlink" href="#a-model-with-two-error-terms" title="Link to this heading">#</a></h3>
 <p>Earlier, we introduced the terms <span class="math notranslate nohighlight">\(S_{i}\)</span> and <span class="math notranslate nohighlight">\(\eta_{ij}\)</span> by <em>splitting</em> the usual single error term in two</p>
 <div class="math notranslate nohighlight">
 \[
 \epsilon_{ij} = S_{i} + \eta_{ij}.
 \]</div>
-<p>Remembering that the errors are used to capture the <em>variance</em> of <span class="math notranslate nohighlight">\(y_{ij}\)</span>, this split also corresponds to a <em>partition of the variance</em></p>
+<p>Remembering that the errors are a random variable of the form</p>
+<div class="math notranslate nohighlight">
+\[
+\epsilon_{ij} \sim \mathcal{N}(0,\sigma^{2}),
+\]</div>
+<p>when they are <em>split</em> we get <em>two</em> random variables of the form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    S_{i}     &amp;\sim \mathcal{N}(0,\sigma^{2}_{b}) \\
+    \eta_{ij} &amp;\sim \mathcal{N}(0,\sigma^{2}_{w}).
+\end{alignat*}
+\end{split}\]</div>
+<p>We therefore have a <em>partition</em> of the variance into two chunks</p>
 <div class="math notranslate nohighlight">
 \[
 \sigma^{2} = \sigma^{2}_{b} + \sigma^{2}_{w}.
 \]</div>
-<p>… So now we have <em>two</em> variance terms, one associated with the differences between the subjects and one associated with measurements within each subject. <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> captures variation due to the fact that we have measured different subjects and <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> captures everything else. We can therefore specify this model more generally as</p>
+<p>This aligns with our visualisation above, where we were able to break-down the <em>unpredictable</em> variance into vertical distances associated with each subject and vertical distances associated with independent random noise. Because of this, these variance terms are often known as the <em>between-subjects</em> variance (<span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>) and the <em>within-subject</em> variance (<span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>). <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> captures variation due to the fact that we have measured different subjects and <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> captures variation of measurement within each subject. We can therefore specify this model more generally as</p>
 <div class="math notranslate nohighlight">
 \[
 y_{ij} \sim\mathcal{N}(\mu + \alpha_{j}, \sigma^{2}_{b} + \sigma^{2}_{w})
 \]</div>
-<p>We will discuss this model specification in more detail in the next part of this lesson, as it is a key result that leads us both to the repeated measures ANOVA and the mixed-effects models that are the focus of this part of the unit. For now, let us see what happens to the variance if we take the <em>difference</em> <span class="math notranslate nohighlight">\(y_{i\Delta} = y_{i1} - y_{i2}\)</span>.</p>
-<p>…</p>
+<p>We will discuss this model specification in more detail in the next part of this lesson, as it is a key result that leads us both to the repeated measures ANOVA and the mixed-effects models that are the focus of this part of the unit.</p>
+</section>
+<section id="error-variance-in-the-model-of-paired-differences">
+<h3>Error Variance in the Model of <em>Paired Differences</em><a class="headerlink" href="#error-variance-in-the-model-of-paired-differences" title="Link to this heading">#</a></h3>
+<p>Starting with the concept of a model with <em>two</em> error variances, what happens when we take the <em>difference</em> <span class="math notranslate nohighlight">\(y_{i\Delta} = y_{i1} - y_{i2}\)</span>? Remember from the beginning of this lesson that the variance of the difference between two random variables is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Var}(y_{1} - y_{2}) = \text{Var}(y_{1}) + \text{Var}(y_{2}) - 2\text{Cov}(y_{1},y_{2}).
+\]</div>
+<p>As such, the variance of <span class="math notranslate nohighlight">\(y_{i\Delta}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{3}
+    \text{Var}(y_{i\Delta}) &amp;= \text{Var}(y_{i1}) &amp;&amp;+ \text{Var}(y_{i2}) &amp;&amp;- 2\text{Cov}(y_{i1},y_{i2}) \\
+                            &amp;= \left(\sigma^{2}_{b} + \sigma^{2}_{w}\right) &amp;&amp;+ \left(\sigma^{2}_{b} + \sigma^{2}_{w}\right) &amp;&amp;- 2\text{Cov}(y_{i1},y_{i2})
+\end{alignat*}
+\end{split}\]</div>
 <p>For reasons we will give in the next part of the lesson, the covariance between the repeated measurements is</p>
 <div class="math notranslate nohighlight">
 \[
 \text{Cov}(y_{i1},y_{i2}) = \sigma^{2}_{b}.
 \]</div>
-<p>Because of this, the variance of the difference becomes …</p>
-<p>So, the between-subjects variance <em>disappears</em> and the only variance left-over is the within-subject variance. This is exactly the same result as the term <span class="math notranslate nohighlight">\(S_{i}\)</span> disappearing in the subtraction, but just expressed in terms of variance.</p>
-<p>Taking all this together, the reason that the standard error is <em>smaller</em> in the paired <span class="math notranslate nohighlight">\(t\)</span>-test is because it is derived from the <em>within-subject</em> variance. Not only is this a <em>partition</em> of the overall variance, but it is generally the <em>smaller</em> partition of the two.</p>
+<p>Putting this all together, the error variance of the paired differences becomes</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    \text{Var}(y_{i\Delta}) &amp;= \left(\sigma^{2}_{b} + \sigma^{2}_{w}\right) + \left(\sigma^{2}_{b} + \sigma^{2}_{w}\right) - 2\sigma^{2}_{b} \\
+                            &amp;= 2\sigma^{2}_{w} + 2\sigma^{2}_{b} - 2\sigma^{2}_{b}  \\
+                            &amp;= \sigma^{2}_{w}
+\end{alignat*}
+\end{split}\]</div>
+<p>So, when we subtract the repeated measurements the between-subjects variance <em>disappears</em> and the only variance left-over is the within-subject variance. This is exactly the same result as the term <span class="math notranslate nohighlight">\(S_{i}\)</span> disappearing in the subtraction, but just expressed in terms of variance.</p>
+</section>
+<section id="standard-errors-in-the-model-of-paired-differences">
+<h3>Standard Errors in the Model of <em>Paired Differences</em><a class="headerlink" href="#standard-errors-in-the-model-of-paired-differences" title="Link to this heading">#</a></h3>
+<p>Given what we have established above, what does the standard error of <span class="math notranslate nohighlight">\(\hat{\mu}_{\delta}\)</span> become in the model of <em>paired differences</em>? The model is a basic intercept-only regression model of the form</p>
+<div class="math notranslate nohighlight">
+\[
+y_{i\delta} = \mu_{\delta} + \epsilon_{i\delta},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu_{\delta}\)</span> is simply the mean of the difference and <span class="math notranslate nohighlight">\(\epsilon_{i\delta}\)</span> is the difference in errors. As we know from above, the variance of <span class="math notranslate nohighlight">\(y_{i\delta}\)</span>, and thus the variance of <span class="math notranslate nohighlight">\(\epsilon_{i\delta}\)</span>, is given by <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. So the full model is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{alignat*}{1}
+    y_{i\delta}        &amp;= \mu_{\delta} + \epsilon_{i\delta} \\
+    \epsilon_{i\delta} &amp;\sim \mathcal{N}(0, \sigma^{2}_{w})
+\end{alignat*}
+\end{split}\]</div>
+<p>So what is the standard error of an estimate of <span class="math notranslate nohighlight">\(\mu_{\delta}\)</span>? For an intercept-only regression model, this is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\sqrt{\text{Var}(\hat{\mu}_{\delta})} = \sqrt{\frac{\sigma^{2}_{w}}{n}} = \frac{\sigma_{w}}{\sqrt{n}}.
+\]</div>
+<p>Taking all this together, the reason that the standard error is <em>smaller</em> in the paired <span class="math notranslate nohighlight">\(t\)</span>-test is because it is derived from the <em>within-subject</em> variance. This is smaller not only because it is a <em>partition</em> of the overall variance, but <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> is generally the <em>smaller</em> partition of the two. We can see this in the visualisations above, where there is a greater discrepancy <em>between</em> the subjects compared to <em>within</em> each subject. This matches our intuition, as people tend to be more different from each other, with a reasonable degree of internal consistency.</p>
+<p>In summary, the paired <span class="math notranslate nohighlight">\(t\)</span>-test works because subtracting the repeated measurements cancels the term <span class="math notranslate nohighlight">\(S_{i}\)</span>. This both removes the correlation <em>and</em> removes a portion of the overall error variance. What is left represents only the <em>within-subject</em> variance, capturing the degree of <em>internal consistency</em> across the measurements. Because this is always <em>smaller</em> than the total variance, and almost always smaller than the <em>between-subjects</em> variance, the standard error of the difference is <em>also</em> smaller. This makes the associated <span class="math notranslate nohighlight">\(t\)</span>-statistic <em>bigger</em> in the paired case, even though the mean difference is identical to the independent samples case. This removal of a variance component is a key element of analysing repeated measurements, as we will see in more detail as we progress.</p>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="delta-foot" role="note">
@@ -689,6 +754,7 @@ y_{ij} \sim\mathcal{N}(\mu + \alpha_{j}, \sigma^{2}_{b} + \sigma^{2}_{w})
 <p>So too will the intercept term <span class="math notranslate nohighlight">\(\mu\)</span>, but this just means that the data will be <em>mean centred</em> with 0 representing no difference between the repeated measurements.</p>
 </aside>
 </aside>
+</section>
 </section>
 </section>
 
@@ -764,7 +830,12 @@ y_{ij} \sim\mathcal{N}(\mu + \alpha_{j}, \sigma^{2}_{b} + \sigma^{2}_{w})
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-model">Visualising the Model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-in-the-model-of-paired-differences">Inference in the Model of <em>Paired Differences</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-in-the-model-of-paired-differences">Inference in the Model of <em>Paired Differences</em></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-model-with-two-error-terms">A Model with <em>Two</em> Error Terms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-variance-in-the-model-of-paired-differences">Error Variance in the Model of <em>Paired Differences</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-errors-in-the-model-of-paired-differences">Standard Errors in the Model of <em>Paired Differences</em></a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
