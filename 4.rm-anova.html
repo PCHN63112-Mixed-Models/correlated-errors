@@ -369,6 +369,7 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-of-the-model-of-paired-differences">Limitations of the Model of <em>Paired Differences</em></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model-of-partitioned-errors">The Model of <em>Partitioned Errors</em></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix">Partitioning the Error as a Decomposition of the Variance-covariance Matrix</a></li>
 </ul>
@@ -397,6 +398,11 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="the-repeated-measures-anova">
 <h1>The Repeated Measures ANOVA<a class="headerlink" href="#the-repeated-measures-anova" title="Link to this heading">#</a></h1>
+<p>In the previous part of this lesson, we examined the paired <span class="math notranslate nohighlight">\(t\)</span>-test as the most basic method for dealing with repeated measurements. In doing do, we established that taking the <em>difference</em> between the pairs was enough to remove correlation and render the data independent, allowing us to specify a simple one-sample test on the mean difference. In order to understand this, we split our usual single error term into two components, one associated with each subject and one associated with any other deviations. We then saw how the term associated with each subject <em>cancelled</em> when the pairs were subtracted, implying that this component captured the correlation between the repeated measurements. Furthermore, by viewing these terms in relation to a partition of the error variance, we established that it is the <em>between-subjects</em> variance that is removed by subtraction, leaving only the <em>within-subject</em> variance. Because this is smaller than the total variance, and smaller than the between-subjects variance, this rendered the standard error of the estimated mean difference smaller, thus making the test statistic larger. This not only established <em>why</em> the paired <span class="math notranslate nohighlight">\(t\)</span>-test is different to the independent measures <span class="math notranslate nohighlight">\(t\)</span>-test, but also why the paired <span class="math notranslate nohighlight">\(t\)</span>-test is typically <em>more powerful</em> and thus desirable, from an inferential perspective.</p>
+<section id="limitations-of-the-model-of-paired-differences">
+<h2>Limitations of the Model of <em>Paired Differences</em><a class="headerlink" href="#limitations-of-the-model-of-paired-differences" title="Link to this heading">#</a></h2>
+<p>This framework is fine when the data consists of only <em>two</em> repeated measurements. However, we hit a problem if we have <em>more than two</em> repeated measurements, <em>more than one</em> repeated measures factor or even when we have a mixture of repeated measurements and independent measurements. In many of these cases, we cannot take a simple subtraction and then analyse the resultant differences as independent. So, while the paired <span class="math notranslate nohighlight">\(t\)</span>-test is fine in simple cases, it does not generalise very easily. As such, we need a more complex method in the form of the <em>repeated measures ANOVA</em>. Importantly, while the repeated measures ANOVA is still used widely in psychological research, it is <em>not</em> generally recommended. We will discuss the reasons why in this part of the lesson. However, it is probably enough at this stage to indicate that few working statisticians would ever use a repeated measures ANOVA in practice, as it is generally considered an <em>old</em> and <em>inflexible</em> approach that has been deprecated in favour of more advanced methods.</p>
+</section>
 <section id="the-model-of-partitioned-errors">
 <h2>The Model of <em>Partitioned Errors</em><a class="headerlink" href="#the-model-of-partitioned-errors" title="Link to this heading">#</a></h2>
 <p>In the model above, we mentioned that performing the subtraction</p>
@@ -654,6 +660,7 @@ E\left(y_{ij}\right) = \mu + \alpha_{j} = \mu_{j}.
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-of-the-model-of-paired-differences">Limitations of the Model of <em>Paired Differences</em></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model-of-partitioned-errors">The Model of <em>Partitioned Errors</em></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix">Partitioning the Error as a Decomposition of the Variance-covariance Matrix</a></li>
 </ul>

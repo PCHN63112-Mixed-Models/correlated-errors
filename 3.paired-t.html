@@ -585,7 +585,7 @@ Residual standard error: 24.69 on 9 degrees of freedom
 </section>
 <section id="removing-the-effect-of-the-subjects">
 <h3>Removing the Effect of the Subjects<a class="headerlink" href="#removing-the-effect-of-the-subjects" title="Link to this heading">#</a></h3>
-<p>Given what we have demonstrated above, the key insight is that taking <span class="math notranslate nohighlight">\(y_{i\Delta} = y_{i1} - y_{i2}\)</span> allows us to treat the values of <span class="math notranslate nohighlight">\(y_{i\Delta}\)</span> as <em>independent</em><a class="footnote-reference brackets" href="#delta-foot" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. Effectively, the element that makes repeated measurements difficult has been <em>removed</em> via this subtraction. Given that we know that <em>correlation</em> is the issue, taking <span class="math notranslate nohighlight">\(y_{i\Delta} = y_{i1} - y_{i2}\)</span> <em>must</em> be removing the correlation from the data. This is fairly intuitive because we have reduced correlated pairs of data down to only a single value per-subject. Given that the subjects are taken as independent, the values of <span class="math notranslate nohighlight">\(y_{i\Delta}\)</span> must also be independent. In effect, there are <em>no</em> repeated measurements anymore. However, expressing this formally is a useful stepping-stone to more general methods.</p>
+<p>Given what we have demonstrated above, the key insight is that taking <span class="math notranslate nohighlight">\(d_{i} = y_{i1} - y_{i2}\)</span> allows us to treat the values of <span class="math notranslate nohighlight">\(d_{i}\)</span> as <em>independent</em>. Effectively, the element that makes repeated measurements difficult has been <em>removed</em> via this subtraction. Given that we know that <em>correlation</em> is the issue, taking <span class="math notranslate nohighlight">\(d_{i} = y_{i1} - y_{i2}\)</span> <em>must</em> be removing the correlation from the data. This is fairly intuitive because we have reduced correlated pairs of data down to only a single value per-subject. Given that the subjects are taken as independent, the values of <span class="math notranslate nohighlight">\(d_{i}\)</span> must also be independent. In effect, there are <em>no</em> repeated measurements anymore. However, expressing this formally is a useful stepping-stone to more general methods.</p>
 <p>To see what is happening, let us return to our basic <span class="math notranslate nohighlight">\(t\)</span>-test model from last semester where we parameterise each group mean in terms of the grand mean plus a group-specific deflection. The mean for the first repeated measurement is therefore <span class="math notranslate nohighlight">\(\mu_{1} = \mu + \alpha_{1}\)</span> and the mean for the second repeated measurement is <span class="math notranslate nohighlight">\(\mu_{2} = \mu + \alpha_{2}\)</span>.</p>
 <p>To capture the concept of <em>dependence</em> between these repeats, we split the error into <em>two</em> components <span class="math notranslate nohighlight">\(\epsilon_{ij} = S_{i} + \eta_{ij}\)</span>. This consists of a <em>shared component</em> for each subject, called <span class="math notranslate nohighlight">\(S_{i}\)</span>, as well as a <em>unique component</em> for each observation, called <span class="math notranslate nohighlight">\(\eta_{ij}\)</span>. For the two repeated measurements, the model is therefore</p>
 <div class="math notranslate nohighlight">
@@ -595,16 +595,16 @@ Residual standard error: 24.69 on 9 degrees of freedom
     y_{i2} &amp;= \mu + \alpha_{2} + S_{i} + \eta_{i2} 
 \end{alignat*}.
 \end{split}\]</div>
-<p>So, the reason why <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span> are correlated is because they <em>share</em> the same component <span class="math notranslate nohighlight">\(S_{i}\)</span>. This captures the idea that these measurements come from the <em>same subject</em>. If we then <em>subtract</em> <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span>, the term <span class="math notranslate nohighlight">\(S_{i}\)</span> will cancel-out<a class="footnote-reference brackets" href="#intercept-foot" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<p>So, the reason why <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span> are correlated is because they <em>share</em> the same component <span class="math notranslate nohighlight">\(S_{i}\)</span>. This captures the idea that these measurements come from the <em>same subject</em>. If we then <em>subtract</em> <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span>, the term <span class="math notranslate nohighlight">\(S_{i}\)</span> will cancel-out<a class="footnote-reference brackets" href="#intercept-foot" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{alignat*}{1}
-    y_{i\Delta} = y_{i1} - y_{i2} &amp;= (\mu + \alpha_{1} + S_{i} + \eta_{i1}) - (\mu + \alpha_{2} + S_{i} + \eta_{i2}) \\
-                                  &amp;= (\alpha_{1} - \alpha_{2}) + (\eta_{i1} - \eta_{i2}) \\
-                                  &amp;= \alpha_{\Delta} + \eta_{i\Delta}
+    d_{i} = y_{i1} - y_{i2} &amp;= (\mu + \alpha_{1} + S_{i} + \eta_{i1}) - (\mu + \alpha_{2} + S_{i} + \eta_{i2}) \\
+                            &amp;= (\alpha_{1} - \alpha_{2}) + (\eta_{i1} - \eta_{i2}) \\
+                            &amp;= \alpha_{d} + \eta_{i}
 \end{alignat*}.
 \end{split}\]</div>
-<p>So, this tells us that <span class="math notranslate nohighlight">\(S_{i}\)</span> precisely captures the <em>correlation</em>, because removing it renders the data <em>independent</em>.</p>
+<p>So, this tells us that <span class="math notranslate nohighlight">\(S_{i}\)</span> precisely captures the <em>correlation</em>, because removing <span class="math notranslate nohighlight">\(S_{i}\)</span> via subtraction renders the data <em>independent</em>.</p>
 </section>
 <section id="visualising-the-model">
 <h3>Visualising the Model<a class="headerlink" href="#visualising-the-model" title="Link to this heading">#</a></h3>
@@ -674,16 +674,16 @@ y_{ij} = \mu + \alpha_{j} + S_{i} + \eta_{ij}
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{alignat*}{1}
-    S_{i}     &amp;\sim \mathcal{N}(0,\sigma^{2}_{b}) \\
-    \eta_{ij} &amp;\sim \mathcal{N}(0,\sigma^{2}_{w}).
+    S_{i}     &amp;\sim \mathcal{N}(0,\sigma^{2}_{1}) \\
+    \eta_{ij} &amp;\sim \mathcal{N}(0,\sigma^{2}_{2}).
 \end{alignat*}
 \end{split}\]</div>
-<p>We therefore have a <em>partition</em> of the variance into two chunks</p>
+<p>We have therefore <em>partitioned</em> the variance into two chunks</p>
 <div class="math notranslate nohighlight">
 \[
-\sigma^{2} = \sigma^{2}_{b} + \sigma^{2}_{w}.
+\sigma^{2} = \sigma^{2}_{1} + \sigma^{2}_{2}.
 \]</div>
-<p>This aligns with our visualisation above, where we were able to break-down the <em>unpredictable</em> variance into vertical distances associated with each subject and vertical distances associated with independent random noise. Because of this, these variance terms are often known as the <em>between-subjects</em> variance (<span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>) and the <em>within-subject</em> variance (<span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>). <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> captures variation due to the fact that we have measured different subjects and <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> captures variation of measurement within each subject. We can therefore specify this model more generally as</p>
+<p>This aligns with our visualisation above, where we were able to break-down the <em>unpredictable</em> variance into vertical distances associated with each subject and vertical distances associated with independent random noise. In order to make this more understandable, these variance components are often called the <em>between-subjects</em> variance (denoted <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>) and the <em>within-subject</em> variance (denoted <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>). In this scheme, <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> captures variation due to the fact that we have measured different subjects and <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> captures variation of measurement within each subject. We can therefore specify this model more generally as</p>
 <div class="math notranslate nohighlight">
 \[
 y_{ij} \sim\mathcal{N}(\mu + \alpha_{j}, \sigma^{2}_{b} + \sigma^{2}_{w})
@@ -692,17 +692,17 @@ y_{ij} \sim\mathcal{N}(\mu + \alpha_{j}, \sigma^{2}_{b} + \sigma^{2}_{w})
 </section>
 <section id="error-variance-in-the-model-of-paired-differences">
 <h3>Error Variance in the Model of <em>Paired Differences</em><a class="headerlink" href="#error-variance-in-the-model-of-paired-differences" title="Link to this heading">#</a></h3>
-<p>Starting with the concept of a model with <em>two</em> error variances, what happens when we take the <em>difference</em> <span class="math notranslate nohighlight">\(y_{i\Delta} = y_{i1} - y_{i2}\)</span>? Remember from the beginning of this lesson that the variance of the difference between two random variables is given by</p>
+<p>Starting with the concept of a model with <em>two</em> error variances, what happens when we take the <em>difference</em> <span class="math notranslate nohighlight">\(d_{i} = y_{i1} - y_{i2}\)</span>? Remember from the beginning of this lesson that the variance of the difference between two random variables is given by</p>
 <div class="math notranslate nohighlight">
 \[
 \text{Var}(y_{1} - y_{2}) = \text{Var}(y_{1}) + \text{Var}(y_{2}) - 2\text{Cov}(y_{1},y_{2}).
 \]</div>
-<p>As such, the variance of <span class="math notranslate nohighlight">\(y_{i\Delta}\)</span> is</p>
+<p>As such, the variance of <span class="math notranslate nohighlight">\(d_{i}\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{alignat*}{3}
-    \text{Var}(y_{i\Delta}) &amp;= \text{Var}(y_{i1}) &amp;&amp;+ \text{Var}(y_{i2}) &amp;&amp;- 2\text{Cov}(y_{i1},y_{i2}) \\
-                            &amp;= \left(\sigma^{2}_{b} + \sigma^{2}_{w}\right) &amp;&amp;+ \left(\sigma^{2}_{b} + \sigma^{2}_{w}\right) &amp;&amp;- 2\text{Cov}(y_{i1},y_{i2})
+    \text{Var}(d_{i}) &amp;= \text{Var}(y_{i1}) &amp;&amp;+ \text{Var}(y_{i2}) &amp;&amp;- 2\text{Cov}(y_{i1},y_{i2}) \\
+                      &amp;= \left(\sigma^{2}_{b} + \sigma^{2}_{w}\right) &amp;&amp;+ \left(\sigma^{2}_{b} + \sigma^{2}_{w}\right) &amp;&amp;- 2\text{Cov}(y_{i1},y_{i2})
 \end{alignat*}
 \end{split}\]</div>
 <p>For reasons we will give in the next part of the lesson, the covariance between the repeated measurements is</p>
@@ -714,43 +714,40 @@ y_{ij} \sim\mathcal{N}(\mu + \alpha_{j}, \sigma^{2}_{b} + \sigma^{2}_{w})
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{alignat*}{1}
-    \text{Var}(y_{i\Delta}) &amp;= \left(\sigma^{2}_{b} + \sigma^{2}_{w}\right) + \left(\sigma^{2}_{b} + \sigma^{2}_{w}\right) - 2\sigma^{2}_{b} \\
-                            &amp;= 2\sigma^{2}_{w} + 2\sigma^{2}_{b} - 2\sigma^{2}_{b}  \\
-                            &amp;= \sigma^{2}_{w}
+    \text{Var}(d_{i}) &amp;= \left(\sigma^{2}_{b} + \sigma^{2}_{w}\right) + \left(\sigma^{2}_{b} + \sigma^{2}_{w}\right) - 2\sigma^{2}_{b} \\
+                      &amp;= 2\sigma^{2}_{w} + 2\sigma^{2}_{b} - 2\sigma^{2}_{b}  \\
+                      &amp;= 2\sigma^{2}_{w}
 \end{alignat*}
 \end{split}\]</div>
-<p>So, when we subtract the repeated measurements the between-subjects variance <em>disappears</em> and the only variance left-over is the within-subject variance. This is exactly the same result as the term <span class="math notranslate nohighlight">\(S_{i}\)</span> disappearing in the subtraction, but just expressed in terms of variance.</p>
+<p>So, when we subtract the repeated measurements the between-subjects variance <em>disappears</em> and the only variance left-over is the within-subject variance. This is exactly the same result as the term <span class="math notranslate nohighlight">\(S_{i}\)</span> disappearing in the subtraction.</p>
 </section>
 <section id="standard-errors-in-the-model-of-paired-differences">
 <h3>Standard Errors in the Model of <em>Paired Differences</em><a class="headerlink" href="#standard-errors-in-the-model-of-paired-differences" title="Link to this heading">#</a></h3>
-<p>Given what we have established above, what does the standard error of <span class="math notranslate nohighlight">\(\hat{\mu}_{\delta}\)</span> become in the model of <em>paired differences</em>? The model is a basic intercept-only regression model of the form</p>
+<p>Earlier we saw how to specify the model of paired differences in <code class="docutils literal notranslate"><span class="pre">R</span></code> using an intercept-only regression on the differences between the repeated measurements. Formally, we can specify this model as</p>
 <div class="math notranslate nohighlight">
 \[
-y_{i\delta} = \mu_{\delta} + \epsilon_{i\delta},
+d_{i} = \mu_{d} + \epsilon_{i},
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\mu_{\delta}\)</span> is simply the mean of the difference and <span class="math notranslate nohighlight">\(\epsilon_{i\delta}\)</span> is the difference in errors. As we know from above, the variance of <span class="math notranslate nohighlight">\(y_{i\delta}\)</span>, and thus the variance of <span class="math notranslate nohighlight">\(\epsilon_{i\delta}\)</span>, is given by <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. So the full model is</p>
+<p>and our interest falls on <span class="math notranslate nohighlight">\(\mu_{d}\)</span>, which is simply the <em>mean difference</em> between the repeated measurements. Once estimated, we need to know the standard error of <span class="math notranslate nohighlight">\(\hat{\mu}_{d}\)</span> in order to perform inference. So what does the standard error of <span class="math notranslate nohighlight">\(\hat{\mu}_{d}\)</span> become in the model of <em>paired differences</em>? As we know from above, the variance of <span class="math notranslate nohighlight">\(d_{i}\)</span>, and thus the variance of <span class="math notranslate nohighlight">\(\epsilon_{i}\)</span>, is given by <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. So the full model is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{alignat*}{1}
-    y_{i\delta}        &amp;= \mu_{\delta} + \epsilon_{i\delta} \\
-    \epsilon_{i\delta} &amp;\sim \mathcal{N}(0, \sigma^{2}_{w})
+    d_{i}        &amp;=    \mu_{d} + \epsilon_{i} \\
+    \epsilon_{i} &amp;\sim \mathcal{N}(0, \sigma^{2}_{w})
 \end{alignat*}
 \end{split}\]</div>
-<p>So what is the standard error of an estimate of <span class="math notranslate nohighlight">\(\mu_{\delta}\)</span>? For an intercept-only regression model, this is given by</p>
+<p>The standard error of <span class="math notranslate nohighlight">\(\hat{\mu}_{d}\)</span> is then given by</p>
 <div class="math notranslate nohighlight">
 \[
-\sqrt{\text{Var}(\hat{\mu}_{\delta})} = \sqrt{\frac{\sigma^{2}_{w}}{n}} = \frac{\sigma_{w}}{\sqrt{n}}.
+\sqrt{\text{Var}(\hat{\mu}_{d})} = \sqrt{\frac{\sigma^{2}_{w}}{n}} = \frac{\sigma_{w}}{\sqrt{n}}.
 \]</div>
-<p>Taking all this together, the reason that the standard error is <em>smaller</em> in the paired <span class="math notranslate nohighlight">\(t\)</span>-test is because it is derived from the <em>within-subject</em> variance. This is smaller not only because it is a <em>partition</em> of the overall variance, but <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> is generally the <em>smaller</em> partition of the two. We can see this in the visualisations above, where there is a greater discrepancy <em>between</em> the subjects compared to <em>within</em> each subject. This matches our intuition, as people tend to be more different from each other, with a reasonable degree of internal consistency.</p>
+<p>So, due to the subtraction, this only depends on <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>, and <em>not</em> <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> or <span class="math notranslate nohighlight">\(\sigma^{2}\)</span>.</p>
+<p>More generally, the reason that the standard error is <em>smaller</em> in the paired <span class="math notranslate nohighlight">\(t\)</span>-test is because it is derived from the <em>within-subject</em> variance. This is smaller not only because it is a <em>partition</em> of the overall variance, but because <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> is generally the <em>smaller</em> of the two partitions. We can see this in the visualisations above, where there is a greater discrepancy <em>between</em> the mice compared to <em>within</em> each mouse. In an independent <span class="math notranslate nohighlight">\(t\)</span>-test, there is no subtraction and thus no implicit partitioning of the variance. As such, the error variance remains as <span class="math notranslate nohighlight">\(\sigma^{2} = \sigma^{2}_{b} + \sigma^{2}_{w}\)</span>, containing contributions from both <em>between-subjects</em> and <em>within-subject</em>. If the data are truly independent, this does not matter because <span class="math notranslate nohighlight">\(\sigma^{2}_{w} = 0\)</span>. However, if we incorrectly apply an independent measures procedure to paired data, the error variance will be too large and the test statistic will shrink.</p>
 <p>In summary, the paired <span class="math notranslate nohighlight">\(t\)</span>-test works because subtracting the repeated measurements cancels the term <span class="math notranslate nohighlight">\(S_{i}\)</span>. This both removes the correlation <em>and</em> removes a portion of the overall error variance. What is left represents only the <em>within-subject</em> variance, capturing the degree of <em>internal consistency</em> across the measurements. Because this is always <em>smaller</em> than the total variance, and almost always smaller than the <em>between-subjects</em> variance, the standard error of the difference is <em>also</em> smaller. This makes the associated <span class="math notranslate nohighlight">\(t\)</span>-statistic <em>bigger</em> in the paired case, even though the mean difference is identical to the independent samples case. This removal of a variance component is a key element of analysing repeated measurements, as we will see in more detail as we progress.</p>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="delta-foot" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>The Greek letter <span class="math notranslate nohighlight">\(\Delta\)</span> (capital <em>delta</em>) is often used as a shorthand for <em>change</em> or <em>difference</em>. So, <span class="math notranslate nohighlight">\(y_{i\Delta}\)</span> reflects the <em>difference</em> between the two repeated measurements for subject <span class="math notranslate nohighlight">\(i\)</span>.</p>
-</aside>
 <aside class="footnote brackets" id="intercept-foot" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>So too will the intercept term <span class="math notranslate nohighlight">\(\mu\)</span>, but this just means that the data will be <em>mean centred</em> with 0 representing no difference between the repeated measurements.</p>
 </aside>
 </aside>
