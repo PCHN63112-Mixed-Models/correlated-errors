@@ -37,6 +37,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/test.css?v=90b7ad94" />
   
   <!-- So that users can add custom icons -->
   <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -391,7 +392,8 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="generalised-least-squares">
 <h1>Generalised Least Squares<a class="headerlink" href="#generalised-least-squares" title="Link to this heading">#</a></h1>
-<p>… As we will see below, GLS is really a stepping-stone to mixed-effects models. Although we can use GLS to accommodate a variety of correlation structures, we will see that this method has no concept of the <em>structure</em> of the data. This means the hypothesis tests produced will not match other methods that <em>do</em> have a sense of the structure. …</p>
+<p>… In the previous part of this lesson, we indicated that one of the biggest issues with the repeated measures ANOVA is that the covariance is not only very simple, it is also only <em>implicit</em> in the model. The practical result of this is that the error terms of the tests needed to be organised manually, which causes a lot of headaches in complex situations. A better approach would be a method where the covariance structure was actually <em>estimated explicitly</em> and then used to derive the correct standard errors for the tests. This would result in an <em>automatic</em> generation of the correct denominators, which is a much nicer situation to have. Mixed-effects models do this, as we will see as this section of the unit progresses. However, before we get there, we will examine another method that is able to do this that we have already covered: <em>generalised least squares</em>.</p>
+<p>… As we will see below, GLS is really a stepping-stone to mixed-effects models. Although we can use GLS to accommodate a variety of correlation structures, we will see that this method has no concept of the <em>structure</em> of the data …</p>
 <section id="how-does-gls-work">
 <h2>How Does GLS Work?<a class="headerlink" href="#how-does-gls-work" title="Link to this heading">#</a></h2>
 <p>…At its most basic, GLS uses the residuals of an initial model fit to estimate the correlation/variance structure. This is then <em>removed</em> from the data. The corrected data is then, in theory, <em>uncorrelated</em> with <em>equal variance</em> and we can use OLS to estimate the parameters. This can all be achived effectively within a single estimation framework by using <em>restricted maximum likelihood</em> (REML). This will iteratively estimate the variance structure from the residuals and then estimate the parameters after removing the estimated variance structure. This continues until covergence (i.e. the parameters stop changing on each iteration). So we can think of GLS as a mechanism for <em>removing</em> a complex correlation or variance structure from the data, and then using a standard regression model on what remains.</p>
@@ -423,7 +425,7 @@
 <span class="nf">t.test</span><span class="p">(</span><span class="n">y</span><span class="p">[,</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">y</span><span class="p">[,</span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="n">paired</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">var.equal</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 
 <span class="n">gls.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">gls</span><span class="p">(</span><span class="n">y.long</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">cond</span><span class="p">,</span><span class="w"> </span><span class="n">correlation</span><span class="o">=</span><span class="nf">corCompSymm</span><span class="p">(</span><span class="n">form</span><span class="o">=~</span><span class="m">1</span><span class="o">|</span><span class="n">subject</span><span class="p">))</span>
-<span class="nf">summary</span><span class="p">(</span><span class="n">gls.mod</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">summary</span><span class="p">(</span><span class="n">gls.mod</span><span class="p">))</span>
 
 <span class="nf">print</span><span class="p">(</span><span class="nf">Anova</span><span class="p">(</span><span class="n">gls.mod</span><span class="p">))</span>
 
@@ -433,19 +435,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>	Paired t-test
-
-data:  y[, 1] and y[, 2]
-t = -2.4952, df = 49, p-value = 0.01601
-alternative hypothesis: true mean difference is not equal to 0
-95 percent confidence interval:
- -0.3730884 -0.0402221
-sample estimates:
-mean difference 
-     -0.2066553 
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generalized least squares fit by REML
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generalized least squares fit by REML
   Model: y.long ~ cond 
   Data: NULL 
        AIC      BIC    logLik
@@ -472,9 +462,7 @@ Standardized residuals:
 
 Residual standard error: 1.113934 
 Degrees of freedom: 100 total; 98 residual
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Analysis of Deviance Table (Type II tests)
+Analysis of Deviance Table (Type II tests)
 
 Response: y.long
      Df  Chisq Pr(&gt;Chisq)  
@@ -486,19 +474,6 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 </div>
 </div>
 <p>Notice, however, that GLS is ignoring the structure in the data in terms of the subjects, because it has no knowledge of them.</p>
-<p>The <span class="math notranslate nohighlight">\(t\)</span>-statistics reported in the table can be thought-of as asymptotic <span class="math notranslate nohighlight">\(z\)</span>-statistics…</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">print</span><span class="p">(</span><span class="m">2</span><span class="o">*</span><span class="nf">pnorm</span><span class="p">(</span><span class="m">2.495231</span><span class="p">,</span><span class="n">lower.tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 0.01258752
-</pre></div>
-</div>
-</div>
-</div>
 </section>
 <section id="large-sample-gls">
 <h2>Large Sample GLS<a class="headerlink" href="#large-sample-gls" title="Link to this heading">#</a></h2>
