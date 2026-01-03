@@ -37,6 +37,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/test.css?v=90b7ad94" />
   
   <!-- So that users can add custom icons -->
   <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -371,16 +372,13 @@
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-of-the-model-of-paired-differences">Limitations of the Model of <em>Paired Differences</em></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model-of-partitioned-errors">The Model of <em>Partitioned Errors</em></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix">Partitioning the Error as a Decomposition of the Variance-covariance Matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioned-errors-in-r">Partitioned Errors in <code class="docutils literal notranslate"><span class="pre">R</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-implied-covariance-structure">The Implied Covariance Structure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-sphericity-condition">The Sphericity Condition</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-concept-of-blocking">The Concept of Blocking</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-between-subjects-factors">Adding Between-subjects Factors</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioned-error-models">Partitioned Error Models</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rm-anova-in-r">RM ANOVA in <code class="docutils literal notranslate"><span class="pre">R</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-aov-function">Using the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#between-subjects-factors">Between-subjects Factors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-within-subject-factors">Additional Within-subject Factors</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-ezanova-function">Using the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> Function</a></li>
 </ul>
 </li>
@@ -401,56 +399,204 @@
 <p>In the previous part of this lesson, we examined the paired <span class="math notranslate nohighlight">\(t\)</span>-test as the most basic method for dealing with repeated measurements. In doing do, we established that taking the <em>difference</em> between the pairs was enough to remove correlation and render the data independent, allowing us to specify a simple one-sample test on the mean difference. In order to understand this, we split our usual single error term into two components, one associated with each subject and one associated with any other deviations. We then saw how the term associated with each subject <em>cancelled</em> when the pairs were subtracted, implying that this component captured the correlation between the repeated measurements. Furthermore, by viewing these terms in relation to a partition of the error variance, we established that it is the <em>between-subjects</em> variance that is removed by subtraction, leaving only the <em>within-subject</em> variance. Because this is smaller than the total variance, and smaller than the between-subjects variance, this rendered the standard error of the estimated mean difference smaller, thus making the test statistic larger. This not only established <em>why</em> the paired <span class="math notranslate nohighlight">\(t\)</span>-test is different to the independent measures <span class="math notranslate nohighlight">\(t\)</span>-test, but also why the paired <span class="math notranslate nohighlight">\(t\)</span>-test is typically <em>more powerful</em> and thus desirable, from an inferential perspective.</p>
 <section id="limitations-of-the-model-of-paired-differences">
 <h2>Limitations of the Model of <em>Paired Differences</em><a class="headerlink" href="#limitations-of-the-model-of-paired-differences" title="Link to this heading">#</a></h2>
-<p>This framework is fine when the data consists of only <em>two</em> repeated measurements. However, we hit a problem if we have <em>more than two</em> repeated measurements, <em>more than one</em> repeated measures factor or even when we have a mixture of repeated measurements and independent measurements. In many of these cases, we cannot take a simple subtraction and then analyse the resultant differences as independent. So, while the paired <span class="math notranslate nohighlight">\(t\)</span>-test is fine in simple cases, it does not generalise very easily. As such, we need a more complex method in the form of the <em>repeated measures ANOVA</em>. Importantly, while the repeated measures ANOVA is still used widely in psychological research, it is <em>not</em> generally recommended. We will discuss the reasons why in this part of the lesson. However, it is probably enough at this stage to indicate that few working statisticians would ever use a repeated measures ANOVA in practice, as it is generally considered an <em>old</em> and <em>inflexible</em> approach that has been deprecated in favour of more advanced methods.</p>
+<p>Although this <em>paired differences</em> framework works well when the data consists of only <em>two</em> repeated measurements, we hit a problem if we have <em>more than two</em> repeated measurements, <em>more than one</em> repeated measures factor or even when we have a mixture of repeated measurements and independent measurements. In many of these cases, we cannot take a simple subtraction and then analyse the resultant differences. So, while the paired <span class="math notranslate nohighlight">\(t\)</span>-test is fine in simple cases, it does not generalise very easily.</p>
+<p>In order to allow the analysis of more complex experimental situations, we need to abandon the idea of making the data independent through subtraction. Instead, we need to accommodate the correlation <em>directly</em> within the model. The general theme of this section of the unit is <em>mixed-effects models</em>, which represent the most modern solution to this problem. However, in this part of the lesson we will discuss an older solution in the form of the <em>repeated measures ANOVA</em>. This is really a stepping-stone towards mixed-effects models, rather than a recommendation, as the repeated measures ANOVA is rather limited in practice. Nevertheless, this method is still used widely in psychological research and so is still worth understanding.</p>
 </section>
 <section id="the-model-of-partitioned-errors">
 <h2>The Model of <em>Partitioned Errors</em><a class="headerlink" href="#the-model-of-partitioned-errors" title="Link to this heading">#</a></h2>
-<p>In the model above, we mentioned that performing the subtraction</p>
-<div class="math notranslate nohighlight">
-\[
-y_{ij} - \alpha_{j} = \mu + S_{i} + \epsilon_{ij}.
-\]</div>
-<p>resulted in a model that was simply the grand mean <em>plus</em> pure error. In defining this “error”, we split it into two parts, one associated with the subjects and one representing everything else. This process of splitting the error into different chunks is known as <em>partitioning</em> the error. In our original linear model, we only had a single error term and the model for two conditions was</p>
-<div class="math notranslate nohighlight">
-\[
-y_{ij} = \mu + \alpha_{j} + \epsilon_{ij}.
-\]</div>
-<p>Although we implied that the term <span class="math notranslate nohighlight">\(S_{i}\)</span> was <em>added</em> to the model, it is more correct to think of <em>splitting</em> the original error term. If we rename the error term to <span class="math notranslate nohighlight">\(\eta_{ij}\)</span>, then this is more correctly expressed as</p>
+<p>As mentioned above, because <em>subtraction</em> only works in a number of limited cases, we need to abandon it as our general solution to dealing with dependent data. Instead, we need to work with data that we <em>know</em> is correlated. Unfortunately, as we have already established, the linear model framework assumes that the errors of the model are <span class="math notranslate nohighlight">\(i.i.d.\)</span>, which will not be true under repeated measurements. However, we have already seen a possible solution to this problem, as the removal of the subject terms <span class="math notranslate nohighlight">\(S_{i}\)</span> theoretically <em>removes</em> the correlation and renders the errors independent. Thus, if we were to <em>include</em> the term <span class="math notranslate nohighlight">\(S_{i}\)</span> in the model, the errors would meet the <span class="math notranslate nohighlight">\(i.i.d.\)</span> criteria. Furthermore, the single error variance assumed by the linear model would be the <em>within-subject</em> variance and thus would be suitable for inference on the repeated measurements. Putting all this together gives us the model</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{alignat*}{1}
-    y_{ij}   &amp;= \mu + \alpha_{j} + \eta_{ij} \\
-    \eta_{ij} &amp;= S_{i} + \epsilon_{ij}
+    y_{ij}    &amp;=                      \mu + \alpha_{j} + S_{i} + \eta_{ij} \\
+    \eta_{ij} &amp;\overset{i.i.d.}{\sim} \mathcal{N}(0,\sigma^{2}_{w})
 \end{alignat*}
 \end{split}\]</div>
-<p>Remembering that the errors represent the <em>random</em> part of our model, then the model with the single error term is given by</p>
+<p>which is the basis for the repeated measures ANOVA.</p>
+<p>Now, in the specification above, we have treated <span class="math notranslate nohighlight">\(S_{i}\)</span> like any other factor in an ANOVA model. However, this is not really correct. As discussed in the previous part of this lesson, <span class="math notranslate nohighlight">\(S_{i}\)</span> comes from <em>splitting</em> the overall error term <span class="math notranslate nohighlight">\(\epsilon_{ij}\)</span>. So, in theory, rather than representing population constants (like <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\alpha_{j}\)</span>), the <span class="math notranslate nohighlight">\(S_{i}\)</span> are a <em>random variable</em>. This makes sense because the subjects represent a <em>random sample</em>, rather than a fixed quantity. If we were to run the experiment again, <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\alpha_{j}\)</span> would be the <em>same</em>, but the <span class="math notranslate nohighlight">\(S_{i}\)</span> would be <em>different</em>. Rather than <span class="math notranslate nohighlight">\(S_{i}\)</span> representing the <span class="math notranslate nohighlight">\(i\)</span>th level of an <span class="math notranslate nohighlight">\(n\)</span>-dimensional experimental factor, it is the <span class="math notranslate nohighlight">\(i\)</span>th <em>random deviation</em>. From this perspective, <span class="math notranslate nohighlight">\(S_{i}\)</span> is clearly an <em>additional error term</em>. Unfortunately, the linear model only has <em>one</em> error term. Thus, what we <em>want</em> to use is the model</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{alignat*}{1}
-    y_{ij}   &amp;= \mu + \alpha_{j} + \eta_{ij} \\
-    \eta_{ij} &amp;\sim \mathcal{N}(0, \sigma^{2})
+    y_{ij}    &amp;=    \mu + \alpha_{j} + S_{i} + \eta_{ij} \\
+    S_{i}     &amp;\sim \mathcal{N}(0,\sigma^{2}_{b})        \\
+    \eta_{ij} &amp;\sim \mathcal{N}(0,\sigma^{2}_{w})
 \end{alignat*}
 \end{split}\]</div>
-<p>which should be familiar from last semester. If we were to then split <span class="math notranslate nohighlight">\(\eta_{ij}\)</span> into different chunks we end up with <em>multiple</em> random error terms</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{alignat*}{1}
-    y_{ij}        &amp;=    \mu + \alpha_{j} + (S_{i} + \epsilon_{ij}) \\
-    S_{i}         &amp;\sim \mathcal{N}(0, \sigma^{2}_{b}) \\
-    \epsilon_{ij} &amp;\sim \mathcal{N}(0, \sigma^{2}_{w})
-\end{alignat*}
-\end{split}\]</div>
-<p>So now we can see <em>explicitly</em> that there are two sources of error variance, one given by <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> and one given by <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. This means that the expected value of <span class="math notranslate nohighlight">\(y_{ij}\)</span> stays exactly the same as any other model of two groups</p>
-<div class="math notranslate nohighlight">
-\[
-E\left(y_{ij}\right) = \mu + \alpha_{j} = \mu_{j}.
-\]</div>
-<p>This connects directly with the idea that repeated measurements do not affect the mean function. However, what changes is the <em>variance</em> of <span class="math notranslate nohighlight">\(y_{ij}\)</span>, which is now given by</p>
-<div class="math notranslate nohighlight">
-\[
-\text{Var}\left(y_{ij}\right) = \sigma^{2}_{b} + \sigma^{2}_{w}.
-\]</div>
-<p>These types of models are also known as <em>variance components</em> models, because they work precisely by splitting the variance into multiple components, as shown above. So, we can now express this model in terms of its mean and variance function like so</p>
+<p>but we cannot, because this would require a method that could flexibly accommodate multiple error terms (which is exactly what <em>mixed-effects</em> model do). Instead, the repeated measures ANOVA aims to <em>replicate</em> this situation within the confines of a modelling framework that <em>does not allow it</em>. As you might imagine, this involves jumping through a number of hoops and places a number of restrictions on what is possible.</p>
+<section id="partitioned-errors-in-r">
+<h3>Partitioned Errors in <code class="docutils literal notranslate"><span class="pre">R</span></code><a class="headerlink" href="#partitioned-errors-in-r" title="Link to this heading">#</a></h3>
+<p>Before discussing this in more detail, we will demonstrate the general idea in <code class="docutils literal notranslate"><span class="pre">R</span></code> in two ways, one using <code class="docutils literal notranslate"><span class="pre">lm()</span></code> and one using the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> function. We have not covered <code class="docutils literal notranslate"><span class="pre">aov()</span></code> previously, but this is a wrapper for <code class="docutils literal notranslate"><span class="pre">lm()</span></code> that can accommodate partitioned errors.</p>
+<p>To begin with, let us specify the model above that contains the subject terms. We will do this using the <code class="docutils literal notranslate"><span class="pre">mice2</span></code> data again, so we can show agreement with the paired <span class="math notranslate nohighlight">\(t\)</span>-test. However, we need to first convert this data into <em>long</em> format.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;datarium&#39;</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="s">&#39;reshape2&#39;</span><span class="p">)</span>
+<span class="nf">data</span><span class="p">(</span><span class="s">&#39;mice2&#39;</span><span class="p">)</span>
+
+<span class="c1"># repeats and number of subjects</span>
+<span class="n">t</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">2</span>
+<span class="n">n</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">dim</span><span class="p">(</span><span class="n">mice2</span><span class="p">)[</span><span class="m">1</span><span class="p">]</span>
+
+<span class="c1"># reshape wide -&gt; long</span>
+<span class="n">mice2.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">melt</span><span class="p">(</span><span class="n">mice2</span><span class="p">,</span><span class="w">                       </span><span class="c1"># wide data frame</span>
+<span class="w">                   </span><span class="n">id.vars</span><span class="o">=</span><span class="s">&#39;id&#39;</span><span class="p">,</span><span class="w">                </span><span class="c1"># what stays fixed?</span>
+<span class="w">                   </span><span class="n">variable.name</span><span class="o">=</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w">        </span><span class="c1"># name for the new predictor</span>
+<span class="w">                   </span><span class="n">value.name</span><span class="o">=</span><span class="s">&quot;weight&quot;</span><span class="p">)</span><span class="w">         </span><span class="c1"># name for the new outcome</span>
+
+<span class="n">mice2.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mice2.long</span><span class="p">[</span><span class="nf">order</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="p">),]</span><span class="w"> </span><span class="c1"># order by ID</span>
+<span class="nf">rownames</span><span class="p">(</span><span class="n">mice2.long</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="n">n</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="w">              </span><span class="c1"># fix row names</span>
+
+<span class="c1"># make id a factor</span>
+<span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">mice2.long</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   id   time weight
+1   1 before  187.2
+2   1  after  429.5
+3   2 before  194.2
+4   2  after  404.4
+5   3 before  231.7
+6   3  after  405.6
+7   4 before  200.5
+8   4  after  397.2
+9   5 before  201.7
+10  5  after  377.9
+11  6 before  235.0
+12  6  after  445.8
+13  7 before  208.7
+14  7  after  408.4
+15  8 before  172.4
+16  8  after  337.0
+17  9 before  184.6
+18  9  after  414.3
+19 10 before  189.6
+20 10  after  380.3
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we can specify the partitioned error model using <code class="docutils literal notranslate"><span class="pre">lm()</span></code> below</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rm.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">mice2.long</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">rm.mod</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call:
+lm(formula = weight ~ time + id, data = mice2.long)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-21.410  -7.155   0.000   7.155  21.410 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  208.610     12.949  16.110 6.06e-08 ***
+timeafter    199.480      7.809  25.546 1.04e-09 ***
+id2           -9.050     17.460  -0.518   0.6167    
+id3           10.300     17.460   0.590   0.5698    
+id4           -9.500     17.460  -0.544   0.5996    
+id5          -18.550     17.460  -1.062   0.3157    
+id6           32.050     17.460   1.836   0.0996 .  
+id7            0.200     17.460   0.011   0.9911    
+id8          -53.650     17.460  -3.073   0.0133 *  
+id9           -8.900     17.460  -0.510   0.6225    
+id10         -23.400     17.460  -1.340   0.2130    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 17.46 on 9 degrees of freedom
+Multiple R-squared:  0.987,	Adjusted R-squared:  0.9725 
+F-statistic: 68.22 on 10 and 9 DF,  p-value: 2.985e-07
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ignoring the subject effects, if we look at the test on <code class="docutils literal notranslate"><span class="pre">timeafter</span></code>, we can see that this agrees with the paired <span class="math notranslate nohighlight">\(t\)</span>-test from earlier, as repeated below</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">print</span><span class="p">(</span><span class="nf">t.test</span><span class="p">(</span><span class="n">mice2</span><span class="o">$</span><span class="n">before</span><span class="p">,</span><span class="w"> </span><span class="n">mice2</span><span class="o">$</span><span class="n">after</span><span class="p">,</span><span class="w"> </span><span class="n">paired</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>	Paired t-test
+
+data:  mice2$before and mice2$after
+t = -25.546, df = 9, p-value = 1.039e-09
+alternative hypothesis: true mean difference is not equal to 0
+95 percent confidence interval:
+ -217.1442 -181.8158
+sample estimates:
+mean difference 
+        -199.48 
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can tidy this output up a bit by calling <code class="docutils literal notranslate"><span class="pre">Anova()</span></code> on the model</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;car&#39;</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">Anova</span><span class="p">(</span><span class="n">rm.mod</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Anova Table (Type II tests)
+
+Response: weight
+          Sum Sq Df F value    Pr(&gt;F)    
+time      198961  1 652.613 1.039e-09 ***
+id          9013  9   3.285   0.04559 *  
+Residuals   2744  9                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+</pre></div>
+</div>
+</div>
+</div>
+<p>Where, again, we would ignore the test on <code class="docutils literal notranslate"><span class="pre">id</span></code> and just focus on the effect of <code class="docutils literal notranslate"><span class="pre">time</span></code>. However, the fact that a test on <code class="docutils literal notranslate"><span class="pre">id</span></code> has been produced suggests that this model term is not really being treated correctly. After all, do we want a hypothesis test based on the null that all the subject means are the same? Given that this is a random sample of subjects, how meaningful would this be unless these were the only subjects in the world that we were interested in? As indicated above, the <code class="docutils literal notranslate"><span class="pre">id</span></code> effect is not really an effect of interest in the same way as <code class="docutils literal notranslate"><span class="pre">time</span></code>. In fact, <code class="docutils literal notranslate"><span class="pre">id</span></code> is considered <em>error</em>. It would be like specifying a hypothesis test on the model residuals. We are not interested in estimating some universal truth here because what we have are <em>random deviations</em> reflective of <em>error variance</em>. As such, in much the same way that the residuals are used to estimate the <em>within-subject</em> variance, we want the values of <code class="docutils literal notranslate"><span class="pre">id</span></code> to be used to estimate the <em>between-subjects</em> variance.</p>
+<p>In order to tell <code class="docutils literal notranslate"><span class="pre">R</span></code> that <code class="docutils literal notranslate"><span class="pre">id</span></code> is an <em>additional error term</em>, we can use the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> function. This is a wrapper for <code class="docutils literal notranslate"><span class="pre">lm()</span></code> designed to produce an ANOVA table where some of the model terms represent <em>error</em> rather than a traditional ANOVA effect. From an <em>estimation</em> perspective, this distinction does not make any difference because ANOVA <em>mean squares</em> are already estimates of variance. However, what <em>does</em> matter, is whether these mean squares form the <em>numerator</em> of an <span class="math notranslate nohighlight">\(F\)</span>-ratio (variance associated with <em>mean differences</em>) or the <em>denominator</em> of an <span class="math notranslate nohighlight">\(F\)</span>-ratio (variance associated with <em>error</em>). So, what we are really doing is telling <code class="docutils literal notranslate"><span class="pre">R</span></code> where to place the different mean squares in the ANOVA table.</p>
+<p>An example of using <code class="docutils literal notranslate"><span class="pre">aov()</span></code> for the <code class="docutils literal notranslate"><span class="pre">mice2</span></code> data is shown below. Here we use the <code class="docutils literal notranslate"><span class="pre">Error()</span></code> syntax within the model formula to indicate that <code class="docutils literal notranslate"><span class="pre">id</span></code> is an <em>error term</em>. This results in <em>two</em> ANOVA tables. One where <span class="math notranslate nohighlight">\(S_{i}\)</span> forms the error term and one where <span class="math notranslate nohighlight">\(\eta_{ij}\)</span> forms the error term. Based on the model structure, <code class="docutils literal notranslate"><span class="pre">aov()</span></code> can work out that <code class="docutils literal notranslate"><span class="pre">time</span></code> should have <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> as its denominator in the <span class="math notranslate nohighlight">\(F\)</span>-ratio and thus has associated it with the correct ANOVA table. As there are no other terms in the model, the ANOVA table with <span class="math notranslate nohighlight">\(id\)</span> as the error is empty.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rm.aov.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">aov</span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">Error</span><span class="p">(</span><span class="n">id</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">mice2.long</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">summary</span><span class="p">(</span><span class="n">rm.aov.mod</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error: id
+          Df Sum Sq Mean Sq F value Pr(&gt;F)
+Residuals  9   9013    1002               
+
+Error: Within
+          Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+time       1 198961  198961   652.6 1.04e-09 ***
+Residuals  9   2744     305                     
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that the test results have remained the same throughout all these examples. So, for this simple situation, we could use <code class="docutils literal notranslate"><span class="pre">t.test(...,</span> <span class="pre">paired=TRUE)</span></code>, <code class="docutils literal notranslate"><span class="pre">lm()</span></code>, <code class="docutils literal notranslate"><span class="pre">Anova(lm())</span></code>, or <code class="docutils literal notranslate"><span class="pre">aov(...</span> <span class="pre">+</span> <span class="pre">Error(id))</span></code>. However, as we add between-subjects factors and additional within-subject factors things start to get much more complicated.</p>
+</section>
+<section id="the-implied-covariance-structure">
+<h3>The Implied Covariance Structure<a class="headerlink" href="#the-implied-covariance-structure" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{alignat*}{2}
@@ -495,8 +641,6 @@ E\left(y_{ij}\right) = \mu + \alpha_{j} = \mu_{j}.
 \end{alignat*}
 \end{split}\]</div>
 <p>So, we can see that the correlation <em>cancels-out</em>, which is exactly as expected from our exploration of the <em>model of paired differences</em> from earlier.</p>
-<section id="partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix">
-<h3>Partitioning the Error as a Decomposition of the Variance-covariance Matrix<a class="headerlink" href="#partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix" title="Link to this heading">#</a></h3>
 <p>Now, we will connect what we have done above with the idea of modelling the variance-covariance matrix. Rather than doing this <em>explicitly</em>, the method above was an <em>implicit</em> modelling of the covariance structure…</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -521,54 +665,19 @@ E\left(y_{ij}\right) = \mu + \alpha_{j} = \mu_{j}.
 \end{bmatrix}
 \right)
 \end{split}\]</div>
+<p>So this means that a covariance matrix is never actually calculated within a repeated measures ANOVA, the structure is simply <em>implied</em> via the various model assumptions. Because of this, the correct error terms for the various tests are not derived logically from the structure of the covariance matrix, they need to be organised manually. This is one of the biggest complexities of this framework and is why modern statistics prefers methods where this is taken care of <em>automatically</em> via an explicit covariance structure.</p>
+</section>
+<section id="the-sphericity-condition">
+<h3>The Sphericity Condition<a class="headerlink" href="#the-sphericity-condition" title="Link to this heading">#</a></h3>
+<p>… These corrections are available through the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> function which, as we will see, is generally the most straight-forward way of generating a repeated measures ANOVA with the correct error partition. For simple models, this will make limited difference. However, as we will see below, more complex models because tricky to specify using <code class="docutils literal notranslate"><span class="pre">aov()</span></code>. This is partly a limitation in the structure of <code class="docutils literal notranslate"><span class="pre">aov()</span></code>, but also points to the general complexity of the repeated measures ANOVA framework.</p>
 </section>
 </section>
-<section id="the-concept-of-blocking">
-<h2>The Concept of Blocking<a class="headerlink" href="#the-concept-of-blocking" title="Link to this heading">#</a></h2>
-</section>
-<section id="adding-between-subjects-factors">
-<h2>Adding Between-subjects Factors<a class="headerlink" href="#adding-between-subjects-factors" title="Link to this heading">#</a></h2>
+<section id="between-subjects-factors">
+<h2>Between-subjects Factors<a class="headerlink" href="#between-subjects-factors" title="Link to this heading">#</a></h2>
 <p>… So what is the correct error here? The obvious, and correct, answer is that it is the <em>between-subjects</em> error. So how do we use this in our test statistics? At present, all we have done is <em>removed</em> the between-subjects error by including the <code class="docutils literal notranslate"><span class="pre">Subject</span></code> factor in our models. However, we somehow have to use this removed error as the denominator in tests that are based on between-subjects effects.</p>
-<section id="partitioned-error-models">
-<h3>Partitioned Error Models<a class="headerlink" href="#partitioned-error-models" title="Link to this heading">#</a></h3>
-<p>… the difference is that, rather than including the <code class="docutils literal notranslate"><span class="pre">Subject</span></code> factor as something to be estimated and tested (like any other regression coefficients), we instead want to just use these effects for the purpose of estimating the <em>between-subjects</em> variance. We already saw from previous examples that the effects of <code class="docutils literal notranslate"><span class="pre">Subject</span></code> are not interesting, as we simply ignored them. Indeed, the <span class="math notranslate nohighlight">\(t\)</span>-tests and <span class="math notranslate nohighlight">\(p\)</span>-values and other automatic treatments of these coefficients were both <em>uninteresting</em> and <em>unnecessary</em>, which is a hint to the fact that we were not really using this factor correctly when adding it to the linear model in this way. This is because <code class="docutils literal notranslate"><span class="pre">Subject</span></code> was, in fact, something known as a <em>random-effect</em>.</p>
-<p>…This distinction between something we want to directly estimate and test and something that is used for calculating varirance is the difference between <em>fixed-effects</em> and <em>random-effects</em>. As such, in order to use the <code class="docutils literal notranslate"><span class="pre">Subject</span></code> factor in this way, it must be treated as a <em>random-effect</em>.</p>
-<p>…We have already seen models that contain random variables, as every single linear model so far has contained a <em>random error term</em>. As such,</p>
-<p>…The way the ANOVA calculated this error is through the usual decomposition of sums-of-squares…If we run an ANOVA on the paired model from earlier, we can see the <em>mean-squares</em> for the subejct effects. This <em>is</em> the estimate of the between-subejcts variance…</p>
 </section>
-</section>
-<section id="rm-anova-in-r">
-<h2>RM ANOVA in <code class="docutils literal notranslate"><span class="pre">R</span></code><a class="headerlink" href="#rm-anova-in-r" title="Link to this heading">#</a></h2>
-<section id="using-the-aov-function">
-<h3>Using the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> Function<a class="headerlink" href="#using-the-aov-function" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">summary</span><span class="p">(</span><span class="nf">aov</span><span class="p">(</span><span class="n">y.long</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">Error</span><span class="p">(</span><span class="n">subject</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="nb">eval</span><span class="p">(</span><span class="n">predvars</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span> <span class="nb">object</span> <span class="s1">&#39;y.long&#39;</span> <span class="ow">not</span> <span class="n">found</span>
-<span class="ne">Traceback</span>:
-
-<span class="mi">1</span><span class="o">.</span> <span class="n">summary</span><span class="p">(</span><span class="n">aov</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">long</span> <span class="o">~</span> <span class="n">cond</span> <span class="o">+</span> <span class="n">Error</span><span class="p">(</span><span class="n">subject</span><span class="p">)))</span>
-<span class="mi">2</span><span class="o">.</span> <span class="n">aov</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">long</span> <span class="o">~</span> <span class="n">cond</span> <span class="o">+</span> <span class="n">Error</span><span class="p">(</span><span class="n">subject</span><span class="p">))</span>
-<span class="mi">3</span><span class="o">.</span> <span class="nb">eval</span><span class="p">(</span><span class="n">ecall</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">frame</span><span class="p">())</span>
-<span class="mi">4</span><span class="o">.</span> <span class="nb">eval</span><span class="p">(</span><span class="n">ecall</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">frame</span><span class="p">())</span>
-<span class="mi">5</span><span class="o">.</span> <span class="n">stats</span><span class="p">::</span><span class="n">lm</span><span class="p">(</span><span class="n">formula</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">long</span> <span class="o">~</span> <span class="n">subject</span><span class="p">,</span> <span class="n">singular</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;qr&quot;</span><span class="p">,</span> 
- <span class="o">.</span>     <span class="n">qr</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
-<span class="mi">6</span><span class="o">.</span> <span class="nb">eval</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">frame</span><span class="p">())</span>
-<span class="mi">7</span><span class="o">.</span> <span class="nb">eval</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">frame</span><span class="p">())</span>
-<span class="mi">8</span><span class="o">.</span> <span class="n">stats</span><span class="p">::</span><span class="n">model</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">formula</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">long</span> <span class="o">~</span> <span class="n">subject</span><span class="p">,</span> <span class="n">drop</span><span class="o">.</span><span class="n">unused</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
-<span class="mi">9</span><span class="o">.</span> <span class="n">model</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">formula</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">long</span> <span class="o">~</span> <span class="n">subject</span><span class="p">,</span> <span class="n">drop</span><span class="o">.</span><span class="n">unused</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
-<span class="mi">10</span><span class="o">.</span> <span class="nb">eval</span><span class="p">(</span><span class="n">predvars</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
-<span class="mi">11</span><span class="o">.</span> <span class="nb">eval</span><span class="p">(</span><span class="n">predvars</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>So this is now very explicitly saying that we want to add <code class="docutils literal notranslate"><span class="pre">subject</span></code> to the model, but that we want it to be treated as an <em>error term</em>. This tells <code class="docutils literal notranslate"><span class="pre">R</span></code> that we want the sums-of-squares and mean-square to be calculated for <code class="docutils literal notranslate"><span class="pre">subject</span></code>, but what we do not want is for there to be tests on this factor. Instead, we want it to be treated as the <em>denominator</em> of the <span class="math notranslate nohighlight">\(F\)</span>-statistic for certain tests. So, in the ANOVA table, we want <code class="docutils literal notranslate"><span class="pre">subject</span></code> to be an additional error term, rather than an actual effect we are interested in.</p>
-</section>
+<section id="additional-within-subject-factors">
+<h2>Additional Within-subject Factors<a class="headerlink" href="#additional-within-subject-factors" title="Link to this heading">#</a></h2>
 <section id="using-the-ezanova-function">
 <h3>Using the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> Function<a class="headerlink" href="#using-the-ezanova-function" title="Link to this heading">#</a></h3>
 <p>As we can see above, using a partitioned error model with <code class="docutils literal notranslate"><span class="pre">aov()</span></code> is a tricky business and it would be very easy to get this wrong. As an alternative, we can use the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> function from the <code class="docutils literal notranslate"><span class="pre">ez</span></code> package. As the name implies, this is designed to allow for an RM ANOVA without the usual difficulties associated with the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> or <code class="docutils literal notranslate"><span class="pre">lm()</span></code> functions. Unfortuantely, the aim of this package is largely to make the <code class="docutils literal notranslate"><span class="pre">R</span></code> output the same as SPSS. So it does away with the linear model framework. This means, no residuals, no parameter estimates, no diagnostic plots or anything else we have made use of so far. If you <em>have</em> to use an RM ANOVA, this is the simplest way to get it <em>right</em>. However, as we will discuss below, we would disuade you from ever considering RM ANOVA as an option in the future. About the only utility of this is showing doubtful researchers that our better options of GLS and mixed-effects models are, in fact, giving them the same answer as an RM ANOVA.</p>
@@ -662,16 +771,13 @@ E\left(y_{ij}\right) = \mu + \alpha_{j} = \mu_{j}.
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-of-the-model-of-paired-differences">Limitations of the Model of <em>Paired Differences</em></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model-of-partitioned-errors">The Model of <em>Partitioned Errors</em></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioning-the-error-as-a-decomposition-of-the-variance-covariance-matrix">Partitioning the Error as a Decomposition of the Variance-covariance Matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioned-errors-in-r">Partitioned Errors in <code class="docutils literal notranslate"><span class="pre">R</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-implied-covariance-structure">The Implied Covariance Structure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-sphericity-condition">The Sphericity Condition</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-concept-of-blocking">The Concept of Blocking</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-between-subjects-factors">Adding Between-subjects Factors</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partitioned-error-models">Partitioned Error Models</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rm-anova-in-r">RM ANOVA in <code class="docutils literal notranslate"><span class="pre">R</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-aov-function">Using the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#between-subjects-factors">Between-subjects Factors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-within-subject-factors">Additional Within-subject Factors</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-ezanova-function">Using the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> Function</a></li>
 </ul>
 </li>
