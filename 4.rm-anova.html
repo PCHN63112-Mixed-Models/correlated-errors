@@ -377,8 +377,8 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-sphericity-condition">The Sphericity Condition</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#between-subjects-factors">Between-subjects Factors</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-within-subject-factors">Additional Within-subject Factors</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-between-subjects-factors">Adding Between-subjects Factors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-more-within-subject-factors">Add More Within-subject Factors</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-ezanova-function">Using the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> Function</a></li>
 </ul>
 </li>
@@ -687,12 +687,12 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 </div>
 </section>
 </section>
-<section id="between-subjects-factors">
-<h2>Between-subjects Factors<a class="headerlink" href="#between-subjects-factors" title="Link to this heading">#</a></h2>
+<section id="adding-between-subjects-factors">
+<h2>Adding Between-subjects Factors<a class="headerlink" href="#adding-between-subjects-factors" title="Link to this heading">#</a></h2>
 <p>… So what is the correct error here? The obvious, and correct, answer is that it is the <em>between-subjects</em> error. So how do we use this in our test statistics? At present, all we have done is <em>removed</em> the between-subjects error by including the <code class="docutils literal notranslate"><span class="pre">Subject</span></code> factor in our models. However, we somehow have to use this removed error as the denominator in tests that are based on between-subjects effects.</p>
 </section>
-<section id="additional-within-subject-factors">
-<h2>Additional Within-subject Factors<a class="headerlink" href="#additional-within-subject-factors" title="Link to this heading">#</a></h2>
+<section id="add-more-within-subject-factors">
+<h2>Add More Within-subject Factors<a class="headerlink" href="#add-more-within-subject-factors" title="Link to this heading">#</a></h2>
 <section id="using-the-ezanova-function">
 <h3>Using the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> Function<a class="headerlink" href="#using-the-ezanova-function" title="Link to this heading">#</a></h3>
 <p>As we can see above, using a partitioned error model with <code class="docutils literal notranslate"><span class="pre">aov()</span></code> is a tricky business and it would be very easy to get this wrong. As an alternative, we can use the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> function from the <code class="docutils literal notranslate"><span class="pre">ez</span></code> package. As the name implies, this is designed to allow for an RM ANOVA without the usual difficulties associated with the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> or <code class="docutils literal notranslate"><span class="pre">lm()</span></code> functions. Unfortuantely, the aim of this package is largely to make the <code class="docutils literal notranslate"><span class="pre">R</span></code> output the same as SPSS. So it does away with the linear model framework. This means, no residuals, no parameter estimates, no diagnostic plots or anything else we have made use of so far. If you <em>have</em> to use an RM ANOVA, this is the simplest way to get it <em>right</em>. However, as we will discuss below, we would disuade you from ever considering RM ANOVA as an option in the future. About the only utility of this is showing doubtful researchers that our better options of GLS and mixed-effects models are, in fact, giving them the same answer as an RM ANOVA.</p>
@@ -803,8 +803,8 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-sphericity-condition">The Sphericity Condition</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#between-subjects-factors">Between-subjects Factors</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-within-subject-factors">Additional Within-subject Factors</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-between-subjects-factors">Adding Between-subjects Factors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-more-within-subject-factors">Add More Within-subject Factors</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-ezanova-function">Using the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> Function</a></li>
 </ul>
 </li>
