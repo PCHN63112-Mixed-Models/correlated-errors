@@ -425,8 +425,8 @@
 <p>but we cannot, because this would require a method that could flexibly accommodate multiple error terms (which is exactly what <em>mixed-effects</em> model do). Instead, the repeated measures ANOVA aims to <em>replicate</em> this situation within the confines of a modelling framework that <em>does not allow it</em>. As you might imagine, this involves jumping through a number of hoops and places a number of restrictions on what is possible.</p>
 <section id="partitioned-errors-in-r">
 <h3>Partitioned Errors in <code class="docutils literal notranslate"><span class="pre">R</span></code><a class="headerlink" href="#partitioned-errors-in-r" title="Link to this heading">#</a></h3>
-<p>Before discussing this in more detail, we will demonstrate the general idea in <code class="docutils literal notranslate"><span class="pre">R</span></code> in two ways, one using <code class="docutils literal notranslate"><span class="pre">lm()</span></code> and one using the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> function. We have not covered <code class="docutils literal notranslate"><span class="pre">aov()</span></code> previously, but this is a wrapper for <code class="docutils literal notranslate"><span class="pre">lm()</span></code> that can accommodate partitioned errors.</p>
-<p>To begin with, let us specify the model above that contains the subject terms. We will do this using the <code class="docutils literal notranslate"><span class="pre">mice2</span></code> data again, so we can show agreement with the paired <span class="math notranslate nohighlight">\(t\)</span>-test. However, we need to first convert this data into <em>long</em> format.</p>
+<p>Before discussing this in more detail, we will demonstrate the general idea in <code class="docutils literal notranslate"><span class="pre">R</span></code> in two ways, one using <code class="docutils literal notranslate"><span class="pre">lm()</span></code> and one using the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> function. To begin with, let us specify the same model given above that contains the <span class="math notranslate nohighlight">\(S_{i}\)</span> term. We will do this using the <code class="docutils literal notranslate"><span class="pre">mice2</span></code> data again, so we can show agreement with the paired <span class="math notranslate nohighlight">\(t\)</span>-test.</p>
+<p>First, we need to first convert this data into <em>long</em> format.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -450,9 +450,6 @@
 
 <span class="n">mice2.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mice2.long</span><span class="p">[</span><span class="nf">order</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="p">),]</span><span class="w"> </span><span class="c1"># order by ID</span>
 <span class="nf">rownames</span><span class="p">(</span><span class="n">mice2.long</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="n">n</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="w">              </span><span class="c1"># fix row names</span>
-
-<span class="c1"># make id a factor</span>
-<span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="p">)</span>
 
 <span class="nf">print</span><span class="p">(</span><span class="n">mice2.long</span><span class="p">)</span>
 </pre></div>
@@ -485,7 +482,15 @@
 </div>
 </div>
 </div>
-<p>Now, we can specify the partitioned error model using <code class="docutils literal notranslate"><span class="pre">lm()</span></code> below</p>
+<p>Next, we need to turn <code class="docutils literal notranslate"><span class="pre">id</span></code> into a factor</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we can specify the partitioned error model using <code class="docutils literal notranslate"><span class="pre">lm()</span></code> below</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rm.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">mice2.long</span><span class="p">)</span>
@@ -524,29 +529,7 @@ F-statistic: 68.22 on 10 and 9 DF,  p-value: 2.985e-07
 </div>
 </div>
 </div>
-<p>Ignoring the subject effects, if we look at the test on <code class="docutils literal notranslate"><span class="pre">timeafter</span></code>, we can see that this agrees with the paired <span class="math notranslate nohighlight">\(t\)</span>-test from earlier, as repeated below</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">print</span><span class="p">(</span><span class="nf">t.test</span><span class="p">(</span><span class="n">mice2</span><span class="o">$</span><span class="n">before</span><span class="p">,</span><span class="w"> </span><span class="n">mice2</span><span class="o">$</span><span class="n">after</span><span class="p">,</span><span class="w"> </span><span class="n">paired</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>	Paired t-test
-
-data:  mice2$before and mice2$after
-t = -25.546, df = 9, p-value = 1.039e-09
-alternative hypothesis: true mean difference is not equal to 0
-95 percent confidence interval:
- -217.1442 -181.8158
-sample estimates:
-mean difference 
-        -199.48 
-</pre></div>
-</div>
-</div>
-</div>
-<p>We can tidy this output up a bit by calling <code class="docutils literal notranslate"><span class="pre">Anova()</span></code> on the model</p>
+<p>Ignoring the <code class="docutils literal notranslate"><span class="pre">id</span></code> effects, if we look at the test on <code class="docutils literal notranslate"><span class="pre">timeafter</span></code>, we can see that this agrees with the paired <span class="math notranslate nohighlight">\(t\)</span>-test from earlier. We can also tidy this output up a bit by calling <code class="docutils literal notranslate"><span class="pre">Anova()</span></code> on the model</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;car&#39;</span><span class="p">)</span>
@@ -555,7 +538,8 @@ mean difference
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Anova Table (Type II tests)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading required package: carData
+Anova Table (Type II tests)
 
 Response: weight
           Sum Sq Df F value    Pr(&gt;F)    
@@ -568,9 +552,10 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 </div>
 </div>
 </div>
-<p>Where, again, we would ignore the test on <code class="docutils literal notranslate"><span class="pre">id</span></code> and just focus on the effect of <code class="docutils literal notranslate"><span class="pre">time</span></code>. However, the fact that a test on <code class="docutils literal notranslate"><span class="pre">id</span></code> has been produced suggests that this model term is not really being treated correctly. After all, do we want a hypothesis test based on the null that all the subject means are the same? Given that this is a random sample of subjects, how meaningful would this be unless these were the only subjects in the world that we were interested in? As indicated above, the <code class="docutils literal notranslate"><span class="pre">id</span></code> effect is not really an effect of interest in the same way as <code class="docutils literal notranslate"><span class="pre">time</span></code>. In fact, <code class="docutils literal notranslate"><span class="pre">id</span></code> is considered <em>error</em>. It would be like specifying a hypothesis test on the model residuals. We are not interested in estimating some universal truth here because what we have are <em>random deviations</em> reflective of <em>error variance</em>. As such, in much the same way that the residuals are used to estimate the <em>within-subject</em> variance, we want the values of <code class="docutils literal notranslate"><span class="pre">id</span></code> to be used to estimate the <em>between-subjects</em> variance.</p>
-<p>In order to tell <code class="docutils literal notranslate"><span class="pre">R</span></code> that <code class="docutils literal notranslate"><span class="pre">id</span></code> is an <em>additional error term</em>, we can use the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> function. This is a wrapper for <code class="docutils literal notranslate"><span class="pre">lm()</span></code> designed to produce an ANOVA table where some of the model terms represent <em>error</em> rather than a traditional ANOVA effect. From an <em>estimation</em> perspective, this distinction does not make any difference because ANOVA <em>mean squares</em> are already estimates of variance. However, what <em>does</em> matter, is whether these mean squares form the <em>numerator</em> of an <span class="math notranslate nohighlight">\(F\)</span>-ratio (variance associated with <em>mean differences</em>) or the <em>denominator</em> of an <span class="math notranslate nohighlight">\(F\)</span>-ratio (variance associated with <em>error</em>). So, what we are really doing is telling <code class="docutils literal notranslate"><span class="pre">R</span></code> where to place the different mean squares in the ANOVA table.</p>
-<p>An example of using <code class="docutils literal notranslate"><span class="pre">aov()</span></code> for the <code class="docutils literal notranslate"><span class="pre">mice2</span></code> data is shown below. Here we use the <code class="docutils literal notranslate"><span class="pre">Error()</span></code> syntax within the model formula to indicate that <code class="docutils literal notranslate"><span class="pre">id</span></code> is an <em>error term</em>. This results in <em>two</em> ANOVA tables. One where <span class="math notranslate nohighlight">\(S_{i}\)</span> forms the error term and one where <span class="math notranslate nohighlight">\(\eta_{ij}\)</span> forms the error term. Based on the model structure, <code class="docutils literal notranslate"><span class="pre">aov()</span></code> can work out that <code class="docutils literal notranslate"><span class="pre">time</span></code> should have <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> as its denominator in the <span class="math notranslate nohighlight">\(F\)</span>-ratio and thus has associated it with the correct ANOVA table. As there are no other terms in the model, the ANOVA table with <span class="math notranslate nohighlight">\(id\)</span> as the error is empty.</p>
+<p>Where, again, we would ignore the test on <code class="docutils literal notranslate"><span class="pre">id</span></code> and just focus on the effect of <code class="docutils literal notranslate"><span class="pre">time</span></code>.</p>
+<p>Now, we have managed to produce correct tests for our factor of interest, so our model specification must be correct in that respect. However, the <em>way</em> we have done this needs some thought. After all, the fact that tests on <code class="docutils literal notranslate"><span class="pre">id</span></code> has been produced suggests that this model term is not being treated correctly. Do we really want a hypothesis test based on the null that all the subject means are the same? Given that this is a random sample of subjects, how meaningful would this be unless these were the only subjects in the world that we were interested in? As indicated earlier, the <code class="docutils literal notranslate"><span class="pre">id</span></code> effect is not really an effect of interest in the same way as <code class="docutils literal notranslate"><span class="pre">time</span></code>. In fact, <code class="docutils literal notranslate"><span class="pre">id</span></code> is considered part of the <em>error</em> rather than part of the <em>mean</em>. The way we have included <code class="docutils literal notranslate"><span class="pre">id</span></code> above is as part of the <em>mean function</em>, but really <code class="docutils literal notranslate"><span class="pre">id</span></code> should be part of the <em>variance function</em>. It would be like trying to specify a hypothesis test on the model residuals. We are not interested in some universal truth here because what we have are <em>random deviations</em> reflective of <em>error variance</em>. As such, in much the same way that the residuals are used to estimate the <em>within-subject</em> variance, we want the values of <code class="docutils literal notranslate"><span class="pre">id</span></code> to be used to estimate the <em>between-subjects</em> variance. Clearly, all we have done above is <em>remove</em> the variance of <code class="docutils literal notranslate"><span class="pre">id</span></code> from the residuals by moving it into the model equation. But we have done nothing to suggest that <code class="docutils literal notranslate"><span class="pre">id</span></code> should be treated differently from <code class="docutils literal notranslate"><span class="pre">time</span></code>.</p>
+<p>In order to tell <code class="docutils literal notranslate"><span class="pre">R</span></code> that <code class="docutils literal notranslate"><span class="pre">id</span></code> is an <em>additional error term</em>, we can use the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> function. This is a wrapper for <code class="docutils literal notranslate"><span class="pre">lm()</span></code> designed to produce an ANOVA table where some of the model terms represent <em>error</em> rather than a traditional ANOVA effect. From an <em>estimation</em> perspective, this distinction does not make any difference because ANOVA mean squares are <em>already</em> estimates of variance. However, what <em>does</em> matter, is whether these mean squares form the <em>numerator</em> of an <span class="math notranslate nohighlight">\(F\)</span>-ratio (variance associated with <em>mean differences</em>) or the <em>denominator</em> of an <span class="math notranslate nohighlight">\(F\)</span>-ratio (variance associated with <em>error</em>). So, what we are really doing is telling <code class="docutils literal notranslate"><span class="pre">R</span></code> where to place the different mean squares in the ANOVA table. In other words, we have to tell <code class="docutils literal notranslate"><span class="pre">R</span></code> how we want the arithmetic to be organised.</p>
+<p>An example of using <code class="docutils literal notranslate"><span class="pre">aov()</span></code> for the <code class="docutils literal notranslate"><span class="pre">mice2</span></code> data is shown below. Here we use the <code class="docutils literal notranslate"><span class="pre">Error()</span></code> syntax within the model formula to indicate that <code class="docutils literal notranslate"><span class="pre">id</span></code> is an <em>error term</em>. This results in <em>two</em> ANOVA tables. One where <span class="math notranslate nohighlight">\(S_{i}\)</span> forms the error term and one where <span class="math notranslate nohighlight">\(\eta_{ij}\)</span> forms the error term. Based on the model structure, <code class="docutils literal notranslate"><span class="pre">aov()</span></code> can work out that <code class="docutils literal notranslate"><span class="pre">time</span></code> should be in the table with <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> as the error term. As there are no other terms in the model, the ANOVA table with <span class="math notranslate nohighlight">\(id\)</span> as the error is empty, but we will see examples where this is not the case further below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rm.aov.mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">aov</span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">Error</span><span class="p">(</span><span class="n">id</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">mice2.long</span><span class="p">)</span>
@@ -593,10 +578,11 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 </div>
 </div>
 </div>
-<p>Notice that the test results have remained the same throughout all these examples. So, for this simple situation, we could use <code class="docutils literal notranslate"><span class="pre">t.test(...,</span> <span class="pre">paired=TRUE)</span></code>, <code class="docutils literal notranslate"><span class="pre">lm()</span></code>, <code class="docutils literal notranslate"><span class="pre">Anova(lm())</span></code>, or <code class="docutils literal notranslate"><span class="pre">aov(...</span> <span class="pre">+</span> <span class="pre">Error(id))</span></code>. However, as we add between-subjects factors and additional within-subject factors things start to get much more complicated.</p>
+<p>The main conclusion to draw at present is that the repeated measures ANOVA is based on a <em>partitioned error</em> model, where we separate the variance into <span class="math notranslate nohighlight">\(\sigma^{2} = \sigma^{2}_{b} + \sigma^{2}_{w}\)</span>. However, because the normal linear model only has a <em>single</em> error term, we cannot do this automatically. Instead, we have to <em>remove</em> additional sources of variance from the errors by placing them within the <em>mean function</em>. We then have to manually construct different ANOVA tables for the different sources, using the mean square of some terms as <em>denominators</em> rather than <em>numerators</em>. This means that our <em>estimated model</em> is based only on a single error term, but the ANOVA table is based on treating some of the terms in the mean function as <em>additional error terms</em>. Hopefully it is clear that this is effectively an <em>ad hoc bolt-on</em> to a procedure that was never designed to support it<a class="footnote-reference brackets" href="#submodel-foot" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 </section>
 <section id="the-implied-covariance-structure">
 <h3>The Implied Covariance Structure<a class="headerlink" href="#the-implied-covariance-structure" title="Link to this heading">#</a></h3>
+<p>Another important element of the repeated measures ANOVA is the implied covariance structure. Although a variance-covariance matrix is never actually estimated or constructed as part of this procedure, it is <em>implied</em> by the model assumptions. As we will see further below, this implied structured is actually very restrictive and makes some strong claims about the nature of the repeated measurements. To see this, first consider the partitioned error model that the ANOVA table is assuming</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{alignat*}{2}
@@ -605,12 +591,12 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
     \text{Var}(y_{ij}) &amp;=    \sigma^{2} = \sigma^{2}_{b} + \sigma^{2}_{w} &amp;\quad \text{(Variance function)}.      \\
 \end{alignat*}
 \end{split}\]</div>
-<p>So, we now have a model with a slightly more complex variance function that accommodates the fact that we have two sources of error whenever there are repeated measurements. This also connects directly with the idea that data from the same subject are <em>correlated</em>. The <em>covariance</em> between two measurements from the same subject is given by</p>
+<p>So, we can see that each observation is assumed to have the same variance, formed from <span class="math notranslate nohighlight">\(\sigma^{2}_{b} + \sigma^{2}_{w}\)</span>. This gives us the implied <em>diagonal</em> elements of the variance-covariance matrix. What about the <em>off-diagonal</em> elements? In a normal linear model these would be 0 to indicate no correlation. However, because we have repeated measurements, this will not be true. As established earlier, the fact that some observations share the error term <span class="math notranslate nohighlight">\(S_{i}\)</span> creates correlation. The way this works is by examining the implied <em>covariance</em> between two measurements from the same subject</p>
 <div class="math notranslate nohighlight">
 \[
 \text{Cov}(y_{i1},y_{i2}) = \text{Cov}(\mu + \alpha_{1} + S_{i} + \epsilon_{i1}, \mu + \alpha_{2} + S_{i} + \epsilon_{i2}) 
 \]</div>
-<p>Because <span class="math notranslate nohighlight">\(\mu\)</span>, <span class="math notranslate nohighlight">\(\alpha_{1}\)</span> and <span class="math notranslate nohighlight">\(\alpha_{2}\)</span> are <em>population constants</em>, they have 0 variance and thus do not contribute to the definition of covariance, leading to</p>
+<p>Because <span class="math notranslate nohighlight">\(\mu\)</span>, <span class="math notranslate nohighlight">\(\alpha_{1}\)</span> and <span class="math notranslate nohighlight">\(\alpha_{2}\)</span> are <em>population constants</em>, they have 0 variance and thus do not contribute to the definition of covariance. These terms therefore drop-out, leaving</p>
 <div class="math notranslate nohighlight">
 \[
 \text{Cov}(y_{i1},y_{i2}) = \text{Cov}(S_{i} + \epsilon_{i1}, S_{i} + \epsilon_{i2}) 
@@ -630,18 +616,7 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 \[
 \text{Cov}(y_{i1},y_{i2}) = \text{Cov}(S_{i},S_{i}) = \text{Var}(S_{i}) = \sigma^{2}_{b}.
 \]</div>
-<p>All of which is to say that the variance associated with the subject-specific deflections <em>is</em> the correlation induced by the repeated measurements.</p>
-<p>…</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{alignat*}{1}
-    \text{Var}\left(y_{i1} - y_{i2}\right) &amp;= \text{Var}(y_{i1}) + \text{Var}(y_{i2}) - 2\text{Cov}(y_{i1},y_{i2}) \\
-                                           &amp;= \left[\sigma^{2}_{b} + \sigma^{2}_{w}\right] + \left[\sigma^{2}_{b} + \sigma^{2}_{w}\right] - 2\sigma^{2}_{b} \\
-                                           &amp;= \sigma^{2}_{w} + \sigma^{2}_{w}
-\end{alignat*}
-\end{split}\]</div>
-<p>So, we can see that the correlation <em>cancels-out</em>, which is exactly as expected from our exploration of the <em>model of paired differences</em> from earlier.</p>
-<p>Now, we will connect what we have done above with the idea of modelling the variance-covariance matrix. Rather than doing this <em>explicitly</em>, the method above was an <em>implicit</em> modelling of the covariance structure…</p>
+<p>All of which is to say that the variance associated with the subject-specific deflections <em>is</em> the covariance induced by the repeated measurements. This means that the repeated measures ANOVA is implying the following covariance structure (as shown for two repeated measurements from two subjects)</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{bmatrix}
@@ -658,18 +633,58 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
     \mu + \alpha_{2} \\
 \end{bmatrix}, 
 \begin{bmatrix}
-    \sigma^{2}_{b} + \sigma^{2}_{w}  &amp; \sigma^{2}_{b}                  &amp; 0           &amp; 0                     \\
-    \sigma^{2}_{b}                   &amp; \sigma^{2}_{b} + \sigma^{2}_{w} &amp; 0           &amp; 0                      \\
-    0                                &amp; 0                               &amp; \sigma^{2}_{b} + \sigma^{2}_{w}  &amp; \sigma^{2}_{b}            \\
-    0                                &amp; 0           &amp; \sigma^{2}_{b} &amp; \sigma^{2}_{b} + \sigma^{2}_{w}  \\
+    \sigma^{2}_{b} + \sigma^{2}_{w} &amp; \sigma^{2}_{b}                  &amp; 0                               &amp; 0                               \\
+    \sigma^{2}_{b}                  &amp; \sigma^{2}_{b} + \sigma^{2}_{w} &amp; 0                               &amp; 0                               \\
+    0                               &amp; 0                               &amp; \sigma^{2}_{b} + \sigma^{2}_{w} &amp; \sigma^{2}_{b}                  \\
+    0                               &amp; 0                               &amp; \sigma^{2}_{b}                  &amp; \sigma^{2}_{b} + \sigma^{2}_{w} \\
 \end{bmatrix}
 \right)
 \end{split}\]</div>
-<p>So this means that a covariance matrix is never actually calculated within a repeated measures ANOVA, the structure is simply <em>implied</em> via the various model assumptions. Because of this, the correct error terms for the various tests are not derived logically from the structure of the covariance matrix, they need to be organised manually. This is one of the biggest complexities of this framework and is why modern statistics prefers methods where this is taken care of <em>automatically</em> via an explicit covariance structure.</p>
+<p>This type of structure is known as <em>compound symmetry</em>, because all variances and covariances are the <em>same</em> across the repeated measurements. This is not really a problem when we have two repeats, because there is only one covariance term. However, consider what happens if we were to have <em>three</em> repeated measurements per-subject</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{bmatrix}
+    y_{11} \\
+    y_{12} \\
+    y_{13} \\
+    y_{21} \\
+    y_{22} \\
+    y_{23} \\
+\end{bmatrix}
+\sim\mathcal{N}\left(
+\begin{bmatrix}
+    \mu + \alpha_{1} \\
+    \mu + \alpha_{2} \\
+    \mu + \alpha_{3} \\
+    \mu + \alpha_{1} \\
+    \mu + \alpha_{2} \\
+    \mu + \alpha_{3} \\
+\end{bmatrix}, 
+\begin{bmatrix}
+    \sigma^{2}_{b} + \sigma^{2}_{w}  &amp; \sigma^{2}_{b}                  &amp; \sigma^{2}_{b}                  &amp; 0                                &amp; 0                               &amp; 0                               \\
+    \sigma^{2}_{b}                   &amp; \sigma^{2}_{b} + \sigma^{2}_{w} &amp; \sigma^{2}_{b}                  &amp; 0                                &amp; 0                               &amp; 0                               \\
+    \sigma^{2}_{b}                   &amp; \sigma^{2}_{b}                  &amp; \sigma^{2}_{b} + \sigma^{2}_{w} &amp; 0                                &amp; 0                               &amp; 0                               \\
+    0                                &amp; 0                               &amp; 0                               &amp; \sigma^{2}_{b} + \sigma^{2}_{w}  &amp; \sigma^{2}_{b}                  &amp; \sigma^{2}_{b}                  \\
+    0                                &amp; 0                               &amp; 0                               &amp; \sigma^{2}_{b}                   &amp; \sigma^{2}_{b} + \sigma^{2}_{w} &amp; \sigma^{2}_{b}                  \\
+    0                                &amp; 0                               &amp; 0                               &amp; \sigma^{2}_{b}                   &amp; \sigma^{2}_{b}                  &amp; \sigma^{2}_{b} + \sigma^{2}_{w} \\
+\end{bmatrix}
+\right)
+\end{split}\]</div>
+<p>This looks messy, but notice that the correlation between each of the repeated measurements is <em>exactly</em> the same value. Irrespective of what the experimental conditions are, the repeated measures ANOVA implies that they are correlated in exactly the same way. This is a <em>big</em> assumption. What if two conditions are positively correlated, but the others are negatively correlated? What is one of the experimental conditions works by making the correlation <em>weaker</em> compared to the other conditions? Any of these more complex situations are effectively <em>ignore</em> in the repeated measures ANOVA. Indeed, look back at the correlation structure we saw earlier in the lesson for the <code class="docutils literal notranslate"><span class="pre">selfesteem</span></code> data. This is clearly not compound symmetric. Remember that the importance of covariance relates to when we want to look at the <em>difference</em> between any of these conditions. If the covariance structure is <em>wrong</em> then the standard error will be <em>wrong</em>. If we are using NHST, this means the test statistic and <span class="math notranslate nohighlight">\(p\)</span>-value will also be <em>wrong</em>.</p>
 </section>
 <section id="the-sphericity-condition">
 <h3>The Sphericity Condition<a class="headerlink" href="#the-sphericity-condition" title="Link to this heading">#</a></h3>
+<p>Although we have suggested that the repeated measures ANOVA assumes a <em>compound symmetric</em> covariance structure, the reality is bit more nuanced. …</p>
 <p>… These corrections are available through the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> function which, as we will see, is generally the most straight-forward way of generating a repeated measures ANOVA with the correct error partition. For simple models, this will make limited difference. However, as we will see below, more complex models because tricky to specify using <code class="docutils literal notranslate"><span class="pre">aov()</span></code>. This is partly a limitation in the structure of <code class="docutils literal notranslate"><span class="pre">aov()</span></code>, but also points to the general complexity of the repeated measures ANOVA framework.</p>
+<p>In the code below, we show fitting a repeated measures ANOVA to the <code class="docutils literal notranslate"><span class="pre">selfesteem</span></code> data, first using <code class="docutils literal notranslate"><span class="pre">aov()</span></code> to correctly partition the error and then using <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> to get the same results with the sphericity corrections.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;datarium&#39;</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="s">&#39;ez&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="between-subjects-factors">
@@ -689,8 +704,13 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="n">ezANOVA</span><span class="p">():</span> <span class="n">argument</span> <span class="s2">&quot;data&quot;</span> <span class="ow">is</span> <span class="n">missing</span><span class="p">,</span> <span class="k">with</span> <span class="n">no</span> <span class="n">default</span>
-<span class="ne">Traceback</span>:
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="err">`</span><span class="n">ezANOVA</span><span class="p">()</span><span class="err">`</span><span class="p">:</span>
+
+<span class="o">!</span><span class="w"> </span>argument<span class="w"> </span><span class="s2">&quot;data&quot;</span><span class="w"> </span>is<span class="w"> </span>missing,<span class="w"> </span>with<span class="w"> </span>no<span class="w"> </span>default
+
+    <span class="err">▆</span>
+
+<span class="g g-Whitespace"> </span><span class="mi">1</span><span class="o">.</span> <span class="err">└─</span><span class="n">ez</span><span class="p">::</span><span class="n">ezANOVA</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -701,6 +721,13 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 <h2>Why We Should <em>Not</em> Use RM ANOVA<a class="headerlink" href="#why-we-should-not-use-rm-anova" title="Link to this heading">#</a></h2>
 <p>Everything we have discussed above has really been an exercise in telling you why you really do not want to use RM ANOVA. All the unncessary fiddling with error terms and different tests requiring different errors is a complication that we could simply do without. Even if we do manage to successfully work out what needs to go where (or get a function like <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> to sort it for us), we are still left with a method that has a number of meaningful restrictions. … Because of this, the RM ANOVA is both tricky to understand, tricky to use correctly and massively inflexible. It is no wonder that statisticians abandoned this method decades ago! And yet, this is the method that has persisted in psychology until releatively recently.</p>
 <p>This section has largely been motivational to understand why we want to use something more flexible and more modern, but it is important to recognise that you may well end up working with someone who knows nothing beyond the RM ANOVA. In those situations, it is useful to (a) motivate the need for something better and (b) understand how to get the RM ANOVA results in <code class="docutils literal notranslate"><span class="pre">R</span></code>, in case they require further convincing. So, we do not condone the use of the RM ANOVA, but we understand its place in psychology and also understand that there are times where you may want to see what the RM ANOVA says, even if you do not wish to use it.</p>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="submodel-foot" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>An alternative perspective here is that each error term represents a different <em>sub-model</em>. So, we can think of specifying <em>multiple</em> models, some of which require us to <em>average-over</em> certain factors. For instance, if we were to average-over the repeated measurements and then fit a model on the resultant outcome variable, this model would automatically have <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> as its error term. This does make the whole procedure feel a little bit less of a hack, however, it is very impractical to do this, especially when the number of factors and interactions gets larger. You can read more about this approach in <a class="reference external" href="https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2019.00352/full">McFarquhar (2019)</a>.</p>
+</aside>
+</aside>
 </section>
 </section>
 
