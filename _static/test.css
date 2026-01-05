@@ -2,3 +2,9 @@
     --mystnb-source-bg-color: var(--pst-color-surface)!important;
     --mystnb-stdout-bg-color: var(--pst-color-surface)!important; 
 }
+
+.sphericity-frame {
+  width: min(100%, 800px); /* scales down on small screens, capped at 800px */
+  aspect-ratio: 1 / 1;     /* keep it square */
+  border: none;
+}
