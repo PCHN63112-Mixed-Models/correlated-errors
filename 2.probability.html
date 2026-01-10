@@ -90,7 +90,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="The Paired t-test" href="3.paired-t.html" />
-    <link rel="prev" title="Repeated Measurement Designs" href="1.designs.html" />
+    <link rel="prev" title="Repeated Measurements" href="1.designs.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -195,7 +195,7 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="1.designs.html">Repeated Measurement Designs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1.designs.html">Repeated Measurements</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Probability Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3.paired-t.html">The Paired <em>t</em>-test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4.rm-anova-I.html">One-way Repeated Measures ANOVA</a></li>
@@ -495,12 +495,7 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
     \sigma_{21}    &amp; \sigma^{2}_{2}
 \end{bmatrix}.
 \end{split}\]</div>
-<p>The <em>diagonal</em> elements encode the variance of <span class="math notranslate nohighlight">\(y_{i1}\)</span> and the variance of <span class="math notranslate nohighlight">\(y_{i2}\)</span> respectively. These are denoted <span class="math notranslate nohighlight">\(\sigma^{2}_{1}\)</span> and <span class="math notranslate nohighlight">\(\sigma^{2}_{2}\)</span>. The <em>off-diagonal</em> elements encode the <em>correlation</em> between <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span>. This is parameterised in similar units to the variance and so is known as the <em>covariance</em>. This can be thought of as a <em>scaled</em> version of correlation. The relationship between correlation and covariance is as follows</p>
-<div class="math notranslate nohighlight">
-\[
-\text{Cov}\left(y_{i1},y_{i2}\right) = \sigma_{12} = \sigma_{21} = \rho\sigma_{1}\sigma_{2}, 
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\rho\)</span> is the correlation, <span class="math notranslate nohighlight">\(\sigma_{1}\)</span> is the <em>standard deviation</em> of <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{2}\)</span> is the <em>standard deviation</em> of <span class="math notranslate nohighlight">\(y_{i2}\)</span>. So this is really just different units encoding the same idea. Correlation re-scales covariance into the range <span class="math notranslate nohighlight">\([-1, 1]\)</span>. Because of this, we will use <em>correlation</em> and <em>covariance</em> somewhat interchangeably as, for our purpose, they capture the same concept. We can therefore think of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> as similar in spirit to a <em>correlation</em> matrix between the repeated measurements. As such, the degree to which the multivariate normal can form an accurate <em>data-generating</em> model will depend upon the values in <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span>, the <em>diagonal</em> elements of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> and, most crucially for repeated measurements, the <em>off-diagonal</em> elements of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.</p>
+<p>The <em>diagonal</em> elements encode the variance of <span class="math notranslate nohighlight">\(y_{i1}\)</span> and the variance of <span class="math notranslate nohighlight">\(y_{i2}\)</span> respectively. These are denoted <span class="math notranslate nohighlight">\(\sigma^{2}_{1}\)</span> and <span class="math notranslate nohighlight">\(\sigma^{2}_{2}\)</span>. The <em>off-diagonal</em> elements encode the <em>correlation</em> between <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span>. This is parameterised in similar units to the variance and so is known as the <em>covariance</em>. This can be thought of as a <em>scaled</em> version of correlation. … We can therefore think of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> as similar in spirit to a <em>correlation</em> matrix between the repeated measurements. As such, the degree to which the multivariate normal can form an accurate <em>data-generating</em> model will depend upon the values in <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span>, the <em>diagonal</em> elements of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> and, most crucially for repeated measurements, the <em>off-diagonal</em> elements of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.</p>
 <p>We can put this all together to give our final probabilistic model for two repeated measurements</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -894,7 +889,7 @@ y_{ij} \sim \mathcal{N}\left(\mu_{j},\sigma^{2}\right),
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Repeated Measurement Designs</p>
+        <p class="prev-next-title">Repeated Measurements</p>
       </div>
     </a>
     <a class="right-next"
