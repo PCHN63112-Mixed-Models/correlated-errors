@@ -418,7 +418,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="probability-models">
 <h1>Probability Models<a class="headerlink" href="#probability-models" title="Link to this heading">#</a></h1>
-<p>…</p>
+<p>In the previous part of this lesson, we discussed the concept of repeated measurement designs and introduced the problems caused by correlation. In sum, the issue is that the standard linear model and all its formulas are based on a probabilistic picture of the data where there is <em>no dependence</em>. Applying these formula to data where there <em>is</em> dependence will lead to values that are incorrect and thus a model that works poorly to represent the data-generating process. This means our inference, in whatever form it takes, <em>will be wrong</em>. This all stems from the fundamental probability model of the data. Thus, in order to fix this, we need a <em>new</em> probability model that can accommodate correlation between elements of <span class="math notranslate nohighlight">\(y\)</span>. In this part of the lesson, we will introduce a suitable framework in the form of the <em>multivariate normal distribution</em>. As we will see, the key element of this new framework is the structure of the <em>variance-covariance matrix</em>. This will be the statistical object of <em>most interest</em> as we progress on this unit.</p>
 <section id="the-multivariate-normal-distribution">
 <h2>The Multivariate Normal Distribution<a class="headerlink" href="#the-multivariate-normal-distribution" title="Link to this heading">#</a></h2>
 <p>In order to place repeated measurements within a probabilistic framework, we need to introduce the concept of the <em>multivariate</em> normal distribution. As opposed to the <em>univariate</em> normal distribution we have seen previously, the <em>multivariate</em> normal distribution is not associated with a single <em>random variable</em>, it is associated with a <em>random vector</em>. This is written as follows</p>
@@ -472,11 +472,6 @@
 \boldsymbol{\Sigma}
 \right).
 \]</div>
-<p>Or, more compactly, as</p>
-<div class="math notranslate nohighlight">
-\[
-\mathbf{y}_{i} \sim\mathcal{N}\left(\boldsymbol{\mu},\boldsymbol{\Sigma}\right).
-\]</div>
 </section>
 <section id="the-variance-covariance-matrix">
 <h3>The Variance-Covariance Matrix<a class="headerlink" href="#the-variance-covariance-matrix" title="Link to this heading">#</a></h3>
@@ -495,7 +490,7 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
     \sigma_{21}    &amp; \sigma^{2}_{2}
 \end{bmatrix}.
 \end{split}\]</div>
-<p>The <em>diagonal</em> elements encode the variance of <span class="math notranslate nohighlight">\(y_{i1}\)</span> and the variance of <span class="math notranslate nohighlight">\(y_{i2}\)</span> respectively. These are denoted <span class="math notranslate nohighlight">\(\sigma^{2}_{1}\)</span> and <span class="math notranslate nohighlight">\(\sigma^{2}_{2}\)</span>. The <em>off-diagonal</em> elements encode the <em>correlation</em> between <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span>. This is parameterised in similar units to the variance and so is known as the <em>covariance</em>. This can be thought of as a <em>scaled</em> version of correlation. … We can therefore think of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> as similar in spirit to a <em>correlation</em> matrix between the repeated measurements. As such, the degree to which the multivariate normal can form an accurate <em>data-generating</em> model will depend upon the values in <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span>, the <em>diagonal</em> elements of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> and, most crucially for repeated measurements, the <em>off-diagonal</em> elements of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.</p>
+<p>The <em>diagonal</em> elements encode the variance of <span class="math notranslate nohighlight">\(y_{i1}\)</span> and the variance of <span class="math notranslate nohighlight">\(y_{i2}\)</span> respectively. These are denoted <span class="math notranslate nohighlight">\(\sigma^{2}_{1}\)</span> and <span class="math notranslate nohighlight">\(\sigma^{2}_{2}\)</span>. The <em>off-diagonal</em> elements encode the <em>covariance</em> between <span class="math notranslate nohighlight">\(y_{i1}\)</span> and <span class="math notranslate nohighlight">\(y_{i2}\)</span>. As such, we can think of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> as similar in spirit to a <em>correlation</em> matrix between the repeated measurements. As such, the degree to which the multivariate normal can form an accurate <em>data-generating</em> model will depend upon the values in <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span>, the <em>diagonal</em> elements of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> and, most crucially, the <em>off-diagonal</em> elements of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.</p>
 <p>We can put this all together to give our final probabilistic model for two repeated measurements</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -541,13 +536,18 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 <span class="nf">set.seed</span><span class="p">(</span><span class="m">666</span><span class="p">)</span>
 
 <span class="n">var.1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span><span class="w">                           </span><span class="c1"># Variance 1</span>
-<span class="n">var.2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">4</span><span class="w">                           </span><span class="c1"># Variance 2</span>
-<span class="n">rho</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.8</span><span class="w">                         </span><span class="c1"># Correlation</span>
+<span class="n">var.2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">2</span><span class="w">                           </span><span class="c1"># Variance 2</span>
+<span class="n">rho</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.8</span><span class="w">                         </span><span class="c1"># Correlation  </span>
 <span class="n">cov</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rho</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var.1</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var.2</span><span class="p">)</span><span class="w"> </span><span class="c1"># Covariance</span>
 
-<span class="n">Mu</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">3</span><span class="p">)</span><span class="w">                                  </span><span class="c1"># Mean vector</span>
+<span class="c1"># Mean vector</span>
+<span class="n">Mu</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">3</span><span class="p">)</span>
+
+<span class="c1"># Variance-covariance matrix</span>
 <span class="n">Sigma</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">var.1</span><span class="p">,</span><span class="w"> </span><span class="n">cov</span><span class="p">,</span>
-<span class="w">                  </span><span class="n">cov</span><span class="p">,</span><span class="w">   </span><span class="n">var.2</span><span class="p">),</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="c1"># Variance-covariance matrix</span>
+<span class="w">                  </span><span class="n">cov</span><span class="p">,</span><span class="w">   </span><span class="n">var.2</span><span class="p">),</span><span class="w"> </span>
+<span class="w">                </span><span class="n">nrow</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                </span><span class="n">ncol</span><span class="o">=</span><span class="m">2</span><span class="p">)</span>
 
 <span class="n">y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="n">Mu</span><span class="p">,</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma</span><span class="p">)</span>
 <span class="nf">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
@@ -555,40 +555,12 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 1.624908 4.941023
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 1.814480 4.608155
 </pre></div>
 </div>
 </div>
 </div>
-<p>So, we can see that we get <em>two</em> values back whenever we sample from this distribution. These can be thought of as random draw from the same experimental unit. For instance, we can think of these as representing responses from subject <span class="math notranslate nohighlight">\(i\)</span> in experimental condition 1 and experimental condition 2. This is parameterised by the mean vector</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">print</span><span class="p">(</span><span class="n">Mu</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 2 3
-</pre></div>
-</div>
-</div>
-</div>
-<p>and by the variance-covariance matrix</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">print</span><span class="p">(</span><span class="n">Sigma</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     [,1] [,2]
-[1,]  1.0  1.6
-[2,]  1.6  4.0
-</pre></div>
-</div>
-</div>
-</div>
-<p>Note that the correlation was set to <span class="math notranslate nohighlight">\(\rho = 0.8\)</span> in the code above and was converted into covariance based on the variances of <span class="math notranslate nohighlight">\(y_{1}\)</span> and <span class="math notranslate nohighlight">\(y_{2}\)</span>. As we can see, covariance is not constrained to <span class="math notranslate nohighlight">\(\left[-1, 1\right]\)</span> like correlation is and so does not have the same ease of interpretation. As such, whenever we want to <em>interpret</em> dependence, correlation is more useful. However, for calculations involving variance, covariance is needed so that the units are compatible.</p>
+<p>So, we can see that we get <em>two</em> values back whenever we sample from this distribution. These can be thought of as random draw from the same experimental unit. For instance, we can think of these as representing responses from subject <span class="math notranslate nohighlight">\(i\)</span> in experimental condition 1 and experimental condition 2.</p>
 </section>
 </section>
 <section id="visualising-the-multivariate-normal">
@@ -597,7 +569,7 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 <p>A basic 2-dimensional normal distribution is shown below.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/e840a92e868254eab815dfa582761465bb970e7375b175f934d4ae63e41d588a.png" src="_images/e840a92e868254eab815dfa582761465bb970e7375b175f934d4ae63e41d588a.png" />
+<img alt="_images/2c4b2c39a7293d1547fe9740641de6eb6fb9e68b5fc029c13cef00f3ca30df0f.png" src="_images/2c4b2c39a7293d1547fe9740641de6eb6fb9e68b5fc029c13cef00f3ca30df0f.png" />
 </div>
 </div>
 <p>Because this is 2-dimensional, it is defined as a probability distribution for the random vector</p>
@@ -618,16 +590,16 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
     0 &amp; \sigma^{2}
 \end{bmatrix}
 \end{split}\]</div>
-<p>In other words, the variance of each dimension was set to be the same and there was <em>no correlation</em>. This creates the perfect symmetry we see in the shape above. Now, let us see what happens when there <em>is</em> correlation. If we keep everything else the same but set <span class="math notranslate nohighlight">\(\rho = 0.8\)</span>, we get the distribution shown below.</p>
+<p>In other words, the variance of each dimension was set to be the same and there was <em>no correlation</em>. This creates the perfect symmetry we see in the shape above. Now, let us see what happens when there <em>is</em> correlation. If we keep everything else the same but set the correlation as <span class="math notranslate nohighlight">\(\rho = 0.8\)</span>, we get the distribution shown below.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/9ffdbf4a61d5320f1133bcecb01b3864a879997cf932df67fa4a56a06b3978a7.png" src="_images/9ffdbf4a61d5320f1133bcecb01b3864a879997cf932df67fa4a56a06b3978a7.png" />
+<img alt="_images/8674ec5a3c36823040dd345ac4d7be411bd63205176586da6ba666a64223c4f0.png" src="_images/8674ec5a3c36823040dd345ac4d7be411bd63205176586da6ba666a64223c4f0.png" />
 </div>
 </div>
 <p>As we can see, correlation has created a “shark fin” shape in the probability density. To see how this connects with the idea of correlation, we will see how the probability distribution of <span class="math notranslate nohighlight">\(y_{2}\)</span> changes for a given value of <span class="math notranslate nohighlight">\(y_{1}\)</span>. The plots below show a rotated view of the multivariate normal where we are focussing on the <span class="math notranslate nohighlight">\(y_{2}\)</span>-axis. The <em>left</em> column shows no correlation (<span class="math notranslate nohighlight">\(\rho=0\)</span>) and the <em>right</em> column shows a strong correlation (<span class="math notranslate nohighlight">\(\rho=0.8\)</span>). The distribution of <span class="math notranslate nohighlight">\(y_{2}\)</span> when <span class="math notranslate nohighlight">\(y_{1}\)</span> is fixed to a certain value is superimposed in blue. This is a <em>slice</em> through the multivariate normal. The <em>top</em> row shows <span class="math notranslate nohighlight">\(P(y_{2}|y_{1}=-1)\)</span> and the <em>bottom</em> row shows <span class="math notranslate nohighlight">\(P(y_{2}|y_{1}=1)\)</span>. Take a moment to study these so you are clear what they are showing.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/fabbd8322fe13f956ea9d72ef91981b629fabbb20c82800904c880bead2ff100.png" src="_images/fabbd8322fe13f956ea9d72ef91981b629fabbb20c82800904c880bead2ff100.png" />
+<img alt="_images/e5cee9f4f84fdfefd7e5796346d778e96c6f848c566865c8908853d2c9907f94.png" src="_images/e5cee9f4f84fdfefd7e5796346d778e96c6f848c566865c8908853d2c9907f94.png" />
 </div>
 </div>
 <p>Notice that when there is <em>no correlation</em>, the distribution of <span class="math notranslate nohighlight">\(y_{2}\)</span> does not change with the value of <span class="math notranslate nohighlight">\(y_{1}\)</span>. In other words, the value of <span class="math notranslate nohighlight">\(y_{1}\)</span> has no bearing on the probability of different values of <span class="math notranslate nohighlight">\(y_{2}\)</span>. This is the essence of <em>independence</em>. However, when there <em>is</em> correlation, the shape of the distribution of <span class="math notranslate nohighlight">\(y_{2}\)</span> <em>shifts</em> depending upon the value of <span class="math notranslate nohighlight">\(y_{1}\)</span>. Notice in the <em>right</em> column that when <span class="math notranslate nohighlight">\(y_{1} = -1\)</span>, the distribution of <span class="math notranslate nohighlight">\(y_{2}\)</span> is centred on a <em>different value</em> compared to when <span class="math notranslate nohighlight">\(y_{1} = 1\)</span>. This change in expectation is captured by the “shark fin” shape of the density. In essence, the most probable value of <span class="math notranslate nohighlight">\(y_{2}\)</span> changes based on the value of <span class="math notranslate nohighlight">\(y_{1}\)</span>. The stronger the correlation, the closer the expected value of one random value tracks the value of the other. This is the essence of <em>dependence</em>.</p>
@@ -801,7 +773,7 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 \end{bmatrix}
 \right)
 \end{split}\]</div>
-<p>This is a 6-dimensional normal distribution, so we would struggle to visualise this. However, dimensions are just a mathematical tool for keeping track of information. We do not <em>have</em> to be able to visualise them in order for it to be meaningful. The more important element here is the <em>structure</em>. In particular, there is nothing about the structure of the outcome vector <em>or</em> the mean vector that encodes the organisation of the data within and between subjects. This could just be 6 independent measurements taken from two separate experimental conditions. The key is recognising that the structure of the data as repeated measurements is entirely encoded by the variance-covariance matrix.</p>
+<p>This is a 6-dimensional normal distribution, so we would struggle to visualise this. However, dimensions are just a mathematical tool for keeping track of information. We do not <em>have</em> to be able to visualise them in order for it to be meaningful. The more important element here is the <em>structure</em>. In particular, there is nothing about the structure of the outcome vector <em>or</em> the mean vector that encodes the organisation of the data within and between subjects. This could just be 6 independent measurements taken from two separate experimental conditions. The key is recognising that the repeated measures structure is entirely encoded by the variance-covariance matrix.</p>
 <p>Just to drive this point home, an equivalent dataset of <em>independent</em> measurements would have the form</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -837,7 +809,20 @@ y_{i} \sim\mathcal{N}(\mu,\sigma^{2}).
 \[
 y_{ij} \sim \mathcal{N}\left(\mu_{j},\sigma^{2}\right),
 \]</div>
-<p>which is <em>exactly</em> the probability model we were working with last semester. The key focus of our statistical model for repeated measurements is therefore the structure of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>. It has nothing to do with the parameter estimates that form the mean function. According to the models above, this will be <em>identical</em> whether we have repeated measurements or not. We already know this because our simulations from the previous part of the lesson showed that correlation directly impacted the <em>standard errors</em>, rather than the estimates themselves. As such, if the covariance structure does <em>not</em> include correlation, we will get the estimated standard errors <em>wrong</em>. This then has a direct impact on inference, both in terms of NHST but also in terms of assessing <em>uncertainty</em> using confidence intervals. As such, the fundamental difference between the models we discussed last semester and methods for repeated measurements is <em>precisely</em> the accommodation of correlation via a more complex covariance structure. This is the <em>core</em> of all the methods we will be discussing on this part of the unit.</p>
+<p>which is <em>exactly</em> the probability model we were working with last semester. The key focus of our statistical model for repeated measurements is therefore the structure of <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>. It has nothing to do with the parameter estimates that form the mean function. According to the models above, this will be <em>identical</em> whether we have repeated measurements or not. The fundamental difference between the models we discussed last semester and models suitable for repeated measurements is <em>precisely</em> the accommodation of correlation via a more complex covariance structure. This will have a direct influence on the standard errors, resultant test statistics, confidence intervals and <span class="math notranslate nohighlight">\(p\)</span>-values. As such, the variance-covariance structure is the <em>core</em> of all the methods we will be discussing on this part of the unit.</p>
+<aside class="topic">
+<p class="topic-title">What do you now know?</p>
+<p>In this section, we have explored the multivariate normal distribution as a probability model for continuous repeated measurements. After reading this section, you should have a good sense of :</p>
+<ul class="simple">
+<li><p>A vector as a mathematical object that contains <em>multiple</em> values, either represented as a <em>row</em> or a <em>column</em>.</p></li>
+<li><p>A matrix as a collection of vectors.</p></li>
+<li><p>The principle of a <em>random vector</em> or <em>random matrix</em> containing <em>random variables</em> rather than fixed values.</p></li>
+<li><p>The concept that the <em>multivariate normal distribution</em> represents the probabilistic behaviour of a <em>random outcome vector</em>, rather than a single random variable.</p></li>
+<li><p>The concept that the multivariate normal distribution is parameterised by a <em>mean vector</em> and a <em>variance-covariance matrix</em>.</p></li>
+<li><p>The concept that the <em>covariance</em> changes the <em>shape</em> of the multivariate normal so that the expected value of one random variable tracks the expected value of another.</p></li>
+<li><p>The idea that, when conceptualising multiple subjects, we can think of this equivalently in terms of <em>wide-formatted</em> data or <em>long-formatted</em> data.</p></li>
+</ul>
+</aside>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="multivar-foot" role="note">
