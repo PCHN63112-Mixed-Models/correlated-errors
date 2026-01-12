@@ -403,10 +403,7 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measures-anova-with-corrections-in-r">Repeated Measures ANOVA with Corrections in <code class="docutils literal notranslate"><span class="pre">R</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#difficulties-in-the-use-of-the-repeated-measures-anova">Difficulties in the Use of the Repeated Measures ANOVA</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-bother-with-the-repeated-measures-anova">Why Bother with the Repeated Measures ANOVA?</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#difficulties-in-the-use-of-the-repeated-measures-anova">Difficulties in the Use of the Repeated Measures ANOVA</a></li>
 </ul>
             </nav>
         </div>
@@ -817,9 +814,15 @@ $`Sphericity Corrections`
 <h2>Difficulties in the Use of the Repeated Measures ANOVA<a class="headerlink" href="#difficulties-in-the-use-of-the-repeated-measures-anova" title="Link to this heading">#</a></h2>
 <p>At this point, we do have a working framework for analysing repeated measurements within a traditional ANOVA framework. However, it is worth taking a step back and thinking about what was needed to reach this point. From a purely theoretical perspective, the repeated measures ANOVA requires partitioned errors within a framework that cannot accommodate more than one error term. In order to make this possible, an ANOVA table is constructed where the mean squares for some terms are treated as <em>denominators</em> rather than <em>numerators</em>. However, these are not treated as error within the model, only as part of the manual construction of tests after the model has been fit. Furthermore, in order to allow for repeated measurements within the classical ANOVA machinery, a very simple covariance structure must be assumed. For all but the most simple of situations, this structure is unlikely to hold in reality. However, rather than abandoning the framework for its lack of flexibility, the traditional approach is to provide a <em>correction</em> that allows an approximation of the null <span class="math notranslate nohighlight">\(F\)</span>-distribution if the sample covariance structure does not match the assumptions. This is effectively a sticking plaster over a procedure that is not flexible enough for general use.</p>
 <p>Beyond the theoretical limitations, we have some practical ones in terms of implementation. We can stick with <code class="docutils literal notranslate"><span class="pre">lm()</span></code> and get all the assumptions plots, follow-up tests and visualisations we are used to. However, the term <span class="math notranslate nohighlight">\(S_{i}\)</span> will not be treated correctly as <em>error</em>. For some models this will not matter, whereas for more complex models (that we will cover in the final part of this lesson) this will make a big difference. The more correct way to do this is by using <code class="docutils literal notranslate"><span class="pre">aov()</span></code>, but not only will this get more complicated in terms of specifying error terms, we also do not get access to any plotting facilities or visualisations, despite this function wrapping <code class="docutils literal notranslate"><span class="pre">lm()</span></code>. The only way to do this would be to specify sub-models that correspond to each error term and examine them separately, but this would be error-prone and generally a bit of a pain. In addition, neither of these methods provide corrections for violations of sphericity. If we want an easier time in terms of correctly specifying error terms and correcting for violations of sphericity, we can use <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code>. However, this only gives us an ANOVA table with no access to the underlying linear model. So, from a practical perspective, there is no great solution here.</p>
-<section id="why-bother-with-the-repeated-measures-anova">
-<h3>Why Bother with the Repeated Measures ANOVA?<a class="headerlink" href="#why-bother-with-the-repeated-measures-anova" title="Link to this heading">#</a></h3>
-<p>Given all these problems, why have we spent so long talking about the repeated measures ANOVA? Indeed, throughout this lesson we have alluded to the fact that something much better and more flexible exists in terms of mixed-effects. So why do we even need to think about the repeated measures ANOVA anymore? In part, these discussions are a prelude to mixed-effects models because the partitioned error model is the <em>starting point</em> for understanding mixed-effects. However, the main reasons is that the repeated measures ANOVA is still <em>widely used</em> in the psychological sciences. You will come across researchers using the repeated measures ANOVA frequently, and may even work for some who ask you to use a repeated measures ANOVA. Understanding the limitations of this method, as well as the limitations of the implementation within <code class="docutils literal notranslate"><span class="pre">R</span></code>, will help guard you against these situations. There are few reasons these days to still use a repeated measures ANOVA, yet researchers will stick stubbornly to what they already know. Everything we have discussed so far is fuel for the argument <em>against</em> the repeated measures ANOVA. However, to complete this picture, we just need to understand how the repeated measures ANOVA works in situations where there are <em>between-subjects</em> factors, as well as multiple <em>within-subject</em> factors. This additional complexity will provide an even clearer impetus for finding a better method, and will give an even clearer rationale for the use of mixed-effects methods.</p>
+<aside class="topic">
+<p class="topic-title">What do you now know?</p>
+<p>In this section, we have explored the one-way repeated measures ANOVA framework. After reading this section, you should have a good sense of :</p>
+<ul class="simple">
+<li><p>…</p></li>
+<li><p>…</p></li>
+<li><p>…</p></li>
+</ul>
+</aside>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="submodel-foot" role="note">
@@ -831,7 +834,6 @@ $`Sphericity Corrections`
 <p>In fact, it is an under-appreciated assumption in the repeated measures ANOVA that the covariance <em>is</em> positive so that the covariance term <em>subtracts</em>. If it were <em>negative</em> then the covariance should actually <em>add</em> and the variance of the difference should <em>increase</em>, but this is not what this method assumes.</p>
 </aside>
 </aside>
-</section>
 </section>
 </section>
 
@@ -910,10 +912,7 @@ $`Sphericity Corrections`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measures-anova-with-corrections-in-r">Repeated Measures ANOVA with Corrections in <code class="docutils literal notranslate"><span class="pre">R</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#difficulties-in-the-use-of-the-repeated-measures-anova">Difficulties in the Use of the Repeated Measures ANOVA</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-bother-with-the-repeated-measures-anova">Why Bother with the Repeated Measures ANOVA?</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#difficulties-in-the-use-of-the-repeated-measures-anova">Difficulties in the Use of the Repeated Measures ANOVA</a></li>
 </ul>
   </nav></div>
 
