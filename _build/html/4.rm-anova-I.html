@@ -818,9 +818,13 @@ $`Sphericity Corrections`
 <p class="topic-title">What do you now know?</p>
 <p>In this section, we have explored the one-way repeated measures ANOVA framework. After reading this section, you should have a good sense of :</p>
 <ul class="simple">
-<li><p>…</p></li>
-<li><p>…</p></li>
-<li><p>…</p></li>
+<li><p>Why the subtraction method used for the paired <span class="math notranslate nohighlight">\(t\)</span>-test only works in a limited number of cases.</p></li>
+<li><p>Why this limitation motivates the use of the full <em>partitioned error</em> model that underlies the logic of the paired <span class="math notranslate nohighlight">\(t\)</span>-test.</p></li>
+<li><p>How splitting <span class="math notranslate nohighlight">\(\epsilon_{ij}\)</span> creates a model with <em>two</em> random error terms that we refer to as <span class="math notranslate nohighlight">\(S_{i}\)</span> and <span class="math notranslate nohighlight">\(\eta_{ij}\)</span>.</p></li>
+<li><p>Why this partitioned error model cannot be used with <code class="docutils literal notranslate"><span class="pre">lm()</span></code> and why this motivates the use of <code class="docutils literal notranslate"><span class="pre">aov()</span></code> with the <code class="docutils literal notranslate"><span class="pre">Error()</span></code> syntax.</p></li>
+<li><p>How the basic partitioned error model implies a <em>compound symmetric</em> covariance structure.</p></li>
+<li><p>How the assumption of compound symmetry can be weakened by assuming <em>sphericity</em>, allowing the use of an <em>approximate correction</em> when sphericity does not hold.</p></li>
+<li><p>How these sphericity corrections can be generated in <code class="docutils literal notranslate"><span class="pre">R</span></code> using the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> function.</p></li>
 </ul>
 </aside>
 <hr class="footnotes docutils" />
