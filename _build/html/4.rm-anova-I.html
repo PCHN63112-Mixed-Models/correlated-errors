@@ -6,7 +6,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>One-way Repeated Measures ANOVA &#8212; Linear Models with Correlated Errors</title>
   
@@ -16,33 +16,36 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/test.css?v=a80109f0" />
     <link rel="stylesheet" type="text/css" href="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rgl.css?v=57907efa" />
     <link rel="stylesheet" type="text/css" href="_static/sphericity_3d_files/htmltools-fill-0.5.8.1/fill.css?v=971cc1da" />
   
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
@@ -53,7 +56,7 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=1ae7504c"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -63,33 +66,34 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '4.rm-anova-I';</script>
-    <script src="_static/sphericity_3d_files/CanvasMatrix4-1.3.18/CanvasMatrix.src.js?v=5a2d04be"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/init.src.js?v=f5bdcbbb"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rglTimer.src.js?v=ac1c3151"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/draw.src.js?v=49d9cbaa"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/axes.src.js?v=3250d244"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/projection.src.js?v=98871b91"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/mouse.src.js?v=96f0b970"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/subscenes.src.js?v=42cb429d"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/textures.src.js?v=9482728f"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/shadersrc.src.js?v=6ce05c17"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/controls.src.js?v=4b3dbe6f"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/utils.src.js?v=56efe719"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/selection.src.js?v=5b47ed7d"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/buffer.src.js?v=1efca185"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rglClass.src.js?v=9e593197"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/mouse.src.js?v=96f0b970"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/projection.src.js?v=98871b91"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/axes.src.js?v=3250d244"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rglTimer.src.js?v=ac1c3151"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/pretty.src.js?v=4f2cffba"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/shaders.src.js?v=bbbdf37d"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/pieces.src.js?v=280fd571"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/animation.src.js?v=74f9b9e8"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/textures.src.js?v=9482728f"></script>
-    <script src="_static/sphericity_3d_files/htmlwidgets-1.6.4/htmlwidgets.js?v=175713be"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/pieces.src.js?v=280fd571"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/selection.src.js?v=5b47ed7d"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/init.src.js?v=f5bdcbbb"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/subscenes.src.js?v=42cb429d"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/controls.src.js?v=4b3dbe6f"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/draw.src.js?v=49d9cbaa"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/utils.src.js?v=56efe719"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rglClass.src.js?v=9e593197"></script>
     <script src="_static/sphericity_3d_files/rglWebGL-binding-1.3.18/rglWebGL.js?v=8cd6f6d7"></script>
+    <script src="_static/sphericity_3d_files/htmlwidgets-1.6.4/htmlwidgets.js?v=175713be"></script>
+    <script src="_static/sphericity_3d_files/CanvasMatrix4-1.3.18/CanvasMatrix.src.js?v=5a2d04be"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Higher-order Repeated Measures ANOVA" href="5.rm-anova-II.html" />
     <link rel="prev" title="The Paired t-test" href="3.paired-t.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -105,19 +109,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -125,7 +118,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -133,8 +125,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -150,7 +142,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -180,21 +173,17 @@
     
     
     <img src="_static/logo.png" class="logo__image only-light" alt="Linear Models with Correlated Errors - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Linear Models with Correlated Errors - Home"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Linear Models with Correlated Errors - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -220,9 +209,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -366,24 +360,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -463,10 +449,10 @@ document.write(`
 <p>Before discussing this in more detail, we will demonstrate the general idea in <code class="docutils literal notranslate"><span class="pre">R</span></code> in two ways, one using <code class="docutils literal notranslate"><span class="pre">lm()</span></code> and one using the <code class="docutils literal notranslate"><span class="pre">aov()</span></code> function. To begin with, let us specify the same model given above that contains the <span class="math notranslate nohighlight">\(S_{i}\)</span> term. We will do this using the <code class="docutils literal notranslate"><span class="pre">mice2</span></code> data again, so we can show agreement with the paired <span class="math notranslate nohighlight">\(t\)</span>-test.</p>
 <p>First, we need to first convert this data into <em>long</em> format.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;datarium&#39;</span><span class="p">)</span>
@@ -732,10 +718,10 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 <h2>Repeated Measures ANOVA with Corrections in <code class="docutils literal notranslate"><span class="pre">R</span></code><a class="headerlink" href="#repeated-measures-anova-with-corrections-in-r" title="Link to this heading">#</a></h2>
 <p>If you have used statistical software such as SPSS in the past, the corrections for sphericity should be familiar. Within <code class="docutils literal notranslate"><span class="pre">R</span></code>, these are available through the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> function which, as we will see, is generally the most straight-forward way of generating a repeated measures ANOVA with the correct error partition. In the code below, we show fitting a one-way repeated measures ANOVA to the <code class="docutils literal notranslate"><span class="pre">selfesteem</span></code> data. We first use <code class="docutils literal notranslate"><span class="pre">aov()</span></code> to show how this can be achieved in base <code class="docutils literal notranslate"><span class="pre">R</span></code> with partitioned errors. First we need to convert <code class="docutils literal notranslate"><span class="pre">selfesteem</span></code> into long format, with <code class="docutils literal notranslate"><span class="pre">id</span></code> coded as a factor</p>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;datarium&#39;</span><span class="p">)</span>
@@ -843,11 +829,11 @@ $`Sphericity Corrections`
 </aside>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="submodel-foot" role="doc-footnote">
+<aside class="footnote brackets" id="submodel-foot" role="note">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>An alternative perspective here is that each error term represents a different <em>sub-model</em>. So, we can think of specifying <em>multiple</em> models, some of which require us to <em>average-over</em> certain factors. For instance, if we were to average-over the repeated measurements and then fit a model on the resultant outcome variable, this model would automatically have <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> as its error term. This does make the whole procedure feel a little bit less of a hack, however, it is very impractical to do this, especially when the number of factors and interactions gets larger. You can read more about this approach in <a class="reference external" href="https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2019.00352/full">McFarquhar (2019)</a>.</p>
 </aside>
-<aside class="footnote brackets" id="negcorr-foot" role="doc-footnote">
+<aside class="footnote brackets" id="negcorr-foot" role="note">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
 <p>In fact, it is an under-appreciated assumption in the repeated measures ANOVA that the covariance <em>is</em> positive so that the covariance term <em>subtracts</em>. If it were <em>negative</em> then the covariance should actually <em>add</em> and the variance of the difference should <em>increase</em>, but this is not what this method assumes.</p>
 </aside>
@@ -910,7 +896,8 @@ $`Sphericity Corrections`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -978,8 +965,8 @@ By Dr Martyn McFarquhar
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>
