@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>The Impact of Negative Correlation &#8212; Linear Models with Correlated Errors</title>
+    <title>Linear Models with Correlated Errors: Workshop &#8212; Linear Models with Correlated Errors</title>
   
   
   
@@ -63,8 +63,6 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'correlated-errors-workshop';</script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/textures.src.js?v=9482728f"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/shadersrc.src.js?v=6ce05c17"></script>
@@ -198,8 +196,7 @@
 <li class="toctree-l1"><a class="reference internal" href="1.designs.html">Repeated Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2.probability.html">Probability Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3.paired-t.html">The Paired <em>t</em>-test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="4.rm-anova-I.html">One-way Repeated Measures ANOVA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="5.rm-anova-II.html">Higher-order Repeated Measures ANOVA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4.rm-anova.html">One-way Repeated Measures ANOVA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="summary.html">Summary</a></li>
 </ul>
 
@@ -383,7 +380,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>The Impact of Negative Correlation</h1>
+    <h1>Linear Models with Correlated Errors: Workshop</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -393,15 +390,8 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">The Impact of <em>Negative</em> Correlation</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#try-setting-correlation-to-1-what-happens">Try Setting Correlation to 1. What happens?</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-conceptualisation">Univariate Conceptualisation</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-normal-distribution-with-2-conditions">Multivariate Normal Distribution with &gt; 2 Conditions</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-model">Visualising the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measures-anova-with-between-subject-factors">Repeated Measures ANOVA with Between-subject Factors</a></li>
 </ul>
-</li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -412,234 +402,10 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="the-impact-of-negative-correlation">
-<h1>The Impact of <em>Negative</em> Correlation<a class="headerlink" href="#the-impact-of-negative-correlation" title="Link to this heading">#</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">MASS</span><span class="p">)</span>
-<span class="nf">set.seed</span><span class="p">(</span><span class="m">666</span><span class="p">)</span><span class="w"> </span><span class="c1"># For reproducibility</span>
-
-<span class="c1"># Dependent covariance matrix</span>
-<span class="n">var1</span><span class="w">      </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span><span class="w">             </span>
-<span class="n">var2</span><span class="w">      </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span><span class="w">             </span>
-<span class="n">rho</span><span class="w">       </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">-0.8</span><span class="w">          </span>
-<span class="n">covar</span><span class="w">     </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rho</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var1</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var2</span><span class="p">)</span>
-<span class="n">Sigma_dep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">var2</span><span class="p">),</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">)</span>
-
-<span class="c1"># Independent covariance matric</span>
-<span class="n">rho</span><span class="w">         </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span><span class="w">             </span>
-<span class="n">covar</span><span class="w">       </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rho</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var1</span><span class="p">)</span><span class="o">*</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var2</span><span class="p">)</span>
-<span class="n">Sigma_indep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="n">var2</span><span class="p">),</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">)</span>
-
-<span class="c1"># Sample data</span>
-<span class="n">y_dep</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma_dep</span><span class="p">)</span>
-<span class="n">y_indep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma_indep</span><span class="p">)</span>
-
-<span class="c1"># Differences</span>
-<span class="n">y_diff_dep</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">y_dep</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">y_dep</span><span class="p">[,</span><span class="m">2</span><span class="p">]</span>
-<span class="n">y_diff_indep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">y_indep</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y_indep</span><span class="p">[,</span><span class="m">2</span><span class="p">]</span>
-
-<span class="c1"># Plot histograms of differences</span>
-<span class="nf">par</span><span class="p">(</span><span class="n">mfrow</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
-<span class="nf">hist</span><span class="p">(</span><span class="n">y_diff_dep</span><span class="p">,</span><span class="w">   </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-7</span><span class="p">,</span><span class="m">7</span><span class="p">),</span><span class="w"> </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Condition Difference&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s">&#39;Correlated&#39;</span><span class="p">)</span>
-<span class="nf">hist</span><span class="p">(</span><span class="n">y_diff_indep</span><span class="p">,</span><span class="w"> </span><span class="n">xlim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-7</span><span class="p">,</span><span class="m">7</span><span class="p">),</span><span class="w"> </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Condition Difference&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s">&#39;Uncorrelated&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/580ecc622665d926f2c7f7281a7cebeb86f539542160bff7ba34ed6e781077e4.png"><img alt="_images/580ecc622665d926f2c7f7281a7cebeb86f539542160bff7ba34ed6e781077e4.png" src="_images/580ecc622665d926f2c7f7281a7cebeb86f539542160bff7ba34ed6e781077e4.png" style="width: 420px; height: 420px;" /></a>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">SE_dep_theory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">2</span><span class="o">*</span><span class="p">(</span><span class="m">-0.8</span><span class="p">))</span><span class="w"> </span><span class="c1"># Theoretical SE</span>
-<span class="n">SE_dep_est</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sd</span><span class="p">(</span><span class="n">y_diff_dep</span><span class="p">)</span><span class="w">         </span><span class="c1"># Estimated SE from simulation</span>
-
-<span class="nf">round</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">SE_dep_theory</span><span class="p">,</span><span class="w"> </span><span class="n">SE_dep_est</span><span class="p">),</span><span class="w"> </span><span class="n">digits</span><span class="o">=</span><span class="m">3</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><style>
-.list-inline {list-style: none; margin:0; padding: 0}
-.list-inline>li {display: inline-block}
-.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
-</style>
-<ol class=list-inline><li>1.897</li><li>1.867</li></ol>
-</div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">SE_indep_theory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">2</span><span class="o">*</span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="c1"># Theoretical SE</span>
-<span class="n">SE_indep_est</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sd</span><span class="p">(</span><span class="n">y_diff_indep</span><span class="p">)</span><span class="w">  </span><span class="c1"># Estimated SE from simulation</span>
-
-<span class="nf">round</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">SE_indep_theory</span><span class="p">,</span><span class="w"> </span><span class="n">SE_indep_est</span><span class="p">),</span><span class="w"> </span><span class="n">digits</span><span class="o">=</span><span class="m">3</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><style>
-.list-inline {list-style: none; margin:0; padding: 0}
-.list-inline>li {display: inline-block}
-.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
-</style>
-<ol class=list-inline><li>1.414</li><li>1.364</li></ol>
-</div></div>
-</div>
-</section>
-<section id="try-setting-correlation-to-1-what-happens">
-<h1>Try Setting Correlation to 1. What happens?<a class="headerlink" href="#try-setting-correlation-to-1-what-happens" title="Link to this heading">#</a></h1>
-</section>
-<section id="univariate-conceptualisation">
-<h1>Univariate Conceptualisation<a class="headerlink" href="#univariate-conceptualisation" title="Link to this heading">#</a></h1>
-<p>IS THIS CONUFSING?</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">Matrix</span><span class="p">)</span>
-
-<span class="n">Sigma.Big</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.matrix</span><span class="p">(</span><span class="nf">bdiag</span><span class="p">(</span><span class="n">Sigma</span><span class="p">,</span><span class="n">Sigma</span><span class="p">,</span><span class="n">Sigma</span><span class="p">))</span>
-<span class="n">Mu.Big</span><span class="w">    </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">Mu</span><span class="p">,</span><span class="n">Mu</span><span class="p">,</span><span class="n">Mu</span><span class="p">)</span>
-
-<span class="n">y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="o">=</span><span class="n">Mu.Big</span><span class="p">,</span><span class="w"> </span><span class="n">Sigma</span><span class="o">=</span><span class="n">Sigma.Big</span><span class="p">)</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 0.6597696 2.2942266 0.5825903 2.7284908 0.4218907 1.6509818
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="multivariate-normal-distribution-with-2-conditions">
-<h1>Multivariate Normal Distribution with &gt; 2 Conditions<a class="headerlink" href="#multivariate-normal-distribution-with-2-conditions" title="Link to this heading">#</a></h1>
-<section id="visualising-the-model">
-<h2>Visualising the Model<a class="headerlink" href="#visualising-the-model" title="Link to this heading">#</a></h2>
-<p>We can also visualise what is happening here, to gain further intuition. The plot below shows each mouse along the <span class="math notranslate nohighlight">\(x\)</span>-axis, with their weight along the <span class="math notranslate nohighlight">\(y\)</span>-axis. The two treatments are shown for each mouse as two different coloured points and the grand mean is shown as a solid black line</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">reshape2</span><span class="p">)</span>
-<span class="nf">data</span><span class="p">(</span><span class="s">&#39;mice2&#39;</span><span class="p">)</span>
-
-<span class="n">mice2.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">melt</span><span class="p">(</span><span class="n">mice2</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                   </span><span class="n">id.vars</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                   </span><span class="n">variable.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;treatment&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                   </span><span class="n">value.name</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;weight&quot;</span><span class="p">)</span>
-<span class="n">p</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">par</span><span class="p">()</span>
-<span class="nf">par</span><span class="p">(</span><span class="n">mar</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">5.1</span><span class="p">,</span><span class="w"> </span><span class="m">4.1</span><span class="p">,</span><span class="w"> </span><span class="m">7.1</span><span class="p">,</span><span class="w"> </span><span class="m">2.1</span><span class="p">),</span><span class="w"> </span><span class="n">xpd</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
-
-<span class="nf">plot</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="p">,</span>
-<span class="w">     </span><span class="n">mice2.long</span><span class="o">$</span><span class="n">weight</span><span class="p">,</span>
-<span class="w">     </span><span class="n">col</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">&#39;skyblue3&#39;</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="s">&#39;tomato1&#39;</span><span class="p">,</span><span class="m">10</span><span class="p">)),</span>
-<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Mouse&#39;</span><span class="p">,</span>
-<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Weight&#39;</span><span class="p">,</span>
-<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span>
-<span class="w">     </span><span class="n">cex</span><span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
-
-<span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="nf">mean</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">weight</span><span class="p">),</span><span class="w"> </span><span class="n">xpd</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
-
-<span class="nf">legend</span><span class="p">(</span><span class="s">&quot;top&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">       </span><span class="n">inset</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">-.2</span><span class="p">),</span><span class="w"> </span>
-<span class="w">       </span><span class="n">title</span><span class="o">=</span><span class="s">&quot;Treatment&quot;</span><span class="p">,</span>
-<span class="w">       </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Before&quot;</span><span class="p">,</span><span class="s">&quot;After&quot;</span><span class="p">),</span><span class="w"> </span>
-<span class="w">       </span><span class="n">fill</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;skyblue3&#39;</span><span class="p">,</span><span class="s">&#39;tomato1&#39;</span><span class="p">),</span><span class="w"> </span>
-<span class="w">       </span><span class="n">horiz</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span>
-<span class="w">       </span><span class="n">cex</span><span class="o">=</span><span class="m">1.2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/0494806ab5e0a22b25a4f73660817c78d68e0782bac6a59a3ab3f703385a2684.png" src="_images/0494806ab5e0a22b25a4f73660817c78d68e0782bac6a59a3ab3f703385a2684.png" />
-</div>
-</div>
-<p>According to the model</p>
-<div class="math notranslate nohighlight">
-\[
-y_{ij} = \mu + \alpha_{j} + S_{i} + \eta_{ij}
-\]</div>
-<p>there are <em>three</em> sources of variance that explain why the data deflects from the grand mean. The first is variation associated with the two treatments (the <span class="math notranslate nohighlight">\(\alpha_{j}\)</span> terms), the second is variation associated with the different subjects (the <span class="math notranslate nohighlight">\(S_{i}\)</span> terms) and the third is random error unrelated to anything else (the <span class="math notranslate nohighlight">\(\eta_{ij}\)</span> terms).</p>
-<p>In order to understand this in more detail, and how it relates to repeated measurements, we can <em>remove</em> each source of variance from the data and then see what the plot looks like. Starting with the two treatments, if we remove the treatment effects from the data (the <span class="math notranslate nohighlight">\(\alpha_{j}\)</span>) we get the following</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">mod</span><span class="w">           </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">treatment</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">mice2.long</span><span class="p">,</span><span class="w"> </span><span class="n">contrasts</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">treatment</span><span class="o">=</span><span class="n">contr.sum</span><span class="p">))</span>
-<span class="n">res.twosample</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">resid</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
-<span class="n">res.twosample</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res.twosample</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">coef</span><span class="p">(</span><span class="n">mod</span><span class="p">)[</span><span class="m">1</span><span class="p">]</span>
-
-<span class="nf">par</span><span class="p">(</span><span class="n">mar</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">5.1</span><span class="p">,</span><span class="w"> </span><span class="m">4.1</span><span class="p">,</span><span class="w"> </span><span class="m">7.1</span><span class="p">,</span><span class="w"> </span><span class="m">2.1</span><span class="p">),</span><span class="w"> </span><span class="n">xpd</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
-
-<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="p">),</span>
-<span class="w">     </span><span class="n">res.twosample</span><span class="p">,</span>
-<span class="w">     </span><span class="n">col</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">&#39;skyblue3&#39;</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="s">&#39;tomato1&#39;</span><span class="p">,</span><span class="m">10</span><span class="p">)),</span>
-<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Mouse&#39;</span><span class="p">,</span>
-<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Weight&#39;</span><span class="p">,</span>
-<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span>
-<span class="w">     </span><span class="n">cex</span><span class="o">=</span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span>
-<span class="w">     </span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">230</span><span class="p">,</span><span class="m">350</span><span class="p">))</span>
-
-<span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="nf">coef</span><span class="p">(</span><span class="n">mod</span><span class="p">)[</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">xpd</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
-
-<span class="nf">legend</span><span class="p">(</span><span class="s">&quot;top&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">       </span><span class="n">inset</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">-.2</span><span class="p">),</span><span class="w"> </span>
-<span class="w">       </span><span class="n">title</span><span class="o">=</span><span class="s">&quot;Treatment&quot;</span><span class="p">,</span>
-<span class="w">       </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Before&quot;</span><span class="p">,</span><span class="s">&quot;After&quot;</span><span class="p">),</span><span class="w"> </span>
-<span class="w">       </span><span class="n">fill</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;skyblue3&#39;</span><span class="p">,</span><span class="s">&#39;tomato1&#39;</span><span class="p">),</span><span class="w"> </span>
-<span class="w">       </span><span class="n">horiz</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span>
-<span class="w">       </span><span class="n">cex</span><span class="o">=</span><span class="m">1.2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/3b3ef361e84f17bc82826cd514ee9f99d48b20404e8e5228bdf9622a9791e600.png" src="_images/3b3ef361e84f17bc82826cd514ee9f99d48b20404e8e5228bdf9622a9791e600.png" />
-</div>
-</div>
-<p>Now, after removing the <em>predictable</em> element of the variance, we should be left with only the <em>unpredictable</em> element. In other words, the plot above shows all the reasons, <em>other</em> than the two experimental conditions, why the data do not adhere to the grand mean. This is the <em>error</em> in the model. Going back to our model, this shows</p>
-<div class="math notranslate nohighlight">
-\[
-y_{ij} - \alpha_{j} = \mu + S_{i} + \eta_{ij}.
-\]</div>
-<p>So, there are two sources to this error. One relates to the fact that the data come from different subjects and the other is just random noise. Rather than a <em>single</em> vertical distance from the grand mean (<span class="math notranslate nohighlight">\(\epsilon_{ij}\)</span>) we have split this distance into <em>two</em> parts: the distance associated with the subject (<span class="math notranslate nohighlight">\(S_{i}\)</span>) and then anything left over (<span class="math notranslate nohighlight">\(\eta_{ij}\)</span>). Of interest is that the <em>correlation</em> induced by the repeated measurements can be seen above. Notice how the data from each subject is closely linked. For instance, both measurements for mouse 6 are close together and are both <em>above</em> the grand mean. Similarly, both measurements for mouse 8 are close together and are both <em>below</em> the grand mean. This implies that each mouse has a unique <em>constant offset</em> that moves their measurements above or below the grand mean <em>as a pair</em>. The fact that this offset moves the measurements <em>together</em> explains why the repeated measurements are <em>correlated</em>. In principle, if we remove this offset we remove the correlation.</p>
-<p>So, let us see what happens if we remove the constant offset given by <span class="math notranslate nohighlight">\(S_{i}\)</span>. This gives</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="p">)</span>
-<span class="n">mod</span><span class="w">           </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">treatment</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">mice2.long</span><span class="p">,</span><span class="w"> </span><span class="n">contrasts</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">treatment</span><span class="o">=</span><span class="n">contr.sum</span><span class="p">,</span><span class="n">id</span><span class="o">=</span><span class="n">contr.sum</span><span class="p">))</span>
-<span class="n">res.nosub</span><span class="w">     </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">resid</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">coef</span><span class="p">(</span><span class="n">mod</span><span class="p">)[</span><span class="m">1</span><span class="p">]</span>
-
-<span class="nf">par</span><span class="p">(</span><span class="n">mar</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">5.1</span><span class="p">,</span><span class="w"> </span><span class="m">4.1</span><span class="p">,</span><span class="w"> </span><span class="m">7.1</span><span class="p">,</span><span class="w"> </span><span class="m">2.1</span><span class="p">),</span><span class="w"> </span><span class="n">xpd</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
-
-<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="p">),</span>
-<span class="w">     </span><span class="n">res.nosub</span><span class="p">,</span>
-<span class="w">     </span><span class="n">col</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">&#39;skyblue3&#39;</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="s">&#39;tomato1&#39;</span><span class="p">,</span><span class="m">10</span><span class="p">)),</span>
-<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Mouse&#39;</span><span class="p">,</span>
-<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Weight&#39;</span><span class="p">,</span>
-<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span>
-<span class="w">     </span><span class="n">cex</span><span class="o">=</span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span>
-<span class="w">     </span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">230</span><span class="p">,</span><span class="m">350</span><span class="p">))</span>
-
-<span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="nf">coef</span><span class="p">(</span><span class="n">mod</span><span class="p">)[</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">xpd</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
-
-<span class="nf">legend</span><span class="p">(</span><span class="s">&quot;top&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">       </span><span class="n">inset</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">-.2</span><span class="p">),</span><span class="w"> </span>
-<span class="w">       </span><span class="n">title</span><span class="o">=</span><span class="s">&quot;Treatment&quot;</span><span class="p">,</span>
-<span class="w">       </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Before&quot;</span><span class="p">,</span><span class="s">&quot;After&quot;</span><span class="p">),</span><span class="w"> </span>
-<span class="w">       </span><span class="n">fill</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;skyblue3&#39;</span><span class="p">,</span><span class="s">&#39;tomato1&#39;</span><span class="p">),</span><span class="w"> </span>
-<span class="w">       </span><span class="n">horiz</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span>
-<span class="w">       </span><span class="n">cex</span><span class="o">=</span><span class="m">1.2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/bd980ff3c7139dd7a6d8da67cdddfb582c2448e55e2c5371ffc0e65e331d887f.png" src="_images/bd980ff3c7139dd7a6d8da67cdddfb582c2448e55e2c5371ffc0e65e331d887f.png" />
-</div>
-</div>
-<p>Now we can see that the constant offset that moves each subject in different directions from the grand mean has been removed. Each subject is now <em>on an equal footing</em>. Mouse 6 is no longer far above the grand mean, nor is Mouse 8 far below the grand mean. Going back to our model, this shows</p>
-<div class="math notranslate nohighlight">
-\[
-y_{ij} - \alpha_{j} - S_{i} = \mu + \eta_{ij}.
-\]</div>
-<p>We have therefore removed the element that causes the data to be correlated and the only variation left is the random error term <span class="math notranslate nohighlight">\(\eta_{ij}\)</span>. Subtracting the <span class="math notranslate nohighlight">\(S_{i}\)</span> effectively <em>removes</em> the value that shifts each subject’s measurements <em>away</em> from the mean by some amount that is <em>unique</em> to each subject, but <em>constant</em> across their own measurements. We can think of this like each person having their own “bias” that makes them behave <em>more</em> or <em>less</em> like the population average. This “bias” is what makes that person’s repeats correlated, because this is what makes the measurements similar to each other (i.e. both measurements <em>larger</em> than average or <em>smaller</em> than average). If we <em>remove</em> this “bias”, we <em>remove</em> the correlation and the only variance that remains is unrelated to each subject. In the paired <span class="math notranslate nohighlight">\(t\)</span>-test, this is removed <em>implicitly</em> by the subtraction of the pairs.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="linear-models-with-correlated-errors-workshop">
+<h1>Linear Models with Correlated Errors: Workshop<a class="headerlink" href="#linear-models-with-correlated-errors-workshop" title="Link to this heading">#</a></h1>
+<section id="repeated-measures-anova-with-between-subject-factors">
+<h2>Repeated Measures ANOVA with Between-subject Factors<a class="headerlink" href="#repeated-measures-anova-with-between-subject-factors" title="Link to this heading">#</a></h2>
 </section>
 </section>
 
@@ -690,15 +456,8 @@ y_{ij} - \alpha_{j} - S_{i} = \mu + \eta_{ij}.
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">The Impact of <em>Negative</em> Correlation</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#try-setting-correlation-to-1-what-happens">Try Setting Correlation to 1. What happens?</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-conceptualisation">Univariate Conceptualisation</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-normal-distribution-with-2-conditions">Multivariate Normal Distribution with &gt; 2 Conditions</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-model">Visualising the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measures-anova-with-between-subject-factors">Repeated Measures ANOVA with Between-subject Factors</a></li>
 </ul>
-</li>
-</ul>
-
   </nav></div>
 
 </div></div>

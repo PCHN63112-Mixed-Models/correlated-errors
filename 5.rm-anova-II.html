@@ -89,8 +89,6 @@
     <script src="_static/sphericity_3d_files/CanvasMatrix4-1.3.18/CanvasMatrix.src.js?v=5a2d04be"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Summary" href="summary.html" />
-    <link rel="prev" title="One-way Repeated Measures ANOVA" href="4.rm-anova-I.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -141,6 +139,8 @@
     <div class="bd-container__inner bd-page-width">
       
       
+      
+        
       
       <dialog id="pst-primary-sidebar-modal"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
@@ -194,12 +194,11 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="1.designs.html">Repeated Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2.probability.html">Probability Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3.paired-t.html">The Paired <em>t</em>-test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="4.rm-anova-I.html">One-way Repeated Measures ANOVA</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Higher-order Repeated Measures ANOVA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4.rm-anova.html">One-way Repeated Measures ANOVA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="summary.html">Summary</a></li>
 </ul>
 
@@ -533,11 +532,11 @@
 \text{Var}(y_{ijk}) = \sigma^{2} = \sigma^{2}_{b} + \sigma^{2}_{w}.
 \]</div>
 <p>The point of doing this was two-fold. Firstly, it <em>removes</em> the correlation from the model errors and thus the model now meets the <span class="math notranslate nohighlight">\(i.i.d.\)</span> assumptions. Secondly, it removes error variance associated with the differences <em>between</em> the subjects, allowing any inferential tests to only use the variance associated with measurements <em>within</em> a subject. This is obviously the most suitable error to use for inference on the repeated measures because it captures the random fluctuations in measurements <em>within</em> an individual.</p>
-<p>Conceptually, the repeated measurements from subject <span class="math notranslate nohighlight">\(i\)</span> can be considered multiple draws from a distribution with a variance <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> and a mean <span class="math notranslate nohighlight">\(E(y_{ij}) = \mu_{j} + S_{i}\)</span>. The distribution of each subject is therefore conceptualised as having the <em>same</em> variance but a <em>different</em> mean, unique to each subject. These means are then further conceptualised as random draws from a larger distribution of <em>different subjects</em> with a variance <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>. Thus, the variation <em>between</em> subjects is represented by this larger distribution, whereas as the variation <em>within</em> each subject is represented by the smaller individual distributions. This is illustrated in <a class="reference internal" href="#mixed-sampling-fig"><span class="std std-numref">Fig. 4</span></a> for two group-level distributions.</p>
+<p>Conceptually, the repeated measurements from subject <span class="math notranslate nohighlight">\(i\)</span> can be considered multiple draws from a distribution with a variance <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> and a mean <span class="math notranslate nohighlight">\(E(y_{ij}) = \mu_{j} + S_{i}\)</span>. The distribution of each subject is therefore conceptualised as having the <em>same</em> variance but a <em>different</em> mean, unique to each subject. These means are then further conceptualised as random draws from a larger distribution of <em>different subjects</em> with a variance <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>. Thus, the variation <em>between</em> subjects is represented by this larger distribution, whereas as the variation <em>within</em> each subject is represented by the smaller individual distributions. This is illustrated in <code class="xref std std-numref docutils literal notranslate"><span class="pre">mixed-sampling-fig</span></code> for two group-level distributions.</p>
 <figure class="align-default" id="mixed-sampling-fig">
 <a class="reference internal image-reference" href="_images/mixed-measures-sampling.png"><img alt="_images/mixed-measures-sampling.png" src="_images/mixed-measures-sampling.png" style="width: 600px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 4 </span><span class="caption-text">An illustration of the sampling model that underlies a repeated measures design with 3 measurements per-subject, as taken from 2 independent groups. Two example subjects are shown for each group. The most important element here is seeing the different variance sources (<span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> and <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>) and how these correspond to inference for either the between-subjects or within-subject effects.</span><a class="headerlink" href="#mixed-sampling-fig" title="Link to this image">#</a></p>
+<p><span class="caption-text">An illustration of the sampling model that underlies a repeated measures design with 3 measurements per-subject, as taken from 2 independent groups. Two example subjects are shown for each group. The most important element here is seeing the different variance sources (<span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> and <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>) and how these correspond to inference for either the between-subjects or within-subject effects.</span><a class="headerlink" href="#mixed-sampling-fig" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Importantly, we need to think about which measure of <em>uncertainty</em> is most suitable for inference about the different elements of this sampling model. For the repeated measurements, we can see that these all come from distributions with variance <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. Thus, our uncertainty around our estimates of these effects is tied to how much we expect them to vary for each subject. This means that <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> is the most suitable error term. Now, in terms of looking at the <em>group</em> effects, we can see that these come from distributions with variance <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>. These are distributions of the <em>subject means</em>, capturing how much the subjects differ from each other. This is parameterised in terms of the subject-specific errors given by <span class="math notranslate nohighlight">\(S_{i}\)</span>, which capture the magnitude of the discrepancy between each subject and the group average. Thus, the variance of the subject means is given by <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>. Any inference about subjects <em>as a whole</em> needs to take the variability of the subjects into account. Thus, for inference about the group effects, <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> is the most suitable error term. So, taking this all together, we now have a model where <em>different effects</em> require <em>different error terms</em>.</p>
@@ -935,24 +934,6 @@ $`Sphericity Corrections`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="4.rm-anova-I.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">One-way Repeated Measures ANOVA</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="summary.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Summary</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
