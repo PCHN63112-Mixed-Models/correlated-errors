@@ -6,7 +6,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>The Impact of Negative Correlation &#8212; Linear Models with Correlated Errors</title>
   
@@ -16,33 +16,36 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/test.css?v=a80109f0" />
     <link rel="stylesheet" type="text/css" href="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rgl.css?v=57907efa" />
     <link rel="stylesheet" type="text/css" href="_static/sphericity_3d_files/htmltools-fill-0.5.8.1/fill.css?v=971cc1da" />
   
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
@@ -53,7 +56,7 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=1ae7504c"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -63,31 +66,32 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'correlated-errors-workshop';</script>
-    <script src="_static/sphericity_3d_files/CanvasMatrix4-1.3.18/CanvasMatrix.src.js?v=5a2d04be"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/init.src.js?v=f5bdcbbb"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rglTimer.src.js?v=ac1c3151"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/draw.src.js?v=49d9cbaa"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/axes.src.js?v=3250d244"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/projection.src.js?v=98871b91"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/mouse.src.js?v=96f0b970"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/subscenes.src.js?v=42cb429d"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/textures.src.js?v=9482728f"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/shadersrc.src.js?v=6ce05c17"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/controls.src.js?v=4b3dbe6f"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/utils.src.js?v=56efe719"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/selection.src.js?v=5b47ed7d"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/buffer.src.js?v=1efca185"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rglClass.src.js?v=9e593197"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/mouse.src.js?v=96f0b970"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/projection.src.js?v=98871b91"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/axes.src.js?v=3250d244"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rglTimer.src.js?v=ac1c3151"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/pretty.src.js?v=4f2cffba"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/shaders.src.js?v=bbbdf37d"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/pieces.src.js?v=280fd571"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/animation.src.js?v=74f9b9e8"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/textures.src.js?v=9482728f"></script>
-    <script src="_static/sphericity_3d_files/htmlwidgets-1.6.4/htmlwidgets.js?v=175713be"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/pieces.src.js?v=280fd571"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/selection.src.js?v=5b47ed7d"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/init.src.js?v=f5bdcbbb"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/subscenes.src.js?v=42cb429d"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/controls.src.js?v=4b3dbe6f"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/draw.src.js?v=49d9cbaa"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/utils.src.js?v=56efe719"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rglClass.src.js?v=9e593197"></script>
     <script src="_static/sphericity_3d_files/rglWebGL-binding-1.3.18/rglWebGL.js?v=8cd6f6d7"></script>
+    <script src="_static/sphericity_3d_files/htmlwidgets-1.6.4/htmlwidgets.js?v=175713be"></script>
+    <script src="_static/sphericity_3d_files/CanvasMatrix4-1.3.18/CanvasMatrix.src.js?v=5a2d04be"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -103,19 +107,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -123,7 +116,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -131,8 +123,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -150,7 +142,8 @@
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -180,21 +173,17 @@
     
     
     <img src="_static/logo.png" class="logo__image only-light" alt="Linear Models with Correlated Errors - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Linear Models with Correlated Errors - Home"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Linear Models with Correlated Errors - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -220,9 +209,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -366,24 +360,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -410,7 +396,10 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">The Impact of <em>Negative</em> Correlation</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#try-setting-correlation-to-1-what-happens">Try Setting Correlation to 1. What happens?</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-conceptualisation">Univariate Conceptualisation</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-normal-distribution-with-2-conditions">Multivariate Normal Distribution with &gt; 2 Conditions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-normal-distribution-with-2-conditions">Multivariate Normal Distribution with &gt; 2 Conditions</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-model">Visualising the Model</a></li>
+</ul>
+</li>
 </ul>
 
             </nav>
@@ -458,8 +447,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/580ecc622665d926f2c7f7281a7cebeb86f539542160bff7ba34ed6e781077e4.png"><img alt="_images/580ecc622665d926f2c7f7281a7cebeb86f539542160bff7ba34ed6e781077e4.png" src="_images/580ecc622665d926f2c7f7281a7cebeb86f539542160bff7ba34ed6e781077e4.png" style="width: 420px; height: 420px;" />
-</a>
+<a class="reference internal image-reference" href="_images/580ecc622665d926f2c7f7281a7cebeb86f539542160bff7ba34ed6e781077e4.png"><img alt="_images/580ecc622665d926f2c7f7281a7cebeb86f539542160bff7ba34ed6e781077e4.png" src="_images/580ecc622665d926f2c7f7281a7cebeb86f539542160bff7ba34ed6e781077e4.png" style="width: 420px; height: 420px;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -527,6 +515,132 @@ document.write(`
 </section>
 <section id="multivariate-normal-distribution-with-2-conditions">
 <h1>Multivariate Normal Distribution with &gt; 2 Conditions<a class="headerlink" href="#multivariate-normal-distribution-with-2-conditions" title="Link to this heading">#</a></h1>
+<section id="visualising-the-model">
+<h2>Visualising the Model<a class="headerlink" href="#visualising-the-model" title="Link to this heading">#</a></h2>
+<p>We can also visualise what is happening here, to gain further intuition. The plot below shows each mouse along the <span class="math notranslate nohighlight">\(x\)</span>-axis, with their weight along the <span class="math notranslate nohighlight">\(y\)</span>-axis. The two treatments are shown for each mouse as two different coloured points and the grand mean is shown as a solid black line</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">reshape2</span><span class="p">)</span>
+<span class="nf">data</span><span class="p">(</span><span class="s">&#39;mice2&#39;</span><span class="p">)</span>
+
+<span class="n">mice2.long</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">melt</span><span class="p">(</span><span class="n">mice2</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                   </span><span class="n">id.vars</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                   </span><span class="n">variable.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;treatment&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                   </span><span class="n">value.name</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;weight&quot;</span><span class="p">)</span>
+<span class="n">p</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">par</span><span class="p">()</span>
+<span class="nf">par</span><span class="p">(</span><span class="n">mar</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">5.1</span><span class="p">,</span><span class="w"> </span><span class="m">4.1</span><span class="p">,</span><span class="w"> </span><span class="m">7.1</span><span class="p">,</span><span class="w"> </span><span class="m">2.1</span><span class="p">),</span><span class="w"> </span><span class="n">xpd</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="p">,</span>
+<span class="w">     </span><span class="n">mice2.long</span><span class="o">$</span><span class="n">weight</span><span class="p">,</span>
+<span class="w">     </span><span class="n">col</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">&#39;skyblue3&#39;</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="s">&#39;tomato1&#39;</span><span class="p">,</span><span class="m">10</span><span class="p">)),</span>
+<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Mouse&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Weight&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span>
+<span class="w">     </span><span class="n">cex</span><span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
+
+<span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="nf">mean</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">weight</span><span class="p">),</span><span class="w"> </span><span class="n">xpd</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+
+<span class="nf">legend</span><span class="p">(</span><span class="s">&quot;top&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">       </span><span class="n">inset</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">-.2</span><span class="p">),</span><span class="w"> </span>
+<span class="w">       </span><span class="n">title</span><span class="o">=</span><span class="s">&quot;Treatment&quot;</span><span class="p">,</span>
+<span class="w">       </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Before&quot;</span><span class="p">,</span><span class="s">&quot;After&quot;</span><span class="p">),</span><span class="w"> </span>
+<span class="w">       </span><span class="n">fill</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;skyblue3&#39;</span><span class="p">,</span><span class="s">&#39;tomato1&#39;</span><span class="p">),</span><span class="w"> </span>
+<span class="w">       </span><span class="n">horiz</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span>
+<span class="w">       </span><span class="n">cex</span><span class="o">=</span><span class="m">1.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/0494806ab5e0a22b25a4f73660817c78d68e0782bac6a59a3ab3f703385a2684.png" src="_images/0494806ab5e0a22b25a4f73660817c78d68e0782bac6a59a3ab3f703385a2684.png" />
+</div>
+</div>
+<p>According to the model</p>
+<div class="math notranslate nohighlight">
+\[
+y_{ij} = \mu + \alpha_{j} + S_{i} + \eta_{ij}
+\]</div>
+<p>there are <em>three</em> sources of variance that explain why the data deflects from the grand mean. The first is variation associated with the two treatments (the <span class="math notranslate nohighlight">\(\alpha_{j}\)</span> terms), the second is variation associated with the different subjects (the <span class="math notranslate nohighlight">\(S_{i}\)</span> terms) and the third is random error unrelated to anything else (the <span class="math notranslate nohighlight">\(\eta_{ij}\)</span> terms).</p>
+<p>In order to understand this in more detail, and how it relates to repeated measurements, we can <em>remove</em> each source of variance from the data and then see what the plot looks like. Starting with the two treatments, if we remove the treatment effects from the data (the <span class="math notranslate nohighlight">\(\alpha_{j}\)</span>) we get the following</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">mod</span><span class="w">           </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">treatment</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">mice2.long</span><span class="p">,</span><span class="w"> </span><span class="n">contrasts</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">treatment</span><span class="o">=</span><span class="n">contr.sum</span><span class="p">))</span>
+<span class="n">res.twosample</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">resid</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+<span class="n">res.twosample</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res.twosample</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">coef</span><span class="p">(</span><span class="n">mod</span><span class="p">)[</span><span class="m">1</span><span class="p">]</span>
+
+<span class="nf">par</span><span class="p">(</span><span class="n">mar</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">5.1</span><span class="p">,</span><span class="w"> </span><span class="m">4.1</span><span class="p">,</span><span class="w"> </span><span class="m">7.1</span><span class="p">,</span><span class="w"> </span><span class="m">2.1</span><span class="p">),</span><span class="w"> </span><span class="n">xpd</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="p">),</span>
+<span class="w">     </span><span class="n">res.twosample</span><span class="p">,</span>
+<span class="w">     </span><span class="n">col</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">&#39;skyblue3&#39;</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="s">&#39;tomato1&#39;</span><span class="p">,</span><span class="m">10</span><span class="p">)),</span>
+<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Mouse&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Weight&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span>
+<span class="w">     </span><span class="n">cex</span><span class="o">=</span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span>
+<span class="w">     </span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">230</span><span class="p">,</span><span class="m">350</span><span class="p">))</span>
+
+<span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="nf">coef</span><span class="p">(</span><span class="n">mod</span><span class="p">)[</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">xpd</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+
+<span class="nf">legend</span><span class="p">(</span><span class="s">&quot;top&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">       </span><span class="n">inset</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">-.2</span><span class="p">),</span><span class="w"> </span>
+<span class="w">       </span><span class="n">title</span><span class="o">=</span><span class="s">&quot;Treatment&quot;</span><span class="p">,</span>
+<span class="w">       </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Before&quot;</span><span class="p">,</span><span class="s">&quot;After&quot;</span><span class="p">),</span><span class="w"> </span>
+<span class="w">       </span><span class="n">fill</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;skyblue3&#39;</span><span class="p">,</span><span class="s">&#39;tomato1&#39;</span><span class="p">),</span><span class="w"> </span>
+<span class="w">       </span><span class="n">horiz</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span>
+<span class="w">       </span><span class="n">cex</span><span class="o">=</span><span class="m">1.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/3b3ef361e84f17bc82826cd514ee9f99d48b20404e8e5228bdf9622a9791e600.png" src="_images/3b3ef361e84f17bc82826cd514ee9f99d48b20404e8e5228bdf9622a9791e600.png" />
+</div>
+</div>
+<p>Now, after removing the <em>predictable</em> element of the variance, we should be left with only the <em>unpredictable</em> element. In other words, the plot above shows all the reasons, <em>other</em> than the two experimental conditions, why the data do not adhere to the grand mean. This is the <em>error</em> in the model. Going back to our model, this shows</p>
+<div class="math notranslate nohighlight">
+\[
+y_{ij} - \alpha_{j} = \mu + S_{i} + \eta_{ij}.
+\]</div>
+<p>So, there are two sources to this error. One relates to the fact that the data come from different subjects and the other is just random noise. Rather than a <em>single</em> vertical distance from the grand mean (<span class="math notranslate nohighlight">\(\epsilon_{ij}\)</span>) we have split this distance into <em>two</em> parts: the distance associated with the subject (<span class="math notranslate nohighlight">\(S_{i}\)</span>) and then anything left over (<span class="math notranslate nohighlight">\(\eta_{ij}\)</span>). Of interest is that the <em>correlation</em> induced by the repeated measurements can be seen above. Notice how the data from each subject is closely linked. For instance, both measurements for mouse 6 are close together and are both <em>above</em> the grand mean. Similarly, both measurements for mouse 8 are close together and are both <em>below</em> the grand mean. This implies that each mouse has a unique <em>constant offset</em> that moves their measurements above or below the grand mean <em>as a pair</em>. The fact that this offset moves the measurements <em>together</em> explains why the repeated measurements are <em>correlated</em>. In principle, if we remove this offset we remove the correlation.</p>
+<p>So, let us see what happens if we remove the constant offset given by <span class="math notranslate nohighlight">\(S_{i}\)</span>. This gives</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="p">)</span>
+<span class="n">mod</span><span class="w">           </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lm</span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">treatment</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">mice2.long</span><span class="p">,</span><span class="w"> </span><span class="n">contrasts</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="n">treatment</span><span class="o">=</span><span class="n">contr.sum</span><span class="p">,</span><span class="n">id</span><span class="o">=</span><span class="n">contr.sum</span><span class="p">))</span>
+<span class="n">res.nosub</span><span class="w">     </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">resid</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">coef</span><span class="p">(</span><span class="n">mod</span><span class="p">)[</span><span class="m">1</span><span class="p">]</span>
+
+<span class="nf">par</span><span class="p">(</span><span class="n">mar</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">5.1</span><span class="p">,</span><span class="w"> </span><span class="m">4.1</span><span class="p">,</span><span class="w"> </span><span class="m">7.1</span><span class="p">,</span><span class="w"> </span><span class="m">2.1</span><span class="p">),</span><span class="w"> </span><span class="n">xpd</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">mice2.long</span><span class="o">$</span><span class="n">id</span><span class="p">),</span>
+<span class="w">     </span><span class="n">res.nosub</span><span class="p">,</span>
+<span class="w">     </span><span class="n">col</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">&#39;skyblue3&#39;</span><span class="p">,</span><span class="m">10</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="s">&#39;tomato1&#39;</span><span class="p">,</span><span class="m">10</span><span class="p">)),</span>
+<span class="w">     </span><span class="n">xlab</span><span class="o">=</span><span class="s">&#39;Mouse&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">ylab</span><span class="o">=</span><span class="s">&#39;Weight&#39;</span><span class="p">,</span>
+<span class="w">     </span><span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span>
+<span class="w">     </span><span class="n">cex</span><span class="o">=</span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span>
+<span class="w">     </span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">230</span><span class="p">,</span><span class="m">350</span><span class="p">))</span>
+
+<span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="nf">coef</span><span class="p">(</span><span class="n">mod</span><span class="p">)[</span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">xpd</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+
+<span class="nf">legend</span><span class="p">(</span><span class="s">&quot;top&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">       </span><span class="n">inset</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">-.2</span><span class="p">),</span><span class="w"> </span>
+<span class="w">       </span><span class="n">title</span><span class="o">=</span><span class="s">&quot;Treatment&quot;</span><span class="p">,</span>
+<span class="w">       </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Before&quot;</span><span class="p">,</span><span class="s">&quot;After&quot;</span><span class="p">),</span><span class="w"> </span>
+<span class="w">       </span><span class="n">fill</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;skyblue3&#39;</span><span class="p">,</span><span class="s">&#39;tomato1&#39;</span><span class="p">),</span><span class="w"> </span>
+<span class="w">       </span><span class="n">horiz</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span>
+<span class="w">       </span><span class="n">cex</span><span class="o">=</span><span class="m">1.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/bd980ff3c7139dd7a6d8da67cdddfb582c2448e55e2c5371ffc0e65e331d887f.png" src="_images/bd980ff3c7139dd7a6d8da67cdddfb582c2448e55e2c5371ffc0e65e331d887f.png" />
+</div>
+</div>
+<p>Now we can see that the constant offset that moves each subject in different directions from the grand mean has been removed. Each subject is now <em>on an equal footing</em>. Mouse 6 is no longer far above the grand mean, nor is Mouse 8 far below the grand mean. Going back to our model, this shows</p>
+<div class="math notranslate nohighlight">
+\[
+y_{ij} - \alpha_{j} - S_{i} = \mu + \eta_{ij}.
+\]</div>
+<p>We have therefore removed the element that causes the data to be correlated and the only variation left is the random error term <span class="math notranslate nohighlight">\(\eta_{ij}\)</span>. Subtracting the <span class="math notranslate nohighlight">\(S_{i}\)</span> effectively <em>removes</em> the value that shifts each subject’s measurements <em>away</em> from the mean by some amount that is <em>unique</em> to each subject, but <em>constant</em> across their own measurements. We can think of this like each person having their own “bias” that makes them behave <em>more</em> or <em>less</em> like the population average. This “bias” is what makes that person’s repeats correlated, because this is what makes the measurements similar to each other (i.e. both measurements <em>larger</em> than average or <em>smaller</em> than average). If we <em>remove</em> this “bias”, we <em>remove</em> the correlation and the only variance that remains is unrelated to each subject. In the paired <span class="math notranslate nohighlight">\(t\)</span>-test, this is removed <em>implicitly</em> by the subtraction of the pairs.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -566,7 +680,8 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -578,7 +693,10 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">The Impact of <em>Negative</em> Correlation</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#try-setting-correlation-to-1-what-happens">Try Setting Correlation to 1. What happens?</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-conceptualisation">Univariate Conceptualisation</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-normal-distribution-with-2-conditions">Multivariate Normal Distribution with &gt; 2 Conditions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-normal-distribution-with-2-conditions">Multivariate Normal Distribution with &gt; 2 Conditions</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-model">Visualising the Model</a></li>
+</ul>
+</li>
 </ul>
 
   </nav></div>
@@ -628,8 +746,8 @@ By Dr Martyn McFarquhar
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>
