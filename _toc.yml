@@ -7,6 +7,5 @@ chapters:
 - file: 1.designs
 - file: 2.probability
 - file: 3.paired-t
-- file: 4.rm-anova-I
-- file: 5.rm-anova-II
+- file: 4.rm-anova
 - file: summary
