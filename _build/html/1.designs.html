@@ -6,7 +6,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Repeated Measurements &#8212; Linear Models with Correlated Errors</title>
   
@@ -16,36 +16,33 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/test.css?v=a80109f0" />
     <link rel="stylesheet" type="text/css" href="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rgl.css?v=57907efa" />
     <link rel="stylesheet" type="text/css" href="_static/sphericity_3d_files/htmltools-fill-0.5.8.1/fill.css?v=971cc1da" />
   
-  <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
@@ -56,7 +53,7 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/togglebutton.js?v=1ae7504c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -66,34 +63,33 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '1.designs';</script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/textures.src.js?v=9482728f"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/shadersrc.src.js?v=6ce05c17"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/buffer.src.js?v=1efca185"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/mouse.src.js?v=96f0b970"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/projection.src.js?v=98871b91"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/axes.src.js?v=3250d244"></script>
+    <script src="_static/sphericity_3d_files/CanvasMatrix4-1.3.18/CanvasMatrix.src.js?v=5a2d04be"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/init.src.js?v=f5bdcbbb"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rglTimer.src.js?v=ac1c3151"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/draw.src.js?v=49d9cbaa"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/axes.src.js?v=3250d244"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/projection.src.js?v=98871b91"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/mouse.src.js?v=96f0b970"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/subscenes.src.js?v=42cb429d"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/shadersrc.src.js?v=6ce05c17"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/controls.src.js?v=4b3dbe6f"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/utils.src.js?v=56efe719"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/selection.src.js?v=5b47ed7d"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/buffer.src.js?v=1efca185"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rglClass.src.js?v=9e593197"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/pretty.src.js?v=4f2cffba"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/shaders.src.js?v=bbbdf37d"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/animation.src.js?v=74f9b9e8"></script>
     <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/pieces.src.js?v=280fd571"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/selection.src.js?v=5b47ed7d"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/init.src.js?v=f5bdcbbb"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/subscenes.src.js?v=42cb429d"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/controls.src.js?v=4b3dbe6f"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/draw.src.js?v=49d9cbaa"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/utils.src.js?v=56efe719"></script>
-    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/rglClass.src.js?v=9e593197"></script>
-    <script src="_static/sphericity_3d_files/rglWebGL-binding-1.3.18/rglWebGL.js?v=8cd6f6d7"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/animation.src.js?v=74f9b9e8"></script>
+    <script src="_static/sphericity_3d_files/rglwidgetClass-1.3.18/textures.src.js?v=9482728f"></script>
     <script src="_static/sphericity_3d_files/htmlwidgets-1.6.4/htmlwidgets.js?v=175713be"></script>
-    <script src="_static/sphericity_3d_files/CanvasMatrix4-1.3.18/CanvasMatrix.src.js?v=5a2d04be"></script>
+    <script src="_static/sphericity_3d_files/rglWebGL-binding-1.3.18/rglWebGL.js?v=8cd6f6d7"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Probability Models" href="2.probability.html" />
     <link rel="prev" title="Introduction" href="0.intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -109,8 +105,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -118,6 +125,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -125,8 +133,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -142,8 +150,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -173,17 +180,21 @@
     
     
     <img src="_static/logo.png" class="logo__image only-light" alt="Linear Models with Correlated Errors - Home"/>
-    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Linear Models with Correlated Errors - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Linear Models with Correlated Errors - Home"/>`);</script>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -209,14 +220,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -360,16 +366,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -393,15 +407,13 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measures-designs">Repeated Measures Designs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurement-designs">Repeated Measurement Designs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measures-and-correlation">Repeated Measures and Correlation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-problem-of-correlation">The Problem of Correlation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-and-the-linear-model-assumptions">Correlation and the Linear Model Assumptions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-and-the-standard-errors">Correlation and the Standard Errors</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#theory">Theory</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#influence-on-test-statistics-and-p-values">Influence on Test Statistics and <span class="math notranslate nohighlight">\(p\)</span>-values</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#influence-on-the-degrees-of-freedom">Influence on the Degrees of Freedom</a></li>
 </ul>
 </li>
 </ul>
@@ -419,26 +431,29 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="repeated-measurements">
 <h1>Repeated Measurements<a class="headerlink" href="#repeated-measurements" title="Link to this heading">#</a></h1>
-<p>As alluded to in the introduction, experiments where multiple measurements are taken from the same subject are problematic from an analysis perspective. These are known as <em>repeated measurement</em>, <em>repeated measures</em> or <em>within-subject</em> designs. In this first part, we will explore <em>why</em> these designs cause problems, before spending the rest of the lesson discussing some traditional remedies. This is all ground work to allow us to begin on the core topic of <em>linear mixed-effects models</em> next week.</p>
-<section id="repeated-measures-designs">
-<h2>Repeated Measures Designs<a class="headerlink" href="#repeated-measures-designs" title="Link to this heading">#</a></h2>
-<p>Up until now the only experimental designs we have considered are those where a <em>single</em> measurement is taken from each subject<a class="footnote-reference brackets" href="#subject-foot" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. This means that every row of our data sets and every value of <span class="math notranslate nohighlight">\(y\)</span> was considered a <em>separate</em> subject. Thinking back to the idea of factorial experiments, this means that <em>different</em> experimental conditions represent different groups of individuals. No single individual was present in <em>both</em> groups and thus different subjects were randomised to different experimental conditions. These are known as <em>independent measures</em> or <em>between-subjects</em> designs. For example, the illustration in  <a class="reference internal" href="#between-sub-fig"><span class="std std-numref">Fig. 1</span></a>. shows a between-subjects design where half the sample undergo a happy mood induction and the other half undergo a sad mood induction.</p>
+<p>As alluded to in the introduction, experiments where multiple measurements are taken from the same subject are problematic from an analysis perspective. These are known as <em>repeated measurement</em> or <em>within-subject</em> designs. In the first part of this lesson, we will explore <em>why</em> these designs cause problems, before spending the rest of the lesson discussing some traditional remedies.</p>
+<section id="repeated-measurement-designs">
+<h2>Repeated Measurement Designs<a class="headerlink" href="#repeated-measurement-designs" title="Link to this heading">#</a></h2>
+<p>Up until now, the only experimental designs we have considered are those where a <em>single</em> measurement is taken from each subject<a class="footnote-reference brackets" href="#subject-foot" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. This means that every row of our data and every value of our outcome <span class="math notranslate nohighlight">\(y\)</span> was considered a <em>separate</em> subject. Thinking back to the idea of factorial experiments, this means that <em>different</em> experimental conditions represent different groups of individuals. Each individual was therefore only present in <em>one</em> of the experimental groups. These are known as <em>independent measurement</em> or <em>between-subjects</em> designs. For example, the illustration in  <a class="reference internal" href="#between-sub-fig"><span class="std std-numref">Fig. 1</span></a>. shows a between-subjects design where half the sample undergo a happy mood induction and the other half undergo a sad mood induction.</p>
 <figure class="align-default" id="between-sub-fig">
-<a class="reference internal image-reference" href="_images/between-subjects-design.png"><img alt="_images/between-subjects-design.png" src="_images/between-subjects-design.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/between-subjects-design.png"><img alt="_images/between-subjects-design.png" src="_images/between-subjects-design.png" style="width: 600px;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 1 </span><span class="caption-text">An example of a between-subjects design for a happy and sad mood induction experiment.</span><a class="headerlink" href="#between-sub-fig" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>A different form of design comes from an experiment where each subject participates in <em>every</em> experimental condition. For instance, each subject performs a task that has 3 different difficulty conditions (<em>easy</em>, <em>medium</em>, <em>hard</em>). If each subject performs each of these conditions then we have 3 measurements per-subject and this is known as a <em>repeated measures</em> or <em>within-subject</em> design<a class="footnote-reference brackets" href="#long-foot" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>. In this example, there is nothing fundamental about the experiment that forces it to be repeated measurements. A between-subjects variant could easily be conducted where each subject participates in only <em>one</em> of the experimental conditions. As such, for this particular example, repeated measurements are a <em>choice</em> rather than a fundamental reality of the data. This experimental setup is illustrated in <a class="reference internal" href="#within-sub-fig"><span class="std std-numref">Fig. 2</span></a>.</p>
+<p>A different form of design comes from an experiment where each subject participates in <em>every</em> experimental condition. For instance, each subject performs a task that has 3 different difficulty conditions (<em>easy</em>, <em>medium</em>, <em>hard</em>). If each subject performs each of these conditions then we have 3 measurements per-subject and this is known as a <em>repeated measurement</em> or <em>within-subject</em> design. In this example, there is nothing fundamental about the experiment that forces it to be repeated measurements. A between-subjects variant could easily be conducted where each subject participates in only <em>one</em> of the experimental conditions. As such, for this particular example, repeated measurements are a <em>choice</em> rather than a fundamental reality of the data. This experimental setup is illustrated in <a class="reference internal" href="#within-sub-fig"><span class="std std-numref">Fig. 2</span></a>.</p>
 <figure class="align-default" id="within-sub-fig">
-<a class="reference internal image-reference" href="_images/within-subject-design.png"><img alt="_images/within-subject-design.png" src="_images/within-subject-design.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="_images/within-subject-design.png"><img alt="_images/within-subject-design.png" src="_images/within-subject-design.png" style="width: 500px;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 2 </span><span class="caption-text">An example of a within-subject design for 3 different difficulty conditions of an experiment.</span><a class="headerlink" href="#within-sub-fig" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Finally, both <em>between-subjects</em> and <em>within-subject</em> designs can be combined. As an example, we could continue our example of task difficulty, where every subject participates in every condition. However, now let us say that half those subjects receive a <em>sad</em> mood induction and half receive a <em>happy</em> mood induction. We now have <em>two</em> experimental manipulations, one of which is conducted <em>within-subject</em> (difficulty condition) and one of which is conducted <em>between-subjects</em> (mood induction). This is illustrated in <a class="reference internal" href="#mixed-measures-fig"><span class="std std-numref">Fig. 3</span></a>.</p>
 <figure class="align-default" id="mixed-measures-fig">
-<a class="reference internal image-reference" href="_images/mixed-measures-design.png"><img alt="_images/mixed-measures-design.png" src="_images/mixed-measures-design.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="_images/mixed-measures-design.png"><img alt="_images/mixed-measures-design.png" src="_images/mixed-measures-design.png" style="width: 500px;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 3 </span><span class="caption-text">An example of a design with both a within-subject and between-subjects experimental manipulation.</span><a class="headerlink" href="#mixed-measures-fig" title="Link to this image">#</a></p>
 </figcaption>
@@ -447,7 +462,7 @@
 </section>
 <section id="repeated-measures-and-correlation">
 <h2>Repeated Measures and Correlation<a class="headerlink" href="#repeated-measures-and-correlation" title="Link to this heading">#</a></h2>
-<p>Now that we have established what repeated measurements are in the context of experimental design, we can turn to the main topic of this part of the lesson: <em>why are repeated measurements a problem</em>? To understand the issue, it is useful to see some example repeated measurement data. Below, we load the <code class="docutils literal notranslate"><span class="pre">selfesteem</span></code> data set from the <code class="docutils literal notranslate"><span class="pre">datarium</span></code> package. These contains measures of self-esteem taken from 10 subjects across 3 different time-points, as shown below.</p>
+<p>Now that we have established what repeated measurements are in the context of experimental design, we can turn to the main topic of this part of the lesson. Why are repeated measurements a problem? To understand the issue, it is useful to see some example repeated measurement data. Below, we load the <code class="docutils literal notranslate"><span class="pre">selfesteem</span></code> data set from the <code class="docutils literal notranslate"><span class="pre">datarium</span></code> package. This contains measures of self-esteem taken from 10 subjects across 3 different time-points, as shown below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;datarium&#39;</span><span class="p">)</span>
@@ -472,7 +487,7 @@
 </div>
 </div>
 </div>
-<p>Because these are measurements <em>across time</em> and <em>ordered</em>, it would be more correct to characterise this as a <em>longitudinal</em> design. But, to keep things simple, we will ignore the temporal aspect for now and just focus on the time-points as if they were any repeated measurements where order does not matter. To see the core issue here, let us examine the pairs plots between the time-points</p>
+<p>Because these are measurements <em>across time</em> and <em>ordered</em>, it would be more correct to characterise this as a <em>longitudinal</em> design. But, to keep things simple, we will ignore the temporal aspect for now. To see the core issue, let us examine the pairs plots between the time-points</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">with</span><span class="p">(</span><span class="n">selfesteem</span><span class="p">,</span><span class="w"> </span><span class="nf">pairs</span><span class="p">(</span><span class="o">~</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">t2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">t3</span><span class="p">))</span>
@@ -480,10 +495,10 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/41bdf115c23fdeac5d8b2e10295abcb061da8c8c9d34b20c2f16054f0ea429b3.png" src="_images/41bdf115c23fdeac5d8b2e10295abcb061da8c8c9d34b20c2f16054f0ea429b3.png" />
+<img alt="_images/b746e74d386d958a87b0d5371a3b5efc062e2c92d52ce812e83b4e9bd2612d17.png" src="_images/b746e74d386d958a87b0d5371a3b5efc062e2c92d52ce812e83b4e9bd2612d17.png" />
 </div>
 </div>
-<p>Although somewhat subtle, notice that there appears to be a relationship between time-points, particularly those that are close (such as <code class="docutils literal notranslate"><span class="pre">t2</span></code> and <code class="docutils literal notranslate"><span class="pre">t3</span></code>). Let us calculate the correlation</p>
+<p>Although somewhat subtle, notice that there appears to be a relationship between time-points, particularly those that are close together (such as <code class="docutils literal notranslate"><span class="pre">t2</span></code> and <code class="docutils literal notranslate"><span class="pre">t3</span></code>). Let us calculate the correlation</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">cor</span><span class="p">(</span><span class="n">selfesteem</span><span class="p">[,</span><span class="m">2</span><span class="o">:</span><span class="m">4</span><span class="p">])</span>
@@ -500,10 +515,10 @@ t3  0.360602 -0.5230331  1.0000000
 </div>
 </div>
 <p>So, now we see the core problem here: <em>repeated measurements are correlated</em>.</p>
-<p>Although this may not necessarily seem like an issues, this actually creates a <em>big</em> problem for our statistical modelling framework. The reasons <em>why</em> will not be very clear right now, but we will discuss them in more detail below. Before getting there, it is worth highlighting that correlation is not some unique feature of this single particular dataset. It is a feature of <em>all</em> repeated measurements. So much so that we never usually check for it, we just assume that it is there. This is a <em>feature of reality</em>. If multiple measurements are taken from the same experimental unit then they will be connected in some fashion. This is true whether the units are <em>people</em>, <em>rats</em>, <em>schools</em>, <em>classrooms</em>, <em>brains</em>, <em>cages</em> or anything else. The point is that the data come from the same source and that source creates a <em>connection</em> between the measurements.</p>
+<p>Although this may not necessarily seem like an issues, this actually creates a <em>big</em> problem for our statistical modelling framework. The reasons <em>why</em> will not be very clear right now, but we will discuss them in more detail below. Before getting there, it is worth highlighting that correlation is not some unique feature of this single particular dataset. It is a feature of <em>all</em> repeated measurements. If multiple measurements are taken from the same experimental unit, then they will be connected in some fashion. This is true whether the units are <em>people</em>, <em>rats</em>, <em>schools</em>, <em>classrooms</em>, <em>brains</em>, <em>cages</em> or anything else. The point is that the data come from the same source and that source creates a <em>connection</em> between the measurements. This connection appears as non-zero correlation.</p>
 <div class="tip admonition">
 <p class="admonition-title">Repeated Measurements on Human Subjects</p>
-<p>In the case of human subjects, we can think of correlation as representing the <em>internal consistency</em> of a single individual. If someone is slow at responding during one experimental condition, it is likely they will be slow responding during another experimental condition. There is not pure randomness at play here. There is not an infinite range of responses a subject could give during one experimental condition, irrespective of the responses given during a different experimental condition. The person themselves constrains the reasonable range of responses. As such, their responses during one condition provides a prediction of their responses during a different condition. Their biology and psychology provides a constraint that is captured by the correlation. Importantly, this does not apply to measurements taken from a different subject, who will have their own range of constraints. As such, we conceptualise measurements from <em>within</em> a subject as correlated, but measurements from <em>between</em> subjects as independent. This is why this has not been a problem before, because every previous example we have seen involved only a <em>single</em> measurement of each experimental unit.</p>
+<p>In the case of human subjects, we can think of correlation as representing the <em>internal consistency</em> of a single individual. If someone is slow at responding during one experimental condition, it is likely they will be slow responding during another experimental condition. There is rarely pure randomness at play, which would suggest an infinite range of responses in one experimental condition, irrespective of the responses given during a different experimental condition. The person <em>themselves</em> constrains the reasonable range of responses. As such, their responses during one condition provides a prediction of their responses during a different condition. Their biology and psychology provide a constraint that is captured by the correlation. Importantly, this does not apply to measurements taken from a different subject, who will have their own range of constraints. As such, we conceptualise measurements from <em>within</em> a subject as correlated, but measurements from <em>between</em> subjects as independent. This is why this has not been a problem before, because every previous example we have seen involved only a <em>single</em> measurement of each experimental unit.</p>
 </div>
 </section>
 <section id="the-problem-of-correlation">
@@ -519,11 +534,11 @@ t3  0.360602 -0.5230331  1.0000000
     \epsilon &amp;\stackrel{i.i.d.}{\sim}\mathcal{N}(0,\sigma^{2})
 \end{alignat*}
 \end{split}\]</div>
-<p>Under repeated measurements, the <span class="math notranslate nohighlight">\(independent\)</span> criteria is clearly broken. Correlation is a feature of the probabilistic structure of <span class="math notranslate nohighlight">\(y\)</span> and thus will also appear in <span class="math notranslate nohighlight">\(\epsilon\)</span>. This criteria of independence is important to guarantee that ordinary least squares (and, by extension, maximum likelihood) is the <em>best linear unbiased estimator</em>, a condition known as BLUE. “Best” in this context corresponds to an estimator with the <em>lowest variance</em>, meaning that we get the <em>smallest</em> possible variation from the true value from sample-to-sample. When correlation is present, these estimators lose their status as BLUE, meaning that we will get more variation from sample-to-sample. The estimators still remain <em>unbiased</em>, so on average we will still land on the true values. However, there will be a lot more variation along the way. This is known as an estimator being <em>inefficient</em>.</p>
+<p>Under repeated measurements, the <span class="math notranslate nohighlight">\(independent\)</span> criteria is clearly broken. This criteria is important to guarantee that ordinary least squares (and, by extension, maximum likelihood) is the <em>best linear unbiased estimator</em>, a condition known as BLUE. “Best” in this context corresponds to an estimator with the <em>lowest variance</em>, meaning that we get the <em>smallest</em> possible variation from the true value from sample-to-sample. When correlation is present, these estimators lose their status as BLUE, meaning that we will get more variation from sample-to-sample. The estimators still remain <em>unbiased</em>, so on average we will still land on the true values. However, there will be a lot more variation along the way. This is known as an estimator being <em>inefficient</em>.</p>
 </section>
 <section id="correlation-and-the-standard-errors">
 <h3>Correlation and the Standard Errors<a class="headerlink" href="#correlation-and-the-standard-errors" title="Link to this heading">#</a></h3>
-<p>Although a loss of efficiency is not great, we could probably live with it if that were the only problem being caused. Yes our estimates are less efficient, but they are still unbiased and so we can probably still sleep at night. Indeed, this implies that nothing about the <em>mean function</em> really changes under repeated measurements. Means are still means and regression slopes are still regression slopes. So, if all we care about are the estimates related to the mean function, there is little to worry about beyond a drop in efficiency. However, there is a much more dangerous change that occurs when correlation is present.</p>
+<p>Although a loss of efficiency is not great, we could probably live with it if that were the only problem being caused. Yes our estimates are less efficient, but they are still unbiased and so we can probably still sleep at night. Indeed, this implies that nothing about the <em>mean function</em> really changes under repeated measurements. Means are still means and regression slopes are still regression slopes. So, if all we care about is the mean function, there is little to worry about beyond a drop in efficiency. However, there is a much more dangerous change that occurs when correlation is present.</p>
 <p>Rather than affecting the <em>mean function</em>, correlation has a direct impact on the <em>variance function</em> of the model. The biggest practical implication of this is that <em>correlation changes the standard errors</em>. This means that our <em>uncertainty</em> is different under correlation. If we get this wrong, the standard errors will be wrong, the test statistics will be wrong, the confidence intervals will be wrong and the <span class="math notranslate nohighlight">\(p\)</span>-values will be wrong. In short, neglecting to model the correlational structure will make our <em>inference wrong</em>.</p>
 <section id="theory">
 <h4>Theory<a class="headerlink" href="#theory" title="Link to this heading">#</a></h4>
@@ -545,29 +560,21 @@ t3  0.360602 -0.5230331  1.0000000
 </section>
 <section id="simulation">
 <h4>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">#</a></h4>
-<p>To see this change in uncertainty, we can run a simulation in <code class="docutils literal notranslate"><span class="pre">R</span></code>. We will discuss methods of simulating correlated data in the next part of this lesson. For now, we can just examine the results. The plot on the <em>left</em> shows the sampling distribution of the <em>mean difference</em> under repeated measurements (<span class="math notranslate nohighlight">\(\rho = 0.8\)</span>, a <em>high</em> correlation). The plot on the <em>right</em> shows the sampling distribution of the <em>mean difference</em> under independent measurements (<span class="math notranslate nohighlight">\(\rho = 0\)</span>, <em>no</em> correlation).</p>
+<p>To see this change in uncertainty, we can run a simulation in <code class="docutils literal notranslate"><span class="pre">R</span></code>. We will discuss methods of simulating correlated data in the next part of this lesson. For now, we can just examine the results. The plots below show the sampling distribution of a <em>mean difference</em> under different degrees of correlation, ranging from <span class="math notranslate nohighlight">\(\rho = 0.9\)</span> to <span class="math notranslate nohighlight">\(\rho=0\)</span> (i.e. <em>no</em> correlation).</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/d0d385ba341eed7676ee5d80433759cc4bb2fadb92d972df7030cec8412aaca1.png" src="_images/d0d385ba341eed7676ee5d80433759cc4bb2fadb92d972df7030cec8412aaca1.png" />
+<img alt="_images/07460ccaf811f2813ebe59045b35cf4acba7de9a7ba678c6fb547d12cc69e18a.png" src="_images/07460ccaf811f2813ebe59045b35cf4acba7de9a7ba678c6fb547d12cc69e18a.png" />
 </div>
 </div>
-<p>Notice that the distribution of differences is much <em>narrower</em> when the data are <em>correlated</em> compared to the distribution of independent differences. This change is captured precisely in the variance formula above, where the <em>covariance</em> between the measurements <em>subtracts</em> when the correlation is positive. This is why it is often said that there is a <em>power advantage</em> to repeated measurements. Our uncertainty reduces <em>dramatically</em> when measurements come from the same experimental units compared to when they come from different units. The problem is that the formulas for the standard errors in a linear model assume that the data are <em>independent</em>. As such, the calculation will produce a value that is <em>too big</em>. Our data will be consistent with the distribution on the <em>left</em>, but the standard errors will be calculated as if it is the distribution on the <em>right</em>. We will therefore build conclusions based on assuming that we are <em>much less certain than we actually are</em>. This will destroy any power advantage we had when collecting repeated measurements.</p>
+<p>Notice that the width of the distribution becomes <em>narrower</em> the more the data are <em>correlated</em>. This change is captured precisely in the variance formula above, where the <em>covariance</em> between the measurements <em>subtracts</em> when the correlation is positive. This is why it is often said that there is a <em>power advantage</em> to repeated measurements. Our uncertainty reduces <em>dramatically</em> when measurements come from the same experimental units compared to when they come from different units. The problem is that the formulas for the standard errors in a linear model assume that the data are <em>independent</em>. As such, the calculation will produce a value that is <em>too big</em>. This will destroy any power advantage we had when collecting repeated measurements.</p>
 <p>Now, if our only issue were that the estimated standard errors are always <em>too big</em> then this is a pain, but it is not disastrous. Our model becomes much less powerful, yes, but our potential for false positives is still controlled. We have an increase in <em>false negatives</em>, but these are typically seen as less of a problem in practice. It is much more dangerous to conclude that something works when it does not (<em>false-positive</em>) compared to concluding that something does not work when it does (<em>false-negative</em>). However, we also need to consider the possibility of <em>negative correlation</em>. According to the formula above, this will cause the sampling distribution to get <em>wider</em>. As such, if we ignore this and use the usual formula for the standard error we will falsely conclude that our estimate is <em>more certain</em> than it actually is. Again, we can simulate this in <code class="docutils literal notranslate"><span class="pre">R</span></code>, with the results shown below.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/3e7d1df64d868f32cca8055134b6373b85f3f4f4b1f7aed15006aaf8edb5bfb3.png" src="_images/3e7d1df64d868f32cca8055134b6373b85f3f4f4b1f7aed15006aaf8edb5bfb3.png" />
+<img alt="_images/787a9d552e4abf03f3f3e8ad8365ecfde96d9c79b8822a841daa68fe4405f745.png" src="_images/787a9d552e4abf03f3f3e8ad8365ecfde96d9c79b8822a841daa68fe4405f745.png" />
 </div>
 </div>
-<p>Now, the distribution of differences has become <em>wider</em>. If we assume independence and use the usual formula for the standard error, we will falsely conclude that we are <em>more certain than we actually are</em>. This is precisely the situation where <em>false-positives</em> with occur and could lead us to artificially conclude that an experimental manipulation <em>works</em>, when in fact it <em>does nothing</em>.</p>
-<p>The important point around all this is that our <em>uncertainty</em> depends upon the degree of <em>correlation</em>. If we ignore this and just use the usual formulas for the standard error, we will either conclude that we are <em>less certain</em> or <em>more certain</em> than reality. In the context of a linear model, our standard errors will either be <em>too big</em> or <em>too small</em>. This is a problem not matter what approach to inference we use. However, this is <em>especially</em> problematic if we are going on to use NHST for inference, as we will now discuss.</p>
-</section>
-<section id="influence-on-test-statistics-and-p-values">
-<h4>Influence on Test Statistics and <span class="math notranslate nohighlight">\(p\)</span>-values<a class="headerlink" href="#influence-on-test-statistics-and-p-values" title="Link to this heading">#</a></h4>
-<p>As you should recall from last semester, the most basic implementation of NHST involves the construction of a <em>test statistic</em> and the subsequent calculation of a <span class="math notranslate nohighlight">\(p\)</span>-value from the theoretical null distribution of the statistic. The simplest form of test statistic involves dividing an <em>estimate</em> by its <em>uncertainty</em> (e.g. to <span class="math notranslate nohighlight">\(t\)</span>-statistic or <span class="math notranslate nohighlight">\(z\)</span>-statistic). The uncertainty is captured by the standard error of the estimate, which is precisely the <em>width</em> of the sampling distributions shown above. As such, the more general point here is that <em>repeated measurements influence the denominator of the test statistics</em>. In other words, the <em>top</em> of the statistic is <em>correct</em>, but the bottom is <em>wrong</em>. As mentioned above, whether we have <em>positive</em> or <em>negative</em> correlation, the regular formulas for the standard errors will either <em>overestimate</em> or <em>underestimate</em> reality. This means the associated <span class="math notranslate nohighlight">\(p\)</span>-values will either be <em>too big</em> or <em>too small</em>.</p>
-</section>
-<section id="influence-on-the-degrees-of-freedom">
-<h4>Influence on the Degrees of Freedom<a class="headerlink" href="#influence-on-the-degrees-of-freedom" title="Link to this heading">#</a></h4>
-<p>The other element that starts to cause problems is the concept of <em>degrees of freedom</em>. Remember from last semester that we can think of the residual degrees of freedom very generally as the amount of independent information we have left after fitting our model. In the basic linear model, this is simply <span class="math notranslate nohighlight">\(n - p\)</span>, where <span class="math notranslate nohighlight">\(n\)</span> is the number of datapoints and <span class="math notranslate nohighlight">\(p\)</span> is the number of parameters. But, this corresponds to <em>independent</em> pieces of information. As as soon as we introduce <em>dependency</em> things begin to break-down. The most naive way to deal with this is to assume that <em>subjects</em> represent independent entities and that repeated measurements are <em>dependent</em> entities. We can thus count subjects and discount repeated measurements. However, repeated measurements are not really 100% dependent. Yes, they are correlated, but not <em>perfectly</em>. As such, they have a <em>dependent</em> and <em>independent</em> component. So, in actuality, each repeated measurement contributes a <em>fractional</em> amount to the degrees of freedom. So the <em>true</em> amount of independent information is no longer an integer that can be calculated from something simple like <span class="math notranslate nohighlight">\(n - p\)</span>. In fact, in many cases, there no actual way to calculate what this is. So, we either <em>naively guess</em>, try to <em>estimate</em> it in a more principled way, or we abandon the concept entirely. We will see examples of all of these approaches as we progress.</p>
+<p>Now, the distribution of differences becomes <em>slimmer</em> the <em>less</em> related the measurements are. This is a more subtle effect than the positive correlation case. Nevertheless, if we assume independence and use the usual formula for the standard error, we will falsely conclude that we are <em>more certain than we actually are</em>. This is precisely the situation where <em>false-positives</em> with occur and could lead us to artificially conclude that an experimental manipulation <em>works</em>, when in fact it <em>does nothing</em>.</p>
+<p>The important point around all this is that our <em>uncertainty</em> depends upon the degree of <em>correlation</em>. If we ignore this and just use the usual formulas for the standard error, we will either conclude that we are <em>less certain</em> or <em>more certain</em> than reality. In the context of a linear model, our standard errors will either be <em>too big</em> or <em>too small</em>. Remembering that the standard errors directly influence the test statistics, confidence intervals and <span class="math notranslate nohighlight">\(p\)</span>-values, getting these wrong could be <em>disastrous</em> for inference.</p>
 <aside class="topic">
 <p class="topic-title">What do you now know?</p>
 <p>In this section, we have explored repeated measures designs and why they cause issues for our modelling framework. After reading this section, you should have a good sense of :</p>
@@ -577,19 +584,13 @@ t3  0.360602 -0.5230331  1.0000000
 <li><p>The idea that repeated measurements introduce <em>correlation</em> into our data.</p></li>
 <li><p>The problem that correlation breaks the <span class="math notranslate nohighlight">\(i.i.d.\)</span> assumptions of the linear model, leading to estimates that remain <em>unbiased</em> but <em>inefficient</em>.</p></li>
 <li><p>The more concerning problem that correlation changes how the standard errors should be calculated. When correlation is <em>positive</em>, standard errors should be <em>smaller</em>. When correlation is <em>negative</em>, standard errors should be <em>bigger</em>. However, the normal linear model formulas for the standard error will get this <em>wrong</em>.</p></li>
-<li><p>The consequences of an incorrect standard error in terms of test statistics where the <em>denominator</em> is incorrect, making the value of the statistic <em>too large</em> or <em>too small</em>, leading to <span class="math notranslate nohighlight">\(p\)</span>-values that are also <em>too large</em> or <em>too small</em>.</p></li>
-<li><p>The idea that the concept of <em>degrees of freedom</em> also becomes problematic, because there is no longer a guaranteed integer-valued amount of independent information when there are repeated measurements.</p></li>
 </ul>
 </aside>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="subject-foot" role="note">
+<aside class="footnote brackets" id="subject-foot" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>We will refer generically to <em>subjects</em> throughout these materials, as the assumption is that you will generally be working with behavioural data from humans. However, it is worth knowing that statistics has the more general concept of a <em>unit of analysis</em>, which could be <em>humans</em>, <em>rats</em>, <em>genes</em>, <em>schools</em> or anything else that our inference is based upon.</p>
-</aside>
-<aside class="footnote brackets" id="long-foot" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
-<p>When repeated measurements are taken across longer temporal gaps (e.g. different days, weeks or months), these types of design are often known as <em>longitudinal</em> designs. Similarly, if many measurements are taken in close succession over time, these types of data are often viewed as a <em>time series</em>. The only real difference is that the measurements have a <em>specific order</em> to them and the analysis has to take this order into account. For most repeated measurement designs, the order of the repeats does not matter and is often randomised across subjects.</p>
+<p>We will refer generically to <em>subjects</em> throughout these materials, as the assumption is that you will generally be working with behavioural data from humans. However, it is worth knowing that statistics has the more general concept of a <em>unit of analysis</em>, which could be <em>humans</em>, <em>rats</em>, <em>genes</em>, <em>schools</em> or anything else that captures our interest.</p>
 </aside>
 </aside>
 </section>
@@ -652,8 +653,7 @@ t3  0.360602 -0.5230331  1.0000000
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -662,15 +662,13 @@ t3  0.360602 -0.5230331  1.0000000
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measures-designs">Repeated Measures Designs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measurement-designs">Repeated Measurement Designs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-measures-and-correlation">Repeated Measures and Correlation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-problem-of-correlation">The Problem of Correlation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-and-the-linear-model-assumptions">Correlation and the Linear Model Assumptions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-and-the-standard-errors">Correlation and the Standard Errors</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#theory">Theory</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#influence-on-test-statistics-and-p-values">Influence on Test Statistics and <span class="math notranslate nohighlight">\(p\)</span>-values</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#influence-on-the-degrees-of-freedom">Influence on the Degrees of Freedom</a></li>
 </ul>
 </li>
 </ul>
@@ -723,8 +721,8 @@ By Dr Martyn McFarquhar
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>
