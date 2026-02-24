@@ -535,14 +535,14 @@
 <li><p>It removes the correlation from the model errors and thus the model now meets the <span class="math notranslate nohighlight">\(i.i.d.\)</span> assumptions.</p></li>
 <li><p>It removes error variance associated with the differences <em>between</em> the subjects, allowing any inferential tests to only use the variance associated with measurements <em>within</em> a subject.</p></li>
 </ol>
-<p>Conceptually, the repeated measurements from subject <span class="math notranslate nohighlight">\(i\)</span> can be considered multiple draws from a distribution with a variance <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> and a mean <span class="math notranslate nohighlight">\(E(y_{ij}) = \mu_{j} + S_{i}\)</span>. The distribution of each subject is therefore conceptualised as having the <em>same</em> variance but a <em>different</em> mean, unique to each subject. These means are then further conceptualised as random draws from a larger distribution of <em>different subjects</em> with a variance <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>. Thus, the variation <em>between</em> subjects is represented by the distribution with width <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>, whereas as the variation <em>within</em> each subject is represented by the distribution with width <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>.</p>
-<p>Bearing this in mind, when we think about hypothesis tests within a repeated measured ANOVA, we need to think about which source of variance is <em>most appropriate</em> for the test: <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> or <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. In the one-way ANOVA example, the only effects were repeated measurement effects and the error term was derived from <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. This makes sense from the name alone, as the <em>within-subject</em> effects are tested using the <em>within-subject</em> variance.</p>
+<p>Practically, this means there are <em>two</em> possible error terms available for our hypothesis tests. So, we need to think about which source of variance is <em>most appropriate</em> for each test: <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> or <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. In the one-way ANOVA example, the only effects were repeated measurement effects and the error term was derived from <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. This makes sense from the name alone, as the <em>within-subject</em> effects are tested using the <em>within-subject</em> variance.</p>
 <div class="alert alert-block alert-info"> 
 <b>ACTIVITY 2</b> Given the logic above, which error do you think is most suitable for tests on <i>between-subjects</i> terms?
 </div></section>
 <section id="specifying-between-subjects-error-in-r">
 <h3>Specifying Between-subjects Error in <code class="docutils literal notranslate"><span class="pre">R</span></code><a class="headerlink" href="#specifying-between-subjects-error-in-r" title="Link to this heading">#</a></h3>
-<p>As is hopefully now clear, the introduction of a between-subjects effect into the model requires us to use the <em>within-subject</em> error term for some tests, as well as the <em>between-subjects</em> error term for other tests. As we established in the lesson, we can use <code class="docutils literal notranslate"><span class="pre">aov()</span></code> to express how we want the arithmetic of the ANOVA table to be organised. Again, this is a limitation of the repeated measures ANOVA because this requires some degree of manual intervention to state which terms we want treated as <em>error</em> and which we want treated as effects of interest. This can get complex very quickly and it is up to the analyst to indicate which terms are which. For this example, the specification is fairly simple because we just denote the subject term as error and <code class="docutils literal notranslate"><span class="pre">aov()</span></code> will automatically arrange the tests for us. This is shown below</p>
+<p>As is hopefully now clear, the introduction of a between-subjects effect into the model requires us to use the <em>within-subject</em> error term for some tests, as well as the <em>between-subjects</em> error term for other tests. As we established in the lesson, we can use <code class="docutils literal notranslate"><span class="pre">aov()</span></code> to express how we want the arithmetic of the ANOVA table to be organised. Again, this is a limitation of the repeated measures ANOVA because this requires some degree of manual intervention to state which terms we want treated as <em>error</em> and which we want treated as effects of interest. This can get complex very quickly and it is up to the analyst to indicate which terms are which.</p>
+<p>For this example, the specification is fairly simple because we just denote the subject term as error and <code class="docutils literal notranslate"><span class="pre">aov()</span></code> will automatically arrange the tests for us. This is shown below</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">anxiety.aov</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">aov</span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">group</span><span class="o">*</span><span class="n">time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">Error</span><span class="p">(</span><span class="n">id</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">anxiety.long</span><span class="p">)</span>
@@ -569,34 +569,23 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 </div>
 </div>
 </div>
-<p>As we can see, the effect of <code class="docutils literal notranslate"><span class="pre">group</span></code> is now associated with <code class="docutils literal notranslate"><span class="pre">Error:</span> <span class="pre">id</span></code>, which represents the estimate of <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>. The effect of <code class="docutils literal notranslate"><span class="pre">time</span></code> remains associated with <code class="docutils literal notranslate"><span class="pre">Error:</span> <span class="pre">Within</span></code>, which represents the estimate of <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. Notice as well that the interaction term <code class="docutils literal notranslate"><span class="pre">group:time</span></code> also uses <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. This may seem puzzling, given that this contains a comparison <em>across</em> the groups. However, remember that when calculating the variance of the difference between two random variables, the covariance is subtracted. Because <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> also acts as the covariance, it cancels-out when comparing the repeated measurements and thus cancels-out when calculating the interaction.</p>
+<p>As we can see, the effect of <code class="docutils literal notranslate"><span class="pre">group</span></code> is now associated with <code class="docutils literal notranslate"><span class="pre">Error:</span> <span class="pre">id</span></code>, which represents the estimate of <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>. The effect of <code class="docutils literal notranslate"><span class="pre">time</span></code> remains associated with <code class="docutils literal notranslate"><span class="pre">Error:</span> <span class="pre">Within</span></code>, which represents the estimate of <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. Notice as well that the interaction term <code class="docutils literal notranslate"><span class="pre">group:time</span></code> also uses <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>.</p>
 <div class="alert alert-block alert-info"> 
-<b>ACTIVITY 3</b> Can you work out why the interaction term is associated with the <i>within-subject</i> error, rather than the <i>between-subjects</i> error? <b>HINT</b> Think about the <i>definition</i> of an interaction as well as what happens to the variance of the difference between two correlated random variables.
-</div><p>We can also calculate the above using <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code>, without having to explicitly specify the error terms, as shown below</p>
+<b>ACTIVITY 3</b> Can you work out why the interaction term is associated with the <i>within-subject</i> error, rather than the <i>between-subjects</i> error? <b>HINT</b> This is quite tricky, but think about the <i>definition</i> of an interaction as well as what happens to the variance of the difference between two correlated random variables.
+</div><p>We can also calculate the above using <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code>, without having to explicitly specify the error terms. We show this below, where we have just printed the ANOVA table for simplicity.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;ez&#39;</span><span class="p">)</span>
 <span class="n">anxiety.ez</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ezANOVA</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">anxiety.long</span><span class="p">,</span><span class="w"> </span><span class="n">dv</span><span class="o">=</span><span class="n">score</span><span class="p">,</span><span class="w"> </span><span class="n">wid</span><span class="o">=</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">within</span><span class="o">=</span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">between</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
-<span class="nf">print</span><span class="p">(</span><span class="n">anxiety.ez</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">anxiety.ez</span><span class="o">$</span><span class="n">ANOVA</span><span class="p">)</span><span class="w"> </span><span class="c1"># just the ANOVA table w/o sphericity info</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>$ANOVA
-      Effect DFn DFd          F            p p&lt;.05       ges
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      Effect DFn DFd          F            p p&lt;.05       ges
 2      group   2  42   4.351811 1.916093e-02     * 0.1683558
 3       time   2  84 394.909490 1.905584e-43     * 0.1785886
 4 group:time   4  84 110.187610 1.384653e-32     * 0.1081997
-
-$`Mauchly&#39;s Test for Sphericity`
-      Effect         W          p p&lt;.05
-3       time 0.8836439 0.07919252      
-4 group:time 0.8836439 0.07919252      
-
-$`Sphericity Corrections`
-      Effect       GGe        p[GG] p[GG]&lt;.05       HFe        p[HF] p[HF]&lt;.05
-3       time 0.8957715 3.484600e-39         * 0.9330916 1.037156e-40         *
-4 group:time 0.8957715 1.966104e-29         * 0.9330916 1.461019e-30         *
 </pre></div>
 </div>
 </div>
@@ -630,8 +619,11 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 </div>
 </div>
 </div>
-<p>Without any further information, both <code class="docutils literal notranslate"><span class="pre">lm()</span></code> and <code class="docutils literal notranslate"><span class="pre">anova()</span></code> treat every term in the formula as part of the <em>mean function</em> and thus assumes we are interested in each term for the purpose of inference. As we saw earlier, we can just ignore the tests on <code class="docutils literal notranslate"><span class="pre">id</span></code>. Its inclusion has partitioned <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> out from <span class="math notranslate nohighlight">\(\sigma^{2}\)</span>, meaning that the <code class="docutils literal notranslate"><span class="pre">Residuals</span></code> term in the ANOVA table only represents <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. This is fine for both the test on <code class="docutils literal notranslate"><span class="pre">time</span></code> and <code class="docutils literal notranslate"><span class="pre">group:time</span></code>, which are no different to the tests produced by <code class="docutils literal notranslate"><span class="pre">aov()</span></code>. However, the crucial difference comes from the test of <code class="docutils literal notranslate"><span class="pre">group</span></code>. Notice that the <em>correct</em> test has <span class="math notranslate nohighlight">\(F = 4.35\)</span>, whereas the test above has <span class="math notranslate nohighlight">\(F = 367.70\)</span>. This is approximately 85 times <em>larger</em>! Such a huge discrepancy comes from the fact that the <em>incorrect</em> test is using <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> as the denominator, which is <em>much smaller</em> than <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>. This makes the test <em>far too liberal</em>.</p>
-<p>Although both versions of this test are still “significant”, it is not hard to imagine a situation where you could get a significant effect of <code class="docutils literal notranslate"><span class="pre">group</span></code> simply by specifying the wrong error. Getting this wrong could be disastrous because we might falsely claim that the between-subjects factor has an effect when it does not. Considering that these factors may correspond to something like patients vs controls, concluding a false difference could have serious implications. You might think this would be well understood, but only relatively recently was it brought up as an issue for fMRI data analysis as if it were some sudden new discovery (). This actually shows how <em>little</em> the way the repeated measures ANOVA works is understood by most researchers.</p>
+<p>Without any further information, both <code class="docutils literal notranslate"><span class="pre">lm()</span></code> and <code class="docutils literal notranslate"><span class="pre">anova()</span></code> treat every term in the formula as part of the <em>mean function</em> and thus assumes we are interested in each term for the purpose of inference. As we saw earlier, we can just ignore the tests on <code class="docutils literal notranslate"><span class="pre">id</span></code>. Its inclusion only serves to partitioned <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span> out from <span class="math notranslate nohighlight">\(\sigma^{2}\)</span>. However, this does mean that the <code class="docutils literal notranslate"><span class="pre">Residuals</span></code> term in the ANOVA table only represents <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>.</p>
+<div class="alert alert-block alert-info"> 
+<b>ACTIVITY 5</b> Compare this table to the one from either <code>ezANOVA()</code> or <code>aov()</code>. Look specifically at the <i>F</i>-values and ignore the test on <code>id</code>. What are the biggest discrepancies you can see? Can you explain <i>why</i> before moving on?
+</div><p>The use of <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> is fine for both the test on <code class="docutils literal notranslate"><span class="pre">time</span></code> and <code class="docutils literal notranslate"><span class="pre">group:time</span></code>, which are no different to the tests produced by <code class="docutils literal notranslate"><span class="pre">aov()</span></code> and <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code>. However, the crucial difference comes from the test of <code class="docutils literal notranslate"><span class="pre">group</span></code>. Notice that the <em>correct</em> test has <span class="math notranslate nohighlight">\(F = 4.35\)</span>, whereas the test above has <span class="math notranslate nohighlight">\(F = 367.70\)</span>. This is approximately 85 times <em>larger</em> than it should be! Such a huge discrepancy comes from the fact that the <em>incorrect</em> test is using <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> as the denominator, which is <em>much smaller</em> than <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>. This makes the test <em>far too liberal</em>.</p>
+<p>Although both versions of this test are still “significant”, it is not hard to imagine a situation where you could get a significant effect of <code class="docutils literal notranslate"><span class="pre">group</span></code> simply by specifying the wrong error. Getting this wrong could be disastrous because we might falsely claim that the between-subjects factor has an effect when it does not. Considering that these factors may correspond to something like patients vs controls, concluding a false difference could have serious implications. You might think this would be well understood, but only relatively recently was it brought up as an issue for fMRI data analysis as if it were some sudden new discovery (see poster 763 on page 67 of the following <a class="reference external" href="https://www.humanbrainmapping.org/files/2011MeetingFiles/HBM2011AbstractBook.pdf">Abstracts Booklet</a>). This actually shows how <em>little</em> the way the repeated measures ANOVA works is understood by most researchers.</p>
 <p>We could also get this “wrong” by not partitioning the error at all and instead working with a <em>pooled</em> error of <span class="math notranslate nohighlight">\(\sigma^{2}_{b} + \sigma^{2}_{w}\)</span> for every test. An example of this is shown below</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -660,7 +652,7 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 </section>
 <section id="adding-more-within-subject-factors">
 <h2>Adding More Within-subject Factors<a class="headerlink" href="#adding-more-within-subject-factors" title="Link to this heading">#</a></h2>
-<p>If all of the above was not bad enough, things get even trickier when we add <em>more</em> within-subject factors. We will not dwell on this too much because, as should be clear by now, we do not condone using the repeated measures ANOVA at all. However, this will provide the final clearest demonstration of <em>why</em> we want a much better framework for these type of data. The complexity demonstrated below is there to help you understand why you really do <em>not</em> want to do this. This is one of clearest cases where the automation provided by software such as SPSS actively <em>hides</em> so much of the complexity that researchers do not think twice about designing studies that require these methods.</p>
+<p>If all of the above was not bad enough, things get even trickier when we add <em>more</em> within-subject factors. We will not dwell on this too much because, as should be clear by now, we do not condone using the repeated measures ANOVA at all. However, this will provide the final clearest demonstration of <em>why</em> we want a much better framework for these type of data. The complexity demonstrated below is there to help you understand why you really do <em>not</em> want to do this. This is one of clearest cases where the automation provided by software such as SPSS (and, to an extent, <code class="docutils literal notranslate"><span class="pre">ezANOVA</span></code>) actively <em>hides</em> so much of the complexity that researchers do not think twice about designing studies that require these methods.</p>
 <p>As our example, the <code class="docutils literal notranslate"><span class="pre">datarium</span></code> package contains a dataset called <code class="docutils literal notranslate"><span class="pre">weightloss</span></code> that represents a fully within-subject <span class="math notranslate nohighlight">\(2 \times 2 \times 3\)</span> design. There were 12 subjects whose weight was measured under combination of <code class="docutils literal notranslate"><span class="pre">diet</span></code> (<code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">no</span></code>) and <code class="docutils literal notranslate"><span class="pre">exercises</span></code> (<code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">no</span></code>). For each combination of <code class="docutils literal notranslate"><span class="pre">diet</span></code> and <code class="docutils literal notranslate"><span class="pre">exercises</span></code>, the trial lasted 9 weeks, with measurements taken at 3 time-points. As such, every subject has 12 repeated measurements, representing every combination of <code class="docutils literal notranslate"><span class="pre">diet</span></code> and <code class="docutils literal notranslate"><span class="pre">exercises</span></code> across 3 values of <code class="docutils literal notranslate"><span class="pre">time</span></code>. The original dataset is shown below</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -684,7 +676,7 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 </div>
 </div>
 </div>
-<p>and again after conversion to long format</p>
+<p>which we again convert to long format. These data are arranged slight strangely because they are long-format, but per-time point. So <code class="docutils literal notranslate"><span class="pre">time</span></code> is wide-formatted, but both <code class="docutils literal notranslate"><span class="pre">diet</span></code> and <code class="docutils literal notranslate"><span class="pre">exercise</span></code> are long-formatted. This half-way house is not actually very useful for <em>any</em> type of modelling. The code below will get these data in a clearer long-format across all the variables.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;reshape2&#39;</span><span class="p">)</span>
@@ -701,7 +693,11 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 
 <span class="n">weightloss.long</span><span class="w">           </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">weightloss.long</span><span class="p">[</span><span class="nf">order</span><span class="p">(</span><span class="n">weightloss.long</span><span class="o">$</span><span class="n">id</span><span class="p">),]</span><span class="w"> </span><span class="c1"># order by ID</span>
 <span class="nf">rownames</span><span class="p">(</span><span class="n">weightloss.long</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="n">n</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="w">                                  </span><span class="c1"># fix row names</span>
+
 <span class="n">weightloss.long</span><span class="o">$</span><span class="n">id</span><span class="w">        </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">weightloss.long</span><span class="o">$</span><span class="n">id</span><span class="p">)</span><span class="w">               </span><span class="c1"># id as factor</span>
+<span class="n">weightloss.long</span><span class="o">$</span><span class="n">diet</span><span class="w">      </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">weightloss.long</span><span class="o">$</span><span class="n">diet</span><span class="p">)</span><span class="w">             </span><span class="c1"># diet as factor</span>
+<span class="n">weightloss.long</span><span class="o">$</span><span class="n">exercises</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">weightloss.long</span><span class="o">$</span><span class="n">exercises</span><span class="p">)</span><span class="w">        </span><span class="c1"># exercises as factor</span>
+<span class="n">weightloss.long</span><span class="o">$</span><span class="n">time</span><span class="w">      </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.factor</span><span class="p">(</span><span class="n">weightloss.long</span><span class="o">$</span><span class="n">time</span><span class="p">)</span><span class="w">             </span><span class="c1"># time as factor</span>
 
 <span class="nf">print</span><span class="p">(</span><span class="nf">head</span><span class="p">(</span><span class="n">weightloss.long</span><span class="p">))</span>
 </pre></div>
@@ -719,9 +715,11 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 </div>
 </div>
 </div>
-<section id="multiple-within-subject-error-terms">
+<div class="alert alert-block alert-info"> 
+<b>ACTIVITY 6</b> Can you think about how these data would be arranged if they were <i>purely</i> wide-formatted? If they were, could you convert them cleanly to long-format, or would you require the specification of <i>new</i> variables?
+</div><section id="multiple-within-subject-error-terms">
 <h3>Multiple Within-subject Error Terms<a class="headerlink" href="#multiple-within-subject-error-terms" title="Link to this heading">#</a></h3>
-<p>In order to facilitate understanding what we have to do when there are multiple within-subject factors, let us start by specifying the same partitioned error model we used above with <code class="docutils literal notranslate"><span class="pre">aov()</span></code>.</p>
+<p>In order to understand what we have to do when there are <em>multiple</em> within-subject factors, let us start by specifying the same partitioned error model we used above with <code class="docutils literal notranslate"><span class="pre">aov()</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">weightloss.aov</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">aov</span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">diet</span><span class="o">*</span><span class="n">exercises</span><span class="o">*</span><span class="n">time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">Error</span><span class="p">(</span><span class="n">id</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">weightloss.long</span><span class="p">)</span>
@@ -750,8 +748,11 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 </div>
 </div>
 </div>
-<p>In this scenario, <code class="docutils literal notranslate"><span class="pre">diet</span></code>, <code class="docutils literal notranslate"><span class="pre">exercises</span></code> and <code class="docutils literal notranslate"><span class="pre">time</span></code> are all using the <em>same</em> within-subject error term. But is this appropriate? If we focus on <code class="docutils literal notranslate"><span class="pre">diet</span></code>, <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> will contain the variation associated with the different diet conditions within each subject, which is what we want. However, it will <em>also</em> contain variation associated with the different levels of <code class="docutils literal notranslate"><span class="pre">exercises</span></code> and the different levels of <code class="docutils literal notranslate"><span class="pre">time</span></code>. If our focus is <code class="docutils literal notranslate"><span class="pre">diet</span></code> alone, it seems inappropriate to include the uncertainty around <code class="docutils literal notranslate"><span class="pre">exercises</span></code> and <code class="docutils literal notranslate"><span class="pre">time</span></code>. Similarly, if we are interested in the <code class="docutils literal notranslate"><span class="pre">diet:time</span></code> interaction, <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> will contain variation associated with both <code class="docutils literal notranslate"><span class="pre">diet</span></code> and <code class="docutils literal notranslate"><span class="pre">time</span></code>, as we want, but it will <em>also</em> include variation associated with <code class="docutils literal notranslate"><span class="pre">exercises</span></code>. This additional variation is of no relevance if we are only interested in the <code class="docutils literal notranslate"><span class="pre">diet:time</span></code> effect. What this means is that whenever there are <em>multiple</em> within-subject factors, we can <em>further partition</em> <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> into more error terms that are more suitable for each of these effects.</p>
-<p>Going back to <code class="docutils literal notranslate"><span class="pre">diet</span></code> as an example, the errors we want are only those associated with the different levels of <code class="docutils literal notranslate"><span class="pre">diet</span></code> for each subject. This means we want to <em>average-over</em> all other repeated measurements associated with both <code class="docutils literal notranslate"><span class="pre">time</span></code> and <code class="docutils literal notranslate"><span class="pre">exercises</span></code>. This can be achieved by specifying an <em>interaction</em> between the subject effects and the levels of <code class="docutils literal notranslate"><span class="pre">diet</span></code>. This will create subject-specific errors (just like <span class="math notranslate nohighlight">\(S_{i}\)</span>) for each level of <code class="docutils literal notranslate"><span class="pre">diet</span></code>. The variance from these errors will then reflect within-subject variation associated with <code class="docutils literal notranslate"><span class="pre">diet</span></code>, ignoring both <code class="docutils literal notranslate"><span class="pre">time</span></code> and <code class="docutils literal notranslate"><span class="pre">exercises</span></code>. If we continue this logic for all other terms, we get an error structure where we can partition <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> into further terms by taking all possible interactions between <code class="docutils literal notranslate"><span class="pre">subject</span></code> and the within-subject factors. Using <code class="docutils literal notranslate"><span class="pre">aov()</span></code>, this becomes</p>
+<p>In this scenario, <code class="docutils literal notranslate"><span class="pre">diet</span></code>, <code class="docutils literal notranslate"><span class="pre">exercises</span></code> and <code class="docutils literal notranslate"><span class="pre">time</span></code> are all using the <em>same</em> within-subject error term. But is this appropriate?</p>
+<p>If we focus on the test of <code class="docutils literal notranslate"><span class="pre">diet</span></code>, the error term is <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>. This <em>will</em> contain the variation associated with the different diet conditions within each subject, which is what we want. However, it will <em>also</em> contain variation associated with the different levels of <code class="docutils literal notranslate"><span class="pre">exercises</span></code> and the different levels of <code class="docutils literal notranslate"><span class="pre">time</span></code>. If our focus is <code class="docutils literal notranslate"><span class="pre">diet</span></code> alone, it seems inappropriate to include the uncertainty around <code class="docutils literal notranslate"><span class="pre">exercises</span></code> and <code class="docutils literal notranslate"><span class="pre">time</span></code>.</p>
+<p>Similarly, if we are interested in the <code class="docutils literal notranslate"><span class="pre">diet:time</span></code> interaction, using <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> means including variation associated with both <code class="docutils literal notranslate"><span class="pre">diet</span></code> and <code class="docutils literal notranslate"><span class="pre">time</span></code>, as we want, but will <em>also</em> include variation associated with <code class="docutils literal notranslate"><span class="pre">exercises</span></code>. This additional variation is of no relevance if we are only interested in the <code class="docutils literal notranslate"><span class="pre">diet:time</span></code> effect.</p>
+<p>What this means is that whenever there are <em>multiple</em> within-subject factors, we can <em>further partition</em> <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> into <em>more error terms</em> that are <em>more suitable</em> for each of these effects. The way this is achieved is by specifying <em>interactions</em> between the subject effects and the factors associated with each effect. Doing so will create subject-specific errors for just the terms of interest, averaging-over all other terms. So, for instance, <code class="docutils literal notranslate"><span class="pre">id:diet</span></code> produces subject-specific effects for <code class="docutils literal notranslate"><span class="pre">diet</span></code>, averaging-over both <code class="docutils literal notranslate"><span class="pre">time</span></code> and <code class="docutils literal notranslate"><span class="pre">exercises</span></code>. This produces a more suitable error term for testing the effect of <code class="docutils literal notranslate"><span class="pre">diet</span></code> compared to just using <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span>.</p>
+<p>If we continue this logic for all other terms, we get an error structure where we can partition <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> into further terms by taking all possible interactions between <code class="docutils literal notranslate"><span class="pre">subject</span></code> and the within-subject factors. Using <code class="docutils literal notranslate"><span class="pre">aov()</span></code>, this becomes</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">weightloss.aov</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">aov</span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">diet</span><span class="o">*</span><span class="n">exercises</span><span class="o">*</span><span class="n">time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
@@ -823,121 +824,32 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 </div>
 </div>
 </div>
-<p>which is both hideous to specify, but also to interpret given that we now have <em>8</em> ANOVA tables to deal with! It would also be very easy to get this wrong by missing a term somewhere. Luckily, there is an easier way to write this using</p>
+<div class="alert alert-block alert-info"> 
+<b>ACTIVITY 7</b> Take a moment to examine the output above. It looks very complicated, because it <i>is</i> very complicated. This is the logical conclusion of a method where error partitioning is performed within a model that only really has <i>one</i> error term and then requires <i>manual assignment</i> of error terms for different tests. 
+<br><br>
+If this output is surprising, it might be worth convincing yourself that this is <i>exactly</i> how a repeated measures ANOVA works in other software. For instance, consider the output table from SPSS in the image before. Notice that this is a single ANOVA table, but split into multiple <i>sub-tables</i>, depending upon the error terms. Now you know why.
+<br><br>
+<img src="images/SPSS-ANOVA.png">
+</div><p>We are making no excuses for this approach. It is hideous to specify, difficult to understand, hard to interpret and very easy to get wrong. You may see examples where a short-hand is used to construct the error terms, as shown below</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">aov</span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">diet</span><span class="o">*</span><span class="n">exercises</span><span class="o">*</span><span class="n">time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">Error</span><span class="p">(</span><span class="n">id</span><span class="o">/</span><span class="p">(</span><span class="n">diet</span><span class="o">*</span><span class="n">exercises</span><span class="o">*</span><span class="n">time</span><span class="p">)),</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">weightloss.long</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Call:
-aov(formula = weight ~ diet * exercises * time + Error(id/(diet * 
-    exercises * time)), data = weightloss.long)
-
-Grand Mean: 12.68132
-
-Stratum 1: id
-
-Terms:
-                Residuals
-Sum of Squares   27.09682
-Deg. of Freedom        11
-
-Residual standard error: 1.569506
-
-Stratum 2: id:diet
-
-Terms:
-                    diet Residuals
-Sum of Squares  5.111367  9.337474
-Deg. of Freedom        1        11
-
-Residual standard error: 0.9213367
-5 out of 6 effects not estimable
-Estimated effects are balanced
-
-Stratum 3: id:exercises
-
-Terms:
-                exercises Residuals
-Sum of Squares   71.16328  13.28392
-Deg. of Freedom         1        11
-
-Residual standard error: 1.098922
-5 out of 6 effects not estimable
-Estimated effects are balanced
-
-Stratum 4: id:time
-
-Terms:
-                     time Residuals
-Sum of Squares  211.38837  20.95943
-Deg. of Freedom         2        22
-
-Residual standard error: 0.9760642
-6 out of 8 effects not estimable
-Estimated effects may be unbalanced
-
-Stratum 5: id:diet:exercises
-
-Terms:
-                diet:exercises Residuals
-Sum of Squares        33.39877   4.87534
-Deg. of Freedom              1        11
-
-Residual standard error: 0.6657423
-2 out of 3 effects not estimable
-Estimated effects are balanced
-
-Stratum 6: id:diet:time
-
-Terms:
-                diet:time Residuals
-Sum of Squares    2.41961  44.17083
-Deg. of Freedom         2        22
-
-Residual standard error: 1.416956
-2 out of 4 effects not estimable
-Estimated effects may be unbalanced
-
-Stratum 7: id:exercises:time
-
-Terms:
-                exercises:time Residuals
-Sum of Squares        67.43327  35.61749
-Deg. of Freedom              2        22
-
-Residual standard error: 1.27239
-2 out of 4 effects not estimable
-Estimated effects may be unbalanced
-
-Stratum 8: id:diet:exercises:time
-
-Terms:
-                diet:exercises:time Residuals
-Sum of Squares             30.77454  23.76233
-Deg. of Freedom                   2        22
-
-Residual standard error: 1.039281
-Estimated effects may be unbalanced
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">aov.alt</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">aov</span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">diet</span><span class="o">*</span><span class="n">exercises</span><span class="o">*</span><span class="n">time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">Error</span><span class="p">(</span><span class="n">id</span><span class="o">/</span><span class="p">(</span><span class="n">diet</span><span class="o">*</span><span class="n">exercises</span><span class="o">*</span><span class="n">time</span><span class="p">)),</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">weightloss.long</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>where the syntax <code class="docutils literal notranslate"><span class="pre">id/(diet*exercises*time)</span></code> can be read as a request to include the main effect of the term on the <em>left</em> of <code class="docutils literal notranslate"><span class="pre">/</span></code> alongside all possible interactions with the terms on the <em>right</em> of <code class="docutils literal notranslate"><span class="pre">/</span></code>[^nesting-foot]. Importantly, only the <em>within-subject</em> factors appear in the <code class="docutils literal notranslate"><span class="pre">Error()</span></code> syntax because our aim is to further partition <span class="math notranslate nohighlight">\(\sigma^{2}_{w}\)</span> and <em>not</em> <span class="math notranslate nohighlight">\(\sigma^{2}_{b}\)</span>.</p>
-<p>In general, it is not recommended to use <code class="docutils literal notranslate"><span class="pre">aov()</span></code> like this. Not only is it <em>difficult</em> and prone to <em>mistakes</em>, but the output becomes unwieldly. A better approach, if you <em>must</em> use a repeated measures ANOVA, is the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> function</p>
+<p>The syntax <code class="docutils literal notranslate"><span class="pre">id/(diet*exercises*time)</span></code> can be read as a request to include the main effect of the term on the <em>left</em> of <code class="docutils literal notranslate"><span class="pre">/</span></code> alongside all possible interactions with the terms on the <em>right</em> of <code class="docutils literal notranslate"><span class="pre">/</span></code>. You will often see <code class="docutils literal notranslate"><span class="pre">Error()</span></code> code written like this, but it is not very informative unless you understand what this evaluates to, as shown <em>explicitly</em> in the earlier example.</p>
+<p>In general, it is <em>not recommended</em> to use <code class="docutils literal notranslate"><span class="pre">aov()</span></code> like this. Not only is it <em>difficult</em> and prone to <em>mistakes</em>, but the output is <em>unwieldly</em>. A better approach, if you <em>must</em> use a repeated measures ANOVA, is the <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code> function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;ez&#39;</span><span class="p">)</span>
 <span class="n">weightloss.ez</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ezANOVA</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">weightloss.long</span><span class="p">,</span><span class="w"> </span><span class="n">dv</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span><span class="w"> </span><span class="n">wid</span><span class="o">=</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">within</span><span class="o">=</span><span class="nf">.</span><span class="p">(</span><span class="n">diet</span><span class="p">,</span><span class="n">exercises</span><span class="p">,</span><span class="n">time</span><span class="p">))</span>
-<span class="nf">print</span><span class="p">(</span><span class="n">weightloss.ez</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">weightloss.ez</span><span class="o">$</span><span class="n">ANOVA</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>$ANOVA
-               Effect DFn DFd          F            p p&lt;.05        ges
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               Effect DFn DFd          F            p p&lt;.05        ges
 2                diet   1  11   6.021440 3.202562e-02     * 0.02774675
 3           exercises   1  11  58.928078 9.650954e-06     * 0.28434954
 4                time   2  22 110.941583 3.218470e-12     * 0.54133853
@@ -945,16 +857,19 @@ Estimated effects may be unbalanced
 6           diet:time   2  22   0.602562 5.561945e-01       0.01332945
 7      exercises:time   2  22  20.825889 8.408790e-06     * 0.27352201
 8 diet:exercises:time   2  22  14.246076 1.074451e-04     * 0.14663048
-
-$`Mauchly&#39;s Test for Sphericity`
-               Effect         W          p p&lt;.05
-4                time 0.9833425 0.91944157      
-6           diet:time 0.5493166 0.05001654      
-7      exercises:time 0.6835227 0.14919857      
-8 diet:exercises:time 0.9589434 0.81089547      
-
-$`Sphericity Corrections`
-               Effect       GGe        p[GG] p[GG]&lt;.05       HFe        p[HF]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The output will match the result of <code class="docutils literal notranslate"><span class="pre">aov()</span></code>, but in a much nicer format, with the additional advantage of the sphericity corrections.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">print</span><span class="p">(</span><span class="n">weightloss.ez</span><span class="o">$</span><span class="n">`Sphericity Corrections`</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               Effect       GGe        p[GG] p[GG]&lt;.05       HFe        p[HF]
 4                time 0.9836155 4.732515e-12         * 1.1960214 3.218470e-12
 6           diet:time 0.6893303 5.008306e-01           0.7558161 5.144265e-01
 7      exercises:time 0.7596029 7.470601e-05         * 0.8559657 3.105108e-05
@@ -968,14 +883,14 @@ $`Sphericity Corrections`
 </div>
 </div>
 </div>
-<p>The output will match the result of <code class="docutils literal notranslate"><span class="pre">aov()</span></code>, but in a much nicer format, with the additional advantage of the sphericity corrections. However, this approach does hide the fundamental difficulty with assigning tests to different error terms and thus hides much of the complexity and disadvantages of the repeated measures ANOVA framework. We also have the problem that, by going down this route, we have effectively thrown away the linear model framework we have been working so hard to build. We end up with an ANOVA table and nothing else.</p>
+<p>However, this approach does hide the fundamental difficulty with assigning tests to different error terms and thus hides much of the complexity and the disadvantages of the repeated measures ANOVA framework. We also have the problem that, by going down this route, we have effectively thrown away the linear model framework we have been working so hard to build. We end up with an ANOVA table and nothing else. Is this is all you want, then so be it. However, the better approaches to this situation, as we will learn in the coming weeks.</p>
 </section>
 </section>
 <section id="why-bother-with-the-repeated-measures-anova">
 <h2>Why Bother with the Repeated Measures ANOVA?<a class="headerlink" href="#why-bother-with-the-repeated-measures-anova" title="Link to this heading">#</a></h2>
-<p>Everything we have discussed above has really been an exercise in telling you why you really <em>do not want to use a repeated measures ANOVA</em>. All the unnecessary fiddling with different error terms and different tests is a complication that we could simply do without. In the past, this was the <em>only</em> way to deal with repeated measures, but that is no longer the case. Ultimately, the concept of multiple error terms and multiple sources of error variance are perfectly sound. Indeed, we will see that this is the basis of mixed-effects models. However, getting this to work within the linear models framework, and within the traditional ANOVA framework, is fraught with difficulties. The repeated measures ANOVA is a solution to this, but is really an <em>ad hoc</em> workaround for an analysis that is ill-suited for this framework. We can use software to hide much of this complexity, but that does not mean it goes away.</p>
-<p>Even if we are ok generating the correct output using <code class="docutils literal notranslate"><span class="pre">R</span></code>, particularly with access to something like <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code>, we are still left with a method that has a number of meaningful restrictions. Perhaps most concerning is the assumption of compound symmetry, because this will almost never be true in real-world data. Yes we can use some sort of correction for this, but this correction only applies to the inferential tests (not the model) and remains a further <em>ad hoc</em> adjustment to make the framework <em>approximately</em> correct. This is somewhat unsatisfying, especially as we would much prefer a method where the covariance matrix could just be <em>estimated</em> from the data and be allowed to take on any form it likes. This is particularly true when the correlation between repeated measurements is <em>negative</em>, because the repeated measures ANOVA simply <em>does not allow this</em>. This is a point that very few people understand about the repeated measures ANOVA.</p>
-<p>Taking all this together, we can conclude that the repeated measures ANOVA is tricky to understand, tricky to use correctly and largely inflexible. It is perhaps no wonder that statisticians abandoned this method decades ago. Indeed, notice the dates around when the sphericity corrections were published: 1959 and 1976. This gives you a hint about when these approaches were last being developed and studied in mathematical statistics. And yet, this is the method that has persisted in psychology until only relatively recently. Indeed, as alluded to already, you are likely to come across people still using the repeated measures ANOVA to this day. You may even work for some of them who will <em>insist</em> that you use a repeated measures ANOVA to analyse their data. In those situations, it is useful to (a) motivate the need for something better and (b) understand how to get the ANOVA results in <code class="docutils literal notranslate"><span class="pre">R</span></code>, if absolutely necessary. So, we do not condone the use of the repeated measures ANOVA, but we understand its place in psychology and also understand that there are times where you may need to see what the repeated measures ANOVA says, even if you do not wish to use it. Over the next few weeks, we will show you how to replace this framework with something much better in the form of <em>mixed-effects models</em>.</p>
+<p>Everything we have discussed in this workshop has been an exercise in telling you why you really <em>do not want to use a repeated measures ANOVA</em>. All the unnecessary fiddling with different error terms and different tests is a complication that we could simply do without. In the past, this was the <em>only</em> way to deal with repeated measures, but that is no longer the case. Ultimately, the concept of multiple error terms and multiple sources of error variance are perfectly sound. Indeed, we will see that this is the basis of mixed-effects models. However, getting this to work within the linear models framework, and within the traditional ANOVA framework, is fraught with difficulties. The repeated measures ANOVA is one solution to this, but is really an <em>ad hoc</em> workaround for an analysis that is ill-suited for this framework. We can use software to hide much of this complexity, but that does not mean it goes away.</p>
+<p>Even if we are comfortable generating the correct output using <code class="docutils literal notranslate"><span class="pre">R</span></code>, particularly with access to something like <code class="docutils literal notranslate"><span class="pre">ezANOVA()</span></code>, we are still left with a method that has a number of meaningful restrictions. Perhaps most concerning is the assumption of <em>compound symmetry</em>, because this will always be dubious in real-world data. Yes we can use some sort of correction for this, but this correction only applies to the inferential tests (not the model) and remains a further <em>ad hoc</em> adjustment to make the framework <em>approximately</em> correct.</p>
+<p>Taking all this together, we can conclude that the repeated measures ANOVA is tricky to understand, tricky to use correctly and largely inflexible. It is perhaps no wonder that statisticians abandoned this method decades ago. Unfortunately, you are likely to come across people still using the repeated measures ANOVA to this day. You may even work for some of them who will <em>insist</em> that you use a repeated measures ANOVA to analyse their data. In those situations, it is useful to (a) motivate the need for something better and (b) understand how to get the ANOVA results in <code class="docutils literal notranslate"><span class="pre">R</span></code>. So, we do not condone the use of the repeated measures ANOVA, but we understand its place in psychology and also understand that there are times where you may need to see what the repeated measures ANOVA says, even if you do not wish to use it. Over the next few weeks, we will show you how to replace this framework with something much better in the form of <em>mixed-effects models</em>.</p>
 </section>
 </section>
 
